@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Sector Admin</title>
+    <link rel="stylesheet" href="RegistrationFormStyle.css"> 
+    <style>
+      /* General body styling */
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f2f2f2;
+          margin: 0;
+          padding: 0;
+          color: #333;
+      }
+
+      /* Header styling */
+      h1 {
+          text-align: center;
+          color: #006699;
+          margin-top: 20px;
+      }
+
+      /* Navigation styling */
+      nav {
+          background-color: #006699;
+          padding: 10px;
+          text-align: center;
+          position: relative;
+      }
+
+      /* Navigation list styling */
+      nav ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+      }
+
+      /* Navigation items styling */
+      nav ul li {
+          display: inline-block;
+          margin-right: 20px;
+          position: relative;
+      }
+
+      /* Navigation links styling */
+      nav ul li a {
+          text-decoration: none;
+          color: white;
+          font-weight: bold;
+          transition: color 0.3s ease;
+      }
+
+      nav ul li a:hover {
+          color: #cce7ff;
+      }
+
+      /* Dropdown styling */
+      .dropdown {
+          display: inline-block;
+      }
+
+      .dropdown-content {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background-color: #006699;
+          padding: 0;
+          border-radius: 5px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          min-width: 200px;
+          z-index: 1000;
+      }
+
+      .dropdown:hover .dropdown-content {
+          display: block;
+      }
+
+      .dropdown-content li {
+          display: block;
+          margin: 0;
+      }
+
+      .dropdown-content li a {
+          display: block;
+          padding: 10px;
+          color: white;
+          font-weight: normal;
+          border-bottom: 1px solid #004d66;
+      }
+
+      .dropdown-content li a:hover {
+          background-color: #004d66;
+      }
+
+      /* Form section styling */
+      .form-section {
+          background-color: white;
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-section h2 {
+          color: #006699;
+          text-align: center;
+          margin-bottom: 20px;
+      }
+
+      /* Label styling */
+      label {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 5px;
+          color: #333;
+      }
+
+      /* Input and textarea styling */
+      input[type="text"],
+      input[type="number"],
+      input[type="password"],
+      select,
+      textarea,
+      input[type="file"] {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 1em;
+      }
+
+      textarea {
+          height: 100px;
+      }
+
+      /* Submit button styling */
+      button[type="submit"] {
+          background-color: #006699;
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          font-size: 1em;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+      }
+
+      button[type="submit"]:hover {
+          background-color: #005580;
+      }
+
+      /* Response message styling */
+      #responseMessage {
+          text-align: center;
+          font-weight: bold;
+          margin-top: 20px;
+      }
+
+      /* Placeholder styling */
+      .placeholder {
+          color: #999;
+          font-style: italic;
+          font-size: 0.9em;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="registerSectorAdmin.html">Register Sector Admin</a></li>
+                <li class="dropdown">
+                    <a href="#">View Information</a>
+                    <ul class="dropdown-content">
+                        <li><a href="/viewWaterSupplyInfo">View Water Supply Information</a></li>
+                        <li><a href="/viewHealthSectorInfo">View Health Sector Information</a></li>
+                        <li><a href="/viewSecurityInfo">View Security Information</a></li>
+                        <li><a href="/viewTourismHotelInfo">View Tourism Hotel Information</a></li>
+                        <li><a href="/viewEventFestivalInfo">View Event Festival Information</a></li>
+                        <li><a href="/viewTransportationInfo">View Transportation Information</a></li>
+                    </ul>
+                </li>
+                <li><a href="/viewIssues">View Issues</a></li>
+                <li><a href="AdminLogin.html">Sign Out</a></li>
+            </ul>
+        </nav>
+        
+        <form action="RegisterationServlet" method="post">
+            <h1>Register Sector Admin</h1>
+            
+            <label for="adminId">Admin ID:</label>
+            <input type="number" id="adminId" name="adminId" required>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="sector">Sector:</label>
+            <select id="sector" name="sector" required>
+                <option value="WaterSupply">Water Supply</option>
+                <option value="HealthSector">Health Sector</option>
+                <option value="Security">Security</option>
+                <option value="TourismAndHotel">Tourism and Hotel</option>
+                <option value="FestivalAndEvent">Festival and Event</option>
+                <option value="Transportation">Transportation</option>
+            </select>
+
+            <input type="submit" value="Register Sector Admin">
+        </form>
+    </div>
+</body>
+</html>

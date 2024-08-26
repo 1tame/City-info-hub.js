@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+   <!--<link rel="stylesheet" href="styles.css">-->
+    <style>
+    
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #loginPage {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #004080;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        select, input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #003366;
+        }
+
+        .general-options {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .general-options h3 {
+            margin-bottom: 10px;
+            color: #004080;
+        }
+
+        .general-options ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .general-options ul li {
+            margin-bottom: 10px;
+        }
+
+        .general-options ul li a {
+            color: #004080;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .general-options ul li a:hover {
+            color: #003366;
+        }
+
+        #errorDiv {
+            text-align: center;
+            margin-top: 20px;
+        }
+    
+    </style>
+    <script>
+       window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorMessage = urlParams.get('errorMessage');
+    if (errorMessage) {
+        const errorDiv = document.getElementById("errorDiv");
+        errorDiv.innerHTML = "<p style='color:red;'>" + errorMessage + "</p>";
+    }
+
+    // Form submission handler
+    const loginForm = document.getElementById('loginForm');
+    loginForm.onsubmit = async function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Gather form data
+        const formData = {
+            role: document.getElementById('role').value,
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+        };
+
+        try {
+            // Make API call using Fetch
+            const response = await fetch('http://localhost:3000/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Save the token to localStorage
+                localStorage.setItem('authToken', result.token);
+
+                // Redirect to the dashboard if login is successful
+                window.location.href = '/admin-dashboard';
+            } else {
+                // Show error message
+                document.getElementById('errorDiv').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
+            }
+        } catch (error) {
+            // Handle network or server errors
+            document.getElementById('errorDiv').innerHTML = "<p style='color:red;'>An error occurred: " + error.message + "</p>";
+        }
+    };
+};
+
+    
+    
+    </script>
+</head>
+<body>
+    <div id="loginPage">
+        <h2>Admin Login</h2>
+        <form id="loginForm">
+            <label for="role">Select Role:</label>
+            <select id="role" name="role" required>
+                <option value="systemAdmin">System Admin</option>
+                <option value="waterSupplyAdmin">Water Supply Admin</option>
+                <option value="healthSectorAdmin">Health Sector Admin</option>
+                <option value="securityAdmin">Security Admin</option>
+                <option value="tourismHotelAdmin">Tourism & Hotel Admin</option>
+                <option value="festivalEventAdmin">Festival & Event Admin</option>
+                <option value="transportationAdmin">Transportation Admin</option>
+            </select>
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="general-options">
+            <ul>
+                <li><a href="javascript:history.back()">Go Back</a></li>
+                <li><a href="#">Forgot Password?</a></li>
+                <li><a href="#">Help & Support</a></li>
+                <li><a href="#">Return to Main Website</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="errorDiv"></div>
+</body>
+</html>

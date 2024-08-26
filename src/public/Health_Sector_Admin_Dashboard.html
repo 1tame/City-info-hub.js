@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Sector Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #004080;
+            margin-top: 20px;
+        }
+
+        nav {
+            background-color: #004080;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #cce7ff;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .card h2 {
+            color: #004080;
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .placeholder {
+            color: #999;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Health Sector Admin Dashboard</h1>
+    <nav>
+        <ul>
+            <li><a href="/insertHealthSectorInfo">Insert Health Sector Information</a></li>
+        <li><a href="/viewHealthSectorInfo">View Health Sector Information</a></li>
+        <li><a href="/reportIssue">Report an Issue</a></li>
+        <li><a href="AdminLogin.html">Sign Out</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <!-- Card 1: Insert Information -->
+        <div class="card">
+            <img src="https://via.placeholder.com/300x150" alt="Insert Event Festival">
+            <h2>Insert Health Sector Information</h2>
+            <p class="placeholder">Add new Health Sector details to the system. Ensure all necessary information is included.</p>
+        </div>
+
+        <!-- Card 2: View Information -->
+        <div class="card">
+            <img src="https://via.placeholder.com/300x150" alt="View Event Festival">
+            <h2>View Health Sector Information</h2>
+            <p class="placeholder">Browse and manage existing Health Sector data. Update or delete as needed.</p>
+        </div>
+
+        <!-- Card 3: Report an Issue -->
+        <div class="card">
+            <img src="https://via.placeholder.com/300x150" alt="Report an Issue">
+            <h2>Report an Issue</h2>
+            <p class="placeholder">Log any problems or issues encountered during event management. Ensure timely resolution.</p>
+        </div>
+
+        <!-- Card 4: Sign Out -->
+        <div class="card">
+            <img src="https://via.placeholder.com/300x150" alt="Sign Out">
+            <h2>Sign Out</h2>
+            <p class="placeholder">Securely sign out from the admin dashboard. Remember to save any work before logging out.</p>
+        </div>
+    </div>
+</body>
+</html>
+

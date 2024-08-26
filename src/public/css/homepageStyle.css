@@ -1,0 +1,147 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Very light grey background */
+    color: #333;
+}
+
+/* Header Styles */
+h1 {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #ffffff; /* White background for header */
+    color: #555; /* Slightly darker grey for text */
+    margin: 0; 
+    font-size: 2.2em;
+    border-bottom: 1px solid #ddd; /* Light border for separation */
+}
+
+/* Navigation Bar Styles */
+nav {
+    background-color: #ffffff; /* White background for navigation */
+    border-bottom: 1px solid #ddd; /* Light border for navigation separation */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    flex-wrap: wrap; /* Wrap items on smaller screens */
+}
+
+nav ul li {
+    margin: 0 8px; /* Reduced space between navigation items for better fit */
+}
+
+nav ul li a {
+    color: #666; /* Medium grey color for links */
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    font-weight: normal;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+nav ul li a:hover {
+    background-color: #f9f9f9; /* Very light grey background on hover */
+    color: #333; /* Darker grey on hover */
+    border-radius: 4px; /* Rounded corners for hover effect */
+}
+
+/* Section Titles */
+h2 {
+    text-align: center;
+    color: #555; /* Medium grey for section titles */
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+}
+
+/* Admin Options Styles */
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+ul li a {
+    background-color: #e0e0e0; /* Light grey background for buttons */
+    color: #333;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: normal;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+ul li a:hover {
+    background-color: #c0c0c0; /* Slightly darker grey on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #ffffff; /* White background for footer */
+    border-top: 1px solid #ddd; /* Light border on top */
+    padding: 20px;
+    text-align: center;
+    color: #555; /* Medium grey for footer text */
+    position: fixed; /* Changed from fixed to relative */
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #007bff; /* Light blue color for footer links */
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px; /* Space between links */
+    padding: 5px 10px;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: #0056b3; /* Darker blue on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally in column layout */
+    }
+
+    nav ul li {
+        margin: 5px 0; /* Space between vertical items */
+    }
+
+    h1 {
+        font-size: 1.8em;
+        padding: 15px 0;
+    }
+
+    h2 {
+        font-size: 1.4em;
+    }
+
+    ul li a {
+        padding: 8px 15px;
+    }
+}

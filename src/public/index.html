@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gondar City Information Provider</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Header Style */
+        header {
+            background-image: url("https://a1auto.sfo2.cdn.digitaloceanspaces.com/media/car-shipping-quote-gondar.jpg?hash=27a9948d5465c2ce9869667e50d03390");
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            height: 300px; /* Adjust the height as needed */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Overlay for better text readability */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+            z-index: 1;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: #004080;
+            overflow: hidden;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            display: block;
+        }
+
+        nav ul li a:hover {
+            background-color: #003366;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin: -30px auto 20px auto; /* Adjust the top margin to overlap the header */
+            max-width: 600px;
+            display: flex;
+            justify-content: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .search-bar input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .search-bar input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .search-bar input[type="submit"]:hover {
+            background-color: #003366;
+        }
+
+        /* Main Content */
+        .content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 60px;
+            padding: 60px;
+        }
+
+        .content a {
+            text-decoration: none;
+            color: inherit; /* Inherit color from parent */
+            display: block;
+        }
+
+        .content div {
+            padding: 20px;
+            background-color: #f2f2f2;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            height: 100%; /* Ensure full height for flex alignment */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .content div:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-5px);
+        }
+
+        .content div h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .content div p {
+            font-size: 1em;
+            color: #333; /* Dark grey for better readability */
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #ffffff; /* White background for footer */
+            border-top: 1px solid #ddd; /* Light border on top */
+            padding: 20px;
+            text-align: center;
+            color: #555; /* Medium grey for footer text */
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        .footer-links {
+            margin-top: 10px;
+        }
+
+        .footer-links a {
+            color: #007bff; /* Light blue color for footer links */
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px; /* Space between links */
+            padding: 5px 10px;
+            display: inline-block;
+        }
+
+        .footer-links a:hover {
+            color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Media query for devices with a max width of 768px (typical tablets and below) */
+        @media screen and (max-width: 768px) {
+            header h1 {
+                font-size: 2em; /* Reduce the header font size */
+            }
+
+            .search-bar {
+                flex-direction: column; /* Stack the search bar vertically */
+                width: 90%; /* Make the search bar wider */
+            }
+
+            .search-bar input[type="text"] {
+                width: 100%;
+                border-radius: 4px;
+                margin-bottom: 10px; /* Add space between input and button */
+            }
+
+            .search-bar input[type="submit"] {
+                width: 100%;
+                border-radius: 4px;
+            }
+
+            .content {
+                padding: 20px; /* Reduce padding */
+                gap: 20px; /* Reduce gap */
+            }
+
+            .content div {
+                padding: 15px; /* Adjust padding for smaller screens */
+            }
+        }
+
+        /* Media query for devices with a max width of 480px (typical smartphones) */
+        @media screen and (max-width: 480px) {
+            header {
+                height: 200px; /* Reduce header height */
+            }
+
+            header h1 {
+                font-size: 1.5em; /* Further reduce header font size */
+            }
+
+            .search-bar {
+                margin-top: -20px; /* Adjust overlap for smaller screens */
+            }
+
+            .content {
+                grid-template-columns: 1fr; /* Single column layout */
+            }
+
+            .footer-links a {
+                display: block; /* Stack footer links vertically */
+                margin: 10px 0; /* Add margin between links */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gondar City Information Provider</h1>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" placeholder="Search Gondar City Information...">
+        <input type="submit" value="Search">
+    </div>
+
+    <div class="content">
+        <a href="/viewWaterSupplyInfo">
+            <div>
+                <h2>View Water Supply Information</h2>
+                <p>Access detailed information on city water supply services, including maintenance schedules and contact details.</p>
+            </div>
+        </a>
+        <a href="/viewHealthSectorInfo">
+            <div>
+                <h2>View Health Sector Information</h2>
+                <p>Find the contact details and services provided by the city's health departments and elected officials.</p>
+            </div>
+        </a>
+        <a href="/viewTourismHotelInfo">
+            <div>
+                <h2>View Tourism Hotel Information</h2>
+                <p>Explore available hotels and accommodations, along with information on COVID-19 vaccination and testing services.</p>
+            </div>
+        </a>
+        <a href="/viewEventFestivalInfo">
+            <div>
+                <h2>View Event Festival Information</h2>
+                <p>Discover local events, festivals, and other community activities in Gondar.</p>
+            </div>
+        </a>
+        <a href="/viewTransportationInfo">
+            <div>
+                <h2>View Transportation Information</h2>
+                <p>Get details on public transportation options, including schedules and routes within the city.</p>
+            </div>
+        </a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 City Information Provider</p>
+        <div class="footer-links">
+            <a href="/contact">Contact Us</a>
+            <a href="/about">About Us</a>
+            <a href="AdminLogin.html">Admin Login</a>
+        </div>
+    </footer>
+</body>
+</html>

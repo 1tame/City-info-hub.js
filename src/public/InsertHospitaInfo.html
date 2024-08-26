@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Health Sector Information</title>
+    <link rel="stylesheet" href="hospitalAdminPageStyle.css">
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #006699;
+            margin-top: 20px;
+        }
+
+        nav {
+            background-color: #006699;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #cce7ff;
+        }
+
+        .form-section {
+            background-color: white;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            color: #006699;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="text"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        button[type="submit"] {
+            background-color: #006699;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #005580;
+        }
+
+        #responseMessage {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .placeholder {
+            color: #999;
+            font-style: italic;
+            font-size: 0.9em;
+        }
+   
+     </style>
+</head>
+<body>
+    <h1>Health Sector Admin Dashboard</h1>
+    <nav>
+        <ul>
+            <li><a href="InsertHospitaInfo.html">Insert Health Sector Information</a></li>
+            <li><a href="/viewHealthSectorInfo">View Health Sector Information</a></li>
+            <li><a href="IssueReporting.html">Report an Issue</a></li>
+            <li><a href="AdminLogin.html">Sign Out</a></li>
+        </ul>
+    </nav>
+
+    <section class="form-section">
+        <h2>Insert Health Sector Information</h2>
+        <form action="/submitHealthSectorInfo" method="post" enctype="multipart/form-data">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" maxlength="100" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" maxlength="255" required>
+
+            <label for="contact">Contact:</label>
+            <input type="text" id="contact" name="contact" maxlength="50" required>
+
+            <label for="operatingHours">Operating Hours:</label>
+            <input type="text" id="operatingHours" name="operatingHours" maxlength="50" required>
+
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+</body>
+</html>

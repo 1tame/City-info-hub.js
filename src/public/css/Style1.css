@@ -1,0 +1,83 @@
+@charset "ISO-8859-1";
+/* Login Page */
+#loginPage {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#loginPage h1 {
+    color: #444;
+}
+
+#loginPage label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+#loginPage input[type="text"],
+#loginPage input[type="password"],
+#loginPage select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#loginPage button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#loginPage button:hover {
+    background-color: #0056b3;
+}
+
+#feedbackMessage {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* View Page Search */
+.viewPage {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.viewPage h2 {
+    color: #444;
+}
+
+#searchBar {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#infoList li {
+    margin: 10px 0;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+#infoList li:last-child {
+    border-bottom: none;
+}
