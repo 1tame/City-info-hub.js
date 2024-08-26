@@ -3,217 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Sector Admin</title>
-    <link rel="stylesheet" href="RegistrationFormStyle.css"> 
+    <title>Report an Issue</title>
+    <link rel="stylesheet" href="ReportIssueStyle.css">
+
     <style>
-      /* General body styling */
-      body {
-          font-family: Arial, sans-serif;
-          background-color: #f2f2f2;
-          margin: 0;
-          padding: 0;
-          color: #333;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-      /* Header styling */
-      h1 {
-          text-align: center;
-          color: #006699;
-          margin-top: 20px;
-      }
+        #registerPage {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* Increased the width for a more spacious layout */
+            box-sizing: border-box;
+            margin: 20px;
+        }
 
-      /* Navigation styling */
-      nav {
-          background-color: #006699;
-          padding: 10px;
-          text-align: center;
-          position: relative;
-      }
+        h1 {
+            text-align: center;
+            color: #004080;
+            margin-bottom: 30px;
+        }
 
-      /* Navigation list styling */
-      nav ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-      }
+        h2 {
+            text-align: center;
+            color: #004080;
+            margin-bottom: 20px;
+        }
 
-      /* Navigation items styling */
-      nav ul li {
-          display: inline-block;
-          margin-right: 20px;
-          position: relative;
-      }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
 
-      /* Navigation links styling */
-      nav ul li a {
-          text-decoration: none;
-          color: white;
-          font-weight: bold;
-          transition: color 0.3s ease;
-      }
+        textarea, input[type="number"] {
+            width: 100%;
+            padding: 12px; /* Increased padding for a better feel */
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: vertical;
+            font-size: 16px; /* Improved readability */
+        }
 
-      nav ul li a:hover {
-          color: #cce7ff;
-      }
+        button {
+            width: 100%;
+            padding: 14px; /* Increased padding */
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px; /* Larger button text */
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
 
-      /* Dropdown styling */
-      .dropdown {
-          display: inline-block;
-      }
+        button:hover {
+            background-color: #003366;
+        }
 
-      .dropdown-content {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          background-color: #006699;
-          padding: 0;
-          border-radius: 5px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          min-width: 200px;
-          z-index: 1000;
-      }
+        #responseMessage {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px; /* Larger text for response message */
+        }
 
-      .dropdown:hover .dropdown-content {
-          display: block;
-      }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+            margin-bottom: 30px; /* Extra space below navigation */
+        }
 
-      .dropdown-content li {
-          display: block;
-          margin: 0;
-      }
+        nav ul li {
+            display: inline-block;
+            margin: 0 15px;
+        }
 
-      .dropdown-content li a {
-          display: block;
-          padding: 10px;
-          color: white;
-          font-weight: normal;
-          border-bottom: 1px solid #004d66;
-      }
+        nav ul li a {
+            color: #004080;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            font-size: 18px; /* Increased font size for navigation links */
+        }
 
-      .dropdown-content li a:hover {
-          background-color: #004d66;
-      }
-
-      /* Form section styling */
-      .form-section {
-          background-color: white;
-          max-width: 600px;
-          margin: 20px auto;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .form-section h2 {
-          color: #006699;
-          text-align: center;
-          margin-bottom: 20px;
-      }
-
-      /* Label styling */
-      label {
-          font-weight: bold;
-          display: block;
-          margin-bottom: 5px;
-          color: #333;
-      }
-
-      /* Input and textarea styling */
-      input[type="text"],
-      input[type="number"],
-      input[type="password"],
-      select,
-      textarea,
-      input[type="file"] {
-          width: 100%;
-          padding: 10px;
-          margin-bottom: 20px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          font-size: 1em;
-      }
-
-      textarea {
-          height: 100px;
-      }
-
-      /* Submit button styling */
-      button[type="submit"] {
-          background-color: #006699;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          font-size: 1em;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-      }
-
-      button[type="submit"]:hover {
-          background-color: #005580;
-      }
-
-      /* Response message styling */
-      #responseMessage {
-          text-align: center;
-          font-weight: bold;
-          margin-top: 20px;
-      }
-
-      /* Placeholder styling */
-      .placeholder {
-          color: #999;
-          font-style: italic;
-          font-size: 0.9em;
-      }
+        nav ul li a:hover {
+            color: #003366;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div id="registerPage">
+        <h1>Issue Reporting Dashboard</h1>
+        
+
+        <section class="form-section">
+            <h2>Report an Issue</h2>
+            <form id="issueForm">
+                <label for="description">Issue Description:</label>
+                <textarea id="description" name="issue_description" rows="5" required></textarea>
+
+                <label for="adminId">Reported By (Admin ID):</label>
+                <input type="number" id="adminId" name="admin_id" required>
+
+                <button type="submit">Submit</button>
+            </form>
+            <p id="responseMessage"></p> <!-- Element to show the response message -->
+        </section>
         <nav>
-            <ul>
-                <li><a href="registerSectorAdmin.html">Register Sector Admin</a></li>
-                <li class="dropdown">
-                    <a href="#">View Information</a>
-                    <ul class="dropdown-content">
-                        <li><a href="/viewWaterSupplyInfo">View Water Supply Information</a></li>
-                        <li><a href="/viewHealthSectorInfo">View Health Sector Information</a></li>
-                        <li><a href="/viewSecurityInfo">View Security Information</a></li>
-                        <li><a href="/viewTourismHotelInfo">View Tourism Hotel Information</a></li>
-                        <li><a href="/viewEventFestivalInfo">View Event Festival Information</a></li>
-                        <li><a href="/viewTransportationInfo">View Transportation Information</a></li>
-                    </ul>
-                </li>
-                <li><a href="/viewIssues">View Issues</a></li>
+            <ul id="adminNav">
+                <li><a href="javascript:history.back()">Go Back</a></li>
                 <li><a href="AdminLogin.html">Sign Out</a></li>
             </ul>
         </nav>
-        
-        <form action="RegisterationServlet" method="post">
-            <h1>Register Sector Admin</h1>
-            
-            <label for="adminId">Admin ID:</label>
-            <input type="number" id="adminId" name="adminId" required>
-
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-
-            <label for="sector">Sector:</label>
-            <select id="sector" name="sector" required>
-                <option value="WaterSupply">Water Supply</option>
-                <option value="HealthSector">Health Sector</option>
-                <option value="Security">Security</option>
-                <option value="TourismAndHotel">Tourism and Hotel</option>
-                <option value="FestivalAndEvent">Festival and Event</option>
-                <option value="Transportation">Transportation</option>
-            </select>
-
-            <input type="submit" value="Register Sector Admin">
-        </form>
     </div>
+
+    <script>
+        document.getElementById("issueForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            var formData = new FormData(this);
+
+            fetch("/reportIssue", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json()) // Expecting JSON response
+            .then(result => {
+                let responseMessage = document.getElementById("responseMessage");
+                if (response.ok && result.message === "Issue reported successfully.") {
+                    responseMessage.textContent = "Issue reported successfully!";
+                    responseMessage.style.color = "green";
+                } else {
+                    responseMessage.textContent = "Failed to report the issue: " + (result.message || 'Please try again.');
+                    responseMessage.style.color = "red";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                let responseMessage = document.getElementById("responseMessage");
+                responseMessage.textContent = "An error occurred. Please try again.";
+                responseMessage.style.color = "red";
+            });
+        });
+    </script>
 </body>
 </html>

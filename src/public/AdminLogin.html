@@ -102,7 +102,7 @@
     
     </style>
     <script>
-       window.onload = function() {
+    window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const errorMessage = urlParams.get('errorMessage');
     if (errorMessage) {
@@ -138,8 +138,37 @@
                 // Save the token to localStorage
                 localStorage.setItem('authToken', result.token);
 
-                // Redirect to the dashboard if login is successful
-                window.location.href = '/admin-dashboard';
+                // Route based on role
+                let dashboardUrl = '/default-dashboard'; // Default URL
+                switch (formData.role) {
+                    case 'systemAdmin':
+                        dashboardUrl = 'sysAdminHomePage.html';
+                        break;
+                    case 'waterSupplyAdmin':
+                        dashboardUrl = 'Water_Supply_Admin_Dashboard.html';
+                        break;
+                    case 'healthSectorAdmin':
+                        dashboardUrl = 'Health_Sector_Admin_Dashboard.html';
+                        break;
+                    case 'securityAdmin':
+                        dashboardUrl = 'Security_Admin_Dashboard.html';
+                        break;
+                    case 'tourismHotelAdmin':
+                        dashboardUrl = 'Tourism_and_Hotel_Admin_Dashboard.html';
+                        break;
+                    case 'festivalEventAdmin':
+                        dashboardUrl = 'Festival_and_Event_Admin_Dashboard.html';
+                        break;
+                    case 'transportationAdmin':
+                        dashboardUrl = 'Transportation_Admin_Dashboard.html';
+                        break;
+                    default:
+                        dashboardUrl = '/default-dashboard'; // Default in case of unknown role
+                        break;
+                }
+
+                // Redirect to the appropriate dashboard
+                window.location.href = dashboardUrl;
             } else {
                 // Show error message
                 document.getElementById('errorDiv').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
@@ -151,8 +180,6 @@
     };
 };
 
-    
-    
     </script>
 </head>
 <body>

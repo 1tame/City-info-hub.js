@@ -4,197 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Sector Admin</title>
-    <link rel="stylesheet" href="RegistrationFormStyle.css"> 
     <style>
-      /* General body styling */
-      body {
-          font-family: Arial, sans-serif;
-          background-color: #f2f2f2;
-          margin: 0;
-          padding: 0;
-          color: #333;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-      /* Header styling */
-      h1 {
-          text-align: center;
-          color: #006699;
-          margin-top: 20px;
-      }
+        #registerPage {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
 
-      /* Navigation styling */
-      nav {
-          background-color: #006699;
-          padding: 10px;
-          text-align: center;
-          position: relative;
-      }
+        h2 {
+            text-align: center;
+            color: #004080;
+            margin-bottom: 20px;
+        }
 
-      /* Navigation list styling */
-      nav ul {
-          list-style-type: none;
-          margin: 0;
-          padding: 0;
-      }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
 
-      /* Navigation items styling */
-      nav ul li {
-          display: inline-block;
-          margin-right: 20px;
-          position: relative;
-      }
+        select, input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-      /* Navigation links styling */
-      nav ul li a {
-          text-decoration: none;
-          color: white;
-          font-weight: bold;
-          transition: color 0.3s ease;
-      }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-      nav ul li a:hover {
-          color: #cce7ff;
-      }
+        button:hover {
+            background-color: #003366;
+        }
 
-      /* Dropdown styling */
-      .dropdown {
-          display: inline-block;
-      }
+        .general-options {
+            text-align: center;
+            margin-top: 20px;
+        }
 
-      .dropdown-content {
-          display: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          background-color: #006699;
-          padding: 0;
-          border-radius: 5px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          min-width: 200px;
-          z-index: 1000;
-      }
+        .general-options ul {
+            list-style: none;
+            padding: 0;
+        }
 
-      .dropdown:hover .dropdown-content {
-          display: block;
-      }
+        .general-options ul li {
+            margin-bottom: 10px;
+        }
 
-      .dropdown-content li {
-          display: block;
-          margin: 0;
-      }
+        .general-options ul li a {
+            color: #004080;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
 
-      .dropdown-content li a {
-          display: block;
-          padding: 10px;
-          color: white;
-          font-weight: normal;
-          border-bottom: 1px solid #004d66;
-      }
+        .general-options ul li a:hover {
+            color: #003366;
+        }
 
-      .dropdown-content li a:hover {
-          background-color: #004d66;
-      }
-
-      /* Form section styling */
-      .form-section {
-          background-color: white;
-          max-width: 600px;
-          margin: 20px auto;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .form-section h2 {
-          color: #006699;
-          text-align: center;
-          margin-bottom: 20px;
-      }
-
-      /* Label styling */
-      label {
-          font-weight: bold;
-          display: block;
-          margin-bottom: 5px;
-          color: #333;
-      }
-
-      /* Input and textarea styling */
-      input[type="text"],
-      input[type="number"],
-      input[type="password"],
-      select,
-      textarea,
-      input[type="file"] {
-          width: 100%;
-          padding: 10px;
-          margin-bottom: 20px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          font-size: 1em;
-      }
-
-      textarea {
-          height: 100px;
-      }
-
-      /* Submit button styling */
-      button[type="submit"] {
-          background-color: #006699;
-          color: white;
-          padding: 10px 20px;
-          border: none;
-          border-radius: 5px;
-          font-size: 1em;
-          cursor: pointer;
-          transition: background-color 0.3s ease;
-      }
-
-      button[type="submit"]:hover {
-          background-color: #005580;
-      }
-
-      /* Response message styling */
-      #responseMessage {
-          text-align: center;
-          font-weight: bold;
-          margin-top: 20px;
-      }
-
-      /* Placeholder styling */
-      .placeholder {
-          color: #999;
-          font-style: italic;
-          font-size: 0.9em;
-      }
+        #responseDiv {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
+    <script>
+        window.onload = function() {
+            // Form submission handler
+            const registerForm = document.getElementById('registerForm');
+            registerForm.onsubmit = async function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Gather form data
+                const formData = {
+                    role: document.getElementById('role').value,
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value,
+                };
+
+                try {
+                    // Make API call using Fetch
+                    const response = await fetch('api/admin/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Redirect to the admin dashboard if registration is successful
+                        window.location.href = '/admin-dashboard';
+                    } else {
+                        // Show error message
+                        document.getElementById('responseDiv').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
+                    }
+                } catch (error) {
+                    // Handle network or server errors
+                    document.getElementById('responseDiv').innerHTML = "<p style='color:red;'>An error occurred: " + error.message + "</p>";
+                }
+            };
+        };
+    </script>
 </head>
 <body>
-    <div class="container">
-        <nav>
-            <ul>
-                <li><a href="registerSectorAdmin.html">Register Sector Admin</a></li>
-                <li class="dropdown">
-                    <a href="#">View Information</a>
-                    <ul class="dropdown-content">
-                        <li><a href="/viewWaterSupplyInfo">View Water Supply Information</a></li>
-                        <li><a href="/viewHealthSectorInfo">View Health Sector Information</a></li>
-                        <li><a href="/viewSecurityInfo">View Security Information</a></li>
-                        <li><a href="/viewTourismHotelInfo">View Tourism Hotel Information</a></li>
-                        <li><a href="/viewEventFestivalInfo">View Event Festival Information</a></li>
-                        <li><a href="/viewTransportationInfo">View Transportation Information</a></li>
-                    </ul>
-                </li>
-                <li><a href="/viewIssues">View Issues</a></li>
-                <li><a href="AdminLogin.html">Sign Out</a></li>
-            </ul>
-        </nav>
-        
-        <form action="RegisterationServlet" method="post">
-            <h1>Register Sector Admin</h1>
-            
-            <label for="adminId">Admin ID:</label>
-            <input type="number" id="adminId" name="adminId" required>
+    <div id="registerPage">
+        <h2>Register Sector Admin</h2>
+        <form id="registerForm">
+            <label for="role">Select Role:</label>
+            <select id="role" name="role" required>
+                <option value="sys_admin">sys_admin</option>
+                <option value="Event&festival-info admin">Event&festival-info admin</option>
+                <option value="Security-info Admin">Security-info Admin</option>
+                <option value="Health sector Admin">Health sector Admin</option>
+                <option value="Tourism-info Admin">Tourism-info Admin</option>
+                <option value="Transportation Admin">Transportation Admin</option>
+                <option value="Water Supply Admin">Water Supply Admin</option>
+            </select>
 
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
@@ -202,18 +155,18 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
-            <label for="sector">Sector:</label>
-            <select id="sector" name="sector" required>
-                <option value="WaterSupply">Water Supply</option>
-                <option value="HealthSector">Health Sector</option>
-                <option value="Security">Security</option>
-                <option value="TourismAndHotel">Tourism and Hotel</option>
-                <option value="FestivalAndEvent">Festival and Event</option>
-                <option value="Transportation">Transportation</option>
-            </select>
-
-            <input type="submit" value="Register Sector Admin">
+            <button type="submit">Register</button>
         </form>
+
+        <div class="general-options">
+            <ul>
+                <li><a href="javascript:history.back()">Go Back</a></li>
+                <li><a href="#">Forgot Password?</a></li>
+                <li><a href="#">Help & Support</a></li>
+                <li><a href="index.html">Return to Main Website</a></li>
+            </ul>
+        </div>
     </div>
+    <div id="responseDiv"></div>
 </body>
 </html>

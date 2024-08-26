@@ -25,6 +25,7 @@ db.then((connection) => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
+
   // auth controller
   const authController = require("./controllers/auth.controller");
 
@@ -38,12 +39,15 @@ db.then((connection) => {
   app.use("/api/post", postRoutes);
   app.use("/api/auth", authRoutes);
   app.use("/issues", issuesRoutes);
+
   app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../public", "index.html"));
   });
+
   app.get("/AdminLogin", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "AdminLogin.html"));
   });
+
   app.get("/admin-dashboard", (req, res) => {
     console.log("User authenticated, accessing admin dashboard");
     console.log(authController.loginAdmin);
@@ -51,6 +55,107 @@ db.then((connection) => {
     // Serve the admin dashboard HTML file
     res.sendFile(path.join(__dirname, "public", "sysAdminHomePage.html"));
   });
+
+  // Register the new routes
+  app.get("/registerSectorAdmin.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "registerSectorAdmin.html"));
+  });
+
+  app.get("/viewAdminInfo.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "view-admins.html"));
+  });
+
+  app.get("/viewIssue.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "viewIssue.html"));
+  });
+
+  app.get("/AdminLogin.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "AdminLogin.html"));
+  });
+
+  //  routes for admin management
+  /*app.get("/create-admin.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "create-admin.html"));
+  });*/
+
+  app.get("/view-admins.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "view-admins.html"));
+  });
+
+  app.get("/update-admin.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "update-admin.html"));
+  });
+
+  app.get("/delete-admin.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "delete-admin.html"));
+  });
+   app.get("/insertHospitalInfo.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "insertHospitalInfo.html"));
+  });
+
+// Route for Insert Event Festival Information
+app.get('/insertEventFestivalInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'insertEventFestivalInfo.html'));
+});
+
+// Route for View Event Festival Information
+app.get('/viewEventFestivalInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'viewEventFestivalInfo.html'));
+});
+
+// Route for Report an Issue
+app.get('/IssueReporting.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'IssueReporting.html'));
+});
+
+
+
+
+// Route for View Health Sector Information
+app.get('/viewHealthSectorInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'viewHealthSectorInfo.html'));
+});
+
+// Route for Insert Security Information
+app.get('/InsertSecurityInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'InsertSecurityInfo.html'));
+});
+
+// Route for View Security Information
+app.get('/viewSecurityInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'viewSecurityInfo.html'));
+});
+
+// Route for Insert Tourism Information
+app.get('/InsertHotelTourismInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'InsertHotelTourismInfo.html'));
+});
+
+// Route for View Tourism Information
+app.get('/viewTourismInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'viewTourismInfo.html'));
+});
+
+// Route for Insert Transportation Information
+app.get('/InsertTransportationInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'InsertTransportationInfo.html'));
+});
+
+// Route for View Transportation Information
+app.get('/viewTransportationInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'viewTransportationInfo.html'));
+});
+
+// Route for Insert Water Supply Information
+app.get('/insert_water_supply_info.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'insert_water_supply_info.html'));
+});
+
+// Route for View Water Supply Information
+app.get('/viewWaterSupplyInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'viewWaterSupplyInfo.html'));
+});
+
 
   // Optionally, you can close the connection if it's not needed immediately
   // connection.end();

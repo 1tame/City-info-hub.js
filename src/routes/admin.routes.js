@@ -15,7 +15,7 @@ console.log(authController.authenticateToken); // Should not be undefined
 router.post('/create', adminController.createAdmin);
 
 // Route to get all admins (Protected route)
-router.get('/admins', authController.authenticateToken, adminController.getAllAdmins);
+router.get('/admins',  adminController.getAllAdmins);
 
 // Route to get an admin by ID (Protected route)
 router.get('/admin/:id', authController.authenticateToken, adminController.getAdminById);
