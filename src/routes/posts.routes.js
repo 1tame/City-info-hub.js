@@ -32,7 +32,7 @@ const upload = multer({
 });
 
 // Route to create a new post (Protected route)
-router.post('/posts', authController.authenticateToken, upload.single('image'), postsController.createPost);
+router.post('/posts', upload.single('image'), postsController.createPost);
 
 // Route to get all posts (Public route, no authentication needed)
 router.get('/posts', postsController.getAllPosts);

@@ -40,6 +40,19 @@ db.then((connection) => {
   app.use("/api/auth", authRoutes);
   app.use("/issues", issuesRoutes);
 
+  /*app.post('/api/post/posts', (req, res) => {
+    // Extract data from the form submission
+    const { fieldName1, fieldName2 } = req.body;
+  
+    // Log the form data to the console (or process it as needed)
+    console.log('Form Data:', req.body);
+  
+    // Send a response back to the client
+    res.send('Form submission received!');
+  
+    // Here, you can add code to save the data to a database, etc.
+  });
+*/
   app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../public", "index.html"));
   });
