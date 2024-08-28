@@ -164,33 +164,44 @@
     </section>
 
     <script>
-        document.getElementById("securityInfoForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the form from submitting the traditional way
+        window.onload = function() {
+            const eventFestivalForm = document.getElementById('securityInfoForm');
+            eventFestivalForm.onsubmit = async function(event) {
+                event.preventDefault(); // Prevent the default form submission
 
-            var formData = new FormData(this);
-
-            fetch("/submitSecurityInfo", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.text())
-            .then(result => {
-                let responseMessage = document.getElementById("responseMessage");
-                if (result === "success") {
-                    responseMessage.textContent = "Security information submitted successfully!";
-                    responseMessage.style.color = "green";
-                } else {
-                    responseMessage.textContent = "Failed to submit security information. Please try again.";
-                    responseMessage.style.color = "red";
+                // Gather form data
+                const formData = new FormData();
+                formData.append('adminId', document.getElementById('adminId').value);
+                formData.append('title', document.getElementById('title').value);
+                formData.append('content', document.getElementById('content').value);
+                formData.append('type', document.getElementById('type').value);
+                const imageFile = document.getElementById('imageUrl').files[0];
+                if (imageFile) {
+                    formData.append('image', imageFile);
                 }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                let responseMessage = document.getElementById("responseMessage");
-                responseMessage.textContent = "An error occurred. Please try again.";
-                responseMessage.style.color = "red";
-            });
-        });
+
+                try {
+                    // Make API call using Fetch
+                    const response = await fetch('http://localhost:3000/api/post/posts', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Show success message or redirect
+                        document.getElementById('responseMessage').innerHTML = "<p style='color:green;'>Post created successfully.</p>";
+                    } else {
+                        // Show error message
+                        document.getElementById('responseMessage').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
+                    }
+                } catch (error) {
+                    // Handle any unexpected errors
+                    document.getElementById('responseMessage').innerHTML = "<p style='color:red;'>An error occurred while creating the post.</p>";
+                }
+            };
+        };
     </script>
 </body>
 </html>

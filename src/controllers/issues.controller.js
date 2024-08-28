@@ -15,7 +15,7 @@ exports.reportIssue = async (req, res) => {
             [admin_id, issue_description, 'open']
         );
 
-        res.status(201).json({ message: 'Issue reported successfully.', issueId: result.insertId });
+        res.status(200).json({ message: 'Issue reported successfully.', issueId: result.insertId });
     } catch (err) {
         console.error('Error reporting issue:', err);
         res.status(500).json({ message: 'Error reporting issue.', error: err.message });
@@ -65,7 +65,7 @@ exports.provideFeedback = async (req, res) => {
             ['in progress', id]
         );
 
-        res.status(201).json({ message: 'Feedback provided successfully.' });
+        res.status(200).json({ message: 'Feedback provided successfully.' });
     } catch (err) {
         console.error('Error providing feedback:', err);
         res.status(500).json({ message: 'Error providing feedback.', error: err.message });

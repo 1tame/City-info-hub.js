@@ -132,7 +132,7 @@
 
     <section class="form-section">
         <h2>Insert Health Sector Information</h2>
-        <form action="/submitHealthSectorInfo" method="post" enctype="multipart/form-data">
+        <form id = "submitHealthInfo" method="post" enctype="multipart/form-data">
             <label for="adminId">Admin ID:</label>
                 <input type="text" id="adminId" name="adminId" required>
     
@@ -159,6 +159,48 @@
     
             <button type="submit">Submit</button>
         </form>
+        <p id="responseMessage"></p> <!-- Element to show the response message -->
     </section>
+
+    <script>
+        window.onload = function() {
+            const eventFestivalForm = document.getElementById('submitHealthInfo');
+            eventFestivalForm.onsubmit = async function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Gather form data
+                const formData = new FormData();
+                formData.append('adminId', document.getElementById('adminId').value);
+                formData.append('title', document.getElementById('title').value);
+                formData.append('content', document.getElementById('content').value);
+                formData.append('type', document.getElementById('type').value);
+                const imageFile = document.getElementById('imageUrl').files[0];
+                if (imageFile) {
+                    formData.append('image', imageFile);
+                }
+
+                try {
+                    // Make API call using Fetch
+                    const response = await fetch('http://localhost:3000/api/post/posts', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Show success message or redirect
+                        document.getElementById('responseMessage').innerHTML = "<p style='color:green;'>Post created successfully.</p>";
+                    } else {
+                        // Show error message
+                        document.getElementById('responseMessage').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
+                    }
+                } catch (error) {
+                    // Handle any unexpected errors
+                    document.getElementById('responseMessage').innerHTML = "<p style='color:red;'>An error occurred while creating the post.</p>";
+                }
+            };
+        };
+    </script>
 </body>
 </html>

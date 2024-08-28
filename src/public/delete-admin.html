@@ -182,11 +182,38 @@ table tbody tr:hover {
     </nav>
 
     <h2>Delete Admin</h2>
-    <form action="/deleteAdmin" method="post">
+    <form id="deleteAdminForm">
         <label for="id">Admin ID:</label>
         <input type="text" id="id" name="id" required><br><br>
 
         <button type="submit">Delete Admin</button>
     </form>
+
+    <script>
+        document.getElementById('deleteAdminForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            const adminId = document.getElementById('id').value;
+
+            try {
+                const response = await fetch('/api/admin/delete/' + encodeURIComponent(adminId), {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    alert('Admin deleted successfully.');
+                } else {
+                    const errorData = await response.json();
+                    alert('Error deleting admin: ' + errorData.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An unexpected error occurred.');
+            }
+        });
+    </script>
 </body>
 </html>

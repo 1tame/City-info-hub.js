@@ -91,6 +91,7 @@
         #responseDiv {
             text-align: center;
             margin-top: 20px;
+            color: green; /* Change color as per your requirement */
         }
     </style>
     <script>
@@ -109,7 +110,7 @@
 
                 try {
                     // Make API call using Fetch
-                    const response = await fetch('api/admin/create', {
+                    const response = await fetch('http://localhost:3000/api/admin/create', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -120,8 +121,9 @@
                     const result = await response.json();
 
                     if (response.ok) {
-                        // Redirect to the admin dashboard if registration is successful
-                        window.location.href = '/admin-dashboard';
+                        // Display success message
+                        document.getElementById('responseDiv').innerHTML = "<p style='color:blue;'>New Admin Created Successfully</p>";
+
                     } else {
                         // Show error message
                         document.getElementById('responseDiv').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
@@ -158,6 +160,8 @@
             <button type="submit">Register</button>
         </form>
 
+        <div id="responseDiv"></div> <!-- Moved inside the card -->
+
         <div class="general-options">
             <ul>
                 <li><a href="javascript:history.back()">Go Back</a></li>
@@ -167,6 +171,5 @@
             </ul>
         </div>
     </div>
-    <div id="responseDiv"></div>
 </body>
 </html>

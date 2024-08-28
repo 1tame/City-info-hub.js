@@ -111,7 +111,6 @@
 <body>
     <div id="registerPage">
         <h1>Issue Reporting Dashboard</h1>
-        
 
         <section class="form-section">
             <h2>Report an Issue</h2>
@@ -120,9 +119,9 @@
                 <textarea id="description" name="issue_description" rows="5" required></textarea>
 
                 <label for="adminId">Reported By (Admin ID):</label>
-                <input type="number" id="adminId" name="admin_id" required>
+                <input type="number" id="admin_id" name="admin_id" required>
 
-                <button type="submit">Submit</button>
+                <button type="submit" id="submitBtn">Submit</button>
             </form>
             <p id="responseMessage"></p> <!-- Element to show the response message -->
         </section>
@@ -133,35 +132,41 @@
             </ul>
         </nav>
     </div>
-
     <script>
-        document.getElementById("issueForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the form from submitting the traditional way
-
-            var formData = new FormData(this);
-
-            fetch("/reportIssue", {
-                method: "POST",
-                body: formData
+        document.getElementById('issueForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            const formData = new FormData(this);
+            const responseMessage = document.getElementById('responseMessage');
+    
+            fetch('http://localhost:3000/issues/report', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
             })
-            .then(response => response.json()) // Expecting JSON response
-            .then(result => {
-                let responseMessage = document.getElementById("responseMessage");
-                if (response.ok && result.message === "Issue reported successfully.") {
-                    responseMessage.textContent = "Issue reported successfully!";
-                    responseMessage.style.color = "green";
-                } else {
-                    responseMessage.textContent = "Failed to report the issue: " + (result.message || 'Please try again.');
-                    responseMessage.style.color = "red";
+            .then(response => {
+                if (!response.ok) {
+                    responseMessage.textContent = 'Failed to report the issue: ' 
+                    responseMessage.style.color = 'red';
+                    throw new Error(`HTTP error! Status: ${response.status}`);
                 }
+                else{
+                    responseMessage.textContent =  'Issue reported successfully!';
+                    responseMessage.style.color = 'green';
+                }
+
+                return response.json();
             })
+            
             .catch(error => {
-                console.error("Error:", error);
-                let responseMessage = document.getElementById("responseMessage");
-                responseMessage.textContent = "An error occurred. Please try again.";
-                responseMessage.style.color = "red";
+                console.error('Error:', error);
+                responseMessage.textContent = 'An error occurred. Please try again.';
+                responseMessage.style.color = 'red';
             });
         });
     </script>
+    
 </body>
 </html>
