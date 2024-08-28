@@ -74,7 +74,7 @@ db.then((connection) => {
     res.sendFile(path.join(__dirname, "public", "registerSectorAdmin.html"));
   });
 
-  app.get("/viewAdminInfo.html", (req, res) => {
+  app.get("/view-admins.html", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "view-admins.html"));
   });
 

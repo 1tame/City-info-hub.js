@@ -18,12 +18,12 @@ router.post('/create', adminController.createAdmin);
 router.get('/admins',  adminController.getAllAdmins);
 
 // Route to get an admin by ID (Protected route)
-router.get('/admin/:id', authController.authenticateToken, adminController.getAdminById);
+router.get('/admin/:id', adminController.getAdminById);
 
 // Route to update an admin (Protected route)
-router.put('/admin/:id', authController.authenticateToken, adminController.updateAdmin);
+router.put('/admin/:id',  adminController.updateAdmin);
 
 // Route to delete an admin (Protected route)
-router.delete('/admin/:id', authController.authenticateToken, adminController.deleteAdmin);
+router.delete('/admin/:id', adminController.deleteAdmin);
 
 module.exports = router;
