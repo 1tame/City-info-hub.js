@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Issues</title>
-    <link rel="stylesheet" href="ViewIssuesStyle.css">
-
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,12 +73,11 @@
         .issues-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center; /* Center cards horizontally */
-            gap: 20px; /* Space between cards */
-            padding: 0 20px; /* Add padding to the sides */
+            justify-content: center;
+            gap: 20px;
+            padding: 0 20px;
         }
 
-        /* General card styling */
         .issue-card {
             background-color: #fff;
             border: 1px solid #ddd;
@@ -89,7 +86,7 @@
             padding: 20px;
             overflow: hidden;
             position: relative;
-            width: calc(33% - 40px); /* Adjust width for better alignment */
+            width: calc(50% - 30px);
             box-sizing: border-box;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -99,16 +96,6 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        /* Header and Footer */
-        .issue-header, .issue-footer {
-            transition: background-color 0.3s ease;
-        }
-
-        .issue-header:hover, .issue-footer:hover {
-            background-color: #f0f0f0;
-        }
-
-        /* Expand Button */
         .expand-button {
             display: flex;
             justify-content: center;
@@ -124,7 +111,6 @@
             transform: scale(1.1);
         }
 
-        /* Expand Content */
         .expand-content {
             display: none;
             margin-top: 10px;
@@ -132,10 +118,9 @@
             overflow: hidden;
         }
 
-        /* Show More / Show Less */
         .expand-content.show {
             display: block;
-            max-height: 500px; /* Adjust based on expected content size */
+            max-height: 500px;
             opacity: 1;
         }
 
@@ -144,7 +129,93 @@
             opacity: 0;
         }
 
-        /* Feedback Form */
+        .issue-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            font-size: 14px;
+            color: #666;
+            margin-top: 15px;
+        }
+
+        .issue-footer span {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+
+        .issue-footer .admin-id {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .issue-footer .created-at {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .card-message {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: calc(100% - 20px);
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-message.success {
+            color: green;
+            opacity: 1;
+        }
+
+        .card-message.error {
+            color: red;
+            opacity: 1;
+        }
+
+        .card-message.hidden {
+            opacity: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
         .feedback-form textarea {
             width: 100%;
             padding: 12px;
@@ -176,43 +247,15 @@
             background-color: #003366;
             transform: scale(1.05);
         }
-
-        /* Card Messages */
-        .card-message {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: calc(100% - 20px);
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            transition: opacity 0.3s ease;
-        }
-
-        .card-message.success {
-            color: green;
-            opacity: 1;
-        }
-
-        .card-message.error {
-            color: red;
-            opacity: 1;
-        }
-
-        .card-message.hidden {
-            opacity: 0;
-        }
     </style>
 </head>
 <body>
     <nav>
         <ul id="adminNav">
-        
-                <li><a href="registerSectorAdmin.html">Create Admin</a></li>
-                <li><a href="view-admins.html">View All Admins</a></li>
-                <li><a href="update-admin.html">Update Admin</a></li>
-                <li><a href="delete-admin.html">Delete Admin</a></li>
-               <!-- <li><a href="viewIssue.html">View Issues</a></li>-->
+            <li><a href="registerSectorAdmin.html">Create Admin</a></li>
+            <li><a href="view-admins.html">View All Admins</a></li>
+            <li><a href="update-admin.html">Update Admin</a></li>
+            <li><a href="delete-admin.html">Delete Admin</a></li>
             <li><a href="javascript:history.back()">Go Back</a></li>
             <li><a href="AdminLogin.html">Sign Out</a></li>
         </ul>
@@ -226,96 +269,100 @@
         </div>
     </div>
 
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Submit Feedback</h2>
+            <div class="feedback-form">
+                <input type="hidden" id="feedbackIssueId">
+                <textarea id="feedbackText" placeholder="Provide your feedback here..."></textarea>
+                <input type="hidden" id="feedbackAdminId" value=""> <!-- Admin ID here -->
+                <button id="submitFeedback">Submit Feedback</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('http://localhost:3000/issues/all')  // Adjust URL if necessary
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    }
-                    return response.json();
-                })
+        // Placeholder for current admin ID
+        const currentAdminId = 'admin123'; // Replace this with actual method to get the logged-in admin ID
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('http://localhost:3000/issues/all')
+                .then(response => response.json())
                 .then(issues => {
-                    const container = document.getElementById('issuesContainer');
-                    if (issues.length === 0) {
-                        container.innerHTML = '<p style="text-align: center;">No issues found.</p>';
-                    } else {
-                        issues.forEach(issue => {
-                            const card = document.createElement('div');
-                            card.className = 'issue-card';
-                            card.innerHTML = `
-                                <div class="card-message hidden" id="message-${issue.id}"></div>
-                                <div class="issue-header">
-                                    <h2>Issue ID: ${issue.id}</h2>
-                                    <span>Status: ${issue.status}</span>
-                                </div>
-                                <div class="issue-description">
-                                    <strong>Description:</strong>
-                                    <p>${issue.issue_description}</p>
-                                    <div class="expand-content" id="content-${issue.id}">
-                                        <p>Additional details or actions could be placed here.</p>
+                    console.log('Fetched issues:', issues);
+                    const issuesContainer = document.getElementById('issuesContainer');
+                    issues.forEach(issue => {
+                        issuesContainer.innerHTML += `
+                            <div class="issue-card">
+                                <h2>Issue ID: ${issue.id}</h2>
+                                <p><strong>Description:</strong> ${issue.issue_description}</p>
+                                <p><strong>Status:</strong> ${issue.status}</p>
+                                <p><strong>Created At:</strong> ${new Date(issue.created_at).toLocaleString()}</p>
+                                <div class="expand-button" onclick="toggleExpand(this)">Show More</div>
+                                <div class="expand-content hide">
+                                    <p><strong>Reported By Admin ID:</strong> ${issue.admin_id}</p>
+                                    <div class="issue-footer">
+                                        <span class="created-at"><strong>Created At:</strong> ${new Date(issue.created_at).toLocaleString()}</span>
                                     </div>
-                                    <div class="expand-button" onclick="toggleExpand(${issue.id})">Show More</div>
                                 </div>
-                                <div class="issue-footer">
-                                    <span>Reported By: Admin ID ${issue.admin_id}</span>
-                                    <span>Created At: ${new Date(issue.created_at).toLocaleString()}</span>
-                                </div>
-                                <div class="feedback-form">
-                                    <h3>Give Feedback</h3>
-                                    <textarea id="feedback-${issue.id}" placeholder="Provide your feedback here..."></textarea>
-                                    <button onclick="submitFeedback(${issue.id})">Submit Feedback</button>
-                                </div>
-                            `;
-                            container.appendChild(card);
-                        });
-                    }
+                                <button class="feedback-button" onclick="openFeedbackModal('${issue.id}')">Submit Feedback</button>
+                            </div>
+                        `;
+                    });
                 })
                 .catch(error => {
                     console.error('Error fetching issues:', error);
                 });
         });
 
-        function toggleExpand(issueId) {
-            const content = document.getElementById(`content-${issueId}`);
-            const button = document.querySelector(`.expand-button[onclick="toggleExpand(${issueId})"]`);
-            const isExpanded = content.classList.contains('show');
-            content.classList.toggle('show', !isExpanded);
-            content.classList.toggle('hide', isExpanded);
-            button.textContent = isExpanded ? 'Show More' : 'Show Less';
+        function toggleExpand(button) {
+            const expandContent = button.nextElementSibling;
+            if (expandContent.classList.contains('show')) {
+                expandContent.classList.remove('show');
+                expandContent.classList.add('hide');
+                button.textContent = 'Show More';
+            } else {
+                expandContent.classList.remove('hide');
+                expandContent.classList.add('show');
+                button.textContent = 'Show Less';
+            }
         }
 
-        function submitFeedback(issueId) {
-            const feedbackTextarea = document.getElementById(`feedback-${issueId}`);
-            const feedback = feedbackTextarea.value;
-            const messageDiv = document.getElementById(`message-${issueId}`);
-            messageDiv.classList.remove('hidden');
+        function openFeedbackModal(issueId) {
+            document.getElementById('feedbackIssueId').value = issueId;
+            document.getElementById('feedbackAdminId').value = currentAdminId; // Set the current admin ID
+            document.getElementById('feedbackModal').style.display = 'block';
+        }
 
-            fetch(`http://localhost:3000/issues/${issueId}/feedback`, {
-                method: 'POST',
+        document.getElementById('closeModal').onclick = function() {
+            document.getElementById('feedbackModal').style.display = 'none';
+        }
+
+        document.getElementById('submitFeedback').onclick = function() {
+            const id = document.getElementById('feedbackIssueId').value;
+            const feedback_message = document.getElementById('feedbackText').value;
+            const admin_id = document.getElementById('feedbackAdminId').value;
+
+        fetch(`http://localhost:3000/issues/feedback/${id}`, {               method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    feedback_message: feedback,
-                    admin_id: 1 // Replace with the actual admin ID
+                    id,
+                    feedback_message,
+                    admin_id,
                 }),
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                messageDiv.textContent = 'Feedback submitted successfully.';
-                messageDiv.className = 'card-message success';
-                feedbackTextarea.value = ''; // Clear the textarea after submission
+            .then(response => response.json())
+            .then(result => {
+                console.log('Feedback submitted:', result);
+                document.getElementById('feedbackModal').style.display = 'none';
+                alert('Feedback submitted successfully');
             })
             .catch(error => {
                 console.error('Error submitting feedback:', error);
-                messageDiv.textContent = 'Error submitting feedback. Please try again.';
-                messageDiv.className = 'card-message error';
             });
         }
     </script>
