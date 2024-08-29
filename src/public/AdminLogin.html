@@ -117,7 +117,7 @@
 
         // Gather form data
         const formData = {
-            role: document.getElementById('role').value,
+            
             username: document.getElementById('username').value,
             password: document.getElementById('password').value,
         };
@@ -136,43 +136,49 @@
 
             if (response.ok) {
                 // Save the token to localStorage
+                console.log('Token:', result.token);
                 localStorage.setItem('authToken', result.token);
-
+                
+                // Assuming "admin" is an object that contains role details
+                localStorage.setItem('admin', JSON.stringify(result.admin));
+            
                 // Route based on role
                 let dashboardUrl = '/default-dashboard'; // Default URL
-                switch (formData.role) {
-                    case 'systemAdmin':
+                switch (result.admin?.role) {
+                    case 'sys_admin':
                         dashboardUrl = 'sysAdminHomePage.html';
                         break;
-                    case 'waterSupplyAdmin':
+                    case 'Water Supply Admin':
                         dashboardUrl = 'Water_Supply_Admin_Dashboard.html';
                         break;
-                    case 'healthSectorAdmin':
+                    case 'Health sector Admin':
                         dashboardUrl = 'Health_Sector_Admin_Dashboard.html';
                         break;
-                    case 'securityAdmin':
+                    case 'Security-info Admin':
                         dashboardUrl = 'Security_Admin_Dashboard.html';
                         break;
-                    case 'tourismHotelAdmin':
+                    case 'Tourism-info Admin':
                         dashboardUrl = 'Tourism_and_Hotel_Admin_Dashboard.html';
                         break;
-                    case 'festivalEventAdmin':
+                    case 'Event&festival-info admin':
                         dashboardUrl = 'Festival_and_Event_Admin_Dashboard.html';
                         break;
-                    case 'transportationAdmin':
+                    case 'Transportation Admin':
                         dashboardUrl = 'Transportation_Admin_Dashboard.html';
                         break;
                     default:
                         dashboardUrl = '/default-dashboard'; // Default in case of unknown role
                         break;
                 }
-
+            
                 // Redirect to the appropriate dashboard
                 window.location.href = dashboardUrl;
             } else {
                 // Show error message
-                document.getElementById('errorDiv').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
+                const errorMessage = result.message || "An unexpected error occurred.";
+                document.getElementById('errorDiv').innerHTML = `<p style='color:red;'>${errorMessage}</p>`;
             }
+            
         } catch (error) {
             // Handle network or server errors
             document.getElementById('errorDiv').innerHTML = "<p style='color:red;'>An error occurred: " + error.message + "</p>";
@@ -186,7 +192,7 @@
     <div id="loginPage">
         <h2>Admin Login</h2>
         <form id="loginForm">
-            <label for="role">Select Role:</label>
+            <!-- <label for="role">Select Role:</label>
             <select id="role" name="role" required>
                 <option value="systemAdmin">System Admin</option>
                 <option value="waterSupplyAdmin">Water Supply Admin</option>
@@ -195,7 +201,7 @@
                 <option value="tourismHotelAdmin">Tourism & Hotel Admin</option>
                 <option value="festivalEventAdmin">Festival & Event Admin</option>
                 <option value="transportationAdmin">Transportation Admin</option>
-            </select>
+            </select> -->
 
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
