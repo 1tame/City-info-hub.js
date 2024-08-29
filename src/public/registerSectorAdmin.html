@@ -10,10 +10,42 @@
             margin: 0;
             padding: 0;
             background-color: #f2f2f2;
+        }
+
+        nav {
+            width: 100%;
+            background-color: #004080;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensure the nav is on top */
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 100vh;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #003366;
         }
 
         #registerPage {
@@ -23,6 +55,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+            margin: 80px auto 0; /* Center the form and push it below the fixed nav */
+            box-sizing: border-box;
         }
 
         h2 {
@@ -91,50 +125,20 @@
         #responseDiv {
             text-align: center;
             margin-top: 20px;
+            color: green; /* Change color as per your requirement */
         }
     </style>
-    <script>
-        window.onload = function() {
-            // Form submission handler
-            const registerForm = document.getElementById('registerForm');
-            registerForm.onsubmit = async function(event) {
-                event.preventDefault(); // Prevent the default form submission
-
-                // Gather form data
-                const formData = {
-                    role: document.getElementById('role').value,
-                    username: document.getElementById('username').value,
-                    password: document.getElementById('password').value,
-                };
-
-                try {
-                    // Make API call using Fetch
-                    const response = await fetch('api/admin/create', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(formData)
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok) {
-                        // Redirect to the admin dashboard if registration is successful
-                        window.location.href = '/admin-dashboard';
-                    } else {
-                        // Show error message
-                        document.getElementById('responseDiv').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
-                    }
-                } catch (error) {
-                    // Handle network or server errors
-                    document.getElementById('responseDiv').innerHTML = "<p style='color:red;'>An error occurred: " + error.message + "</p>";
-                }
-            };
-        };
-    </script>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="registerSectorAdmin.html">Create Admin</a></li>
+            <li><a href="view-admins.html">View All Admins</a></li>
+            <li><a href="update-admin.html">Update Admin</a></li>
+            <li><a href="delete-admin.html">Delete Admin</a></li>
+            <li><a href="AdminLogin.html">Sign Out</a></li>
+        </ul>
+    </nav>
     <div id="registerPage">
         <h2>Register Sector Admin</h2>
         <form id="registerForm">
@@ -158,6 +162,8 @@
             <button type="submit">Register</button>
         </form>
 
+        <div id="responseDiv"></div>
+
         <div class="general-options">
             <ul>
                 <li><a href="javascript:history.back()">Go Back</a></li>
@@ -167,6 +173,5 @@
             </ul>
         </div>
     </div>
-    <div id="responseDiv"></div>
 </body>
 </html>

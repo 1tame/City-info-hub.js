@@ -8,167 +8,133 @@
 
     <style>
         /* styles.css */
+        /* Global Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-/* Global Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-}
+        nav {
+            width: 100%;
+            background-color: #004080;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-nav {
-    width: 100%;
-    background-color: #004080;
-    padding: 10px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-}
+        nav ul li {
+            margin: 0 15px;
+        }
 
-nav ul li {
-    margin: 0 15px;
-}
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+        nav ul li a:hover {
+            background-color: #003366;
+        }
 
-nav ul li a:hover {
-    background-color: #003366;
-}
+        /* Heading Style */
+        h2 {
+            color: #004080;
+            margin-top: 20px;
+            text-align: center;
+        }
 
-/* Heading Style */
-h2 {
-    color: #004080;
-    margin-top: 20px;
-    text-align: center;
-}
+        /* Button Style */
+        #viewAdminsButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
-/* Form Styles */
-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    margin-top: 20px;
-}
+        #viewAdminsButton:hover {
+            background-color: #003366;
+        }
 
-form label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-    font-weight: bold;
-}
+        /* Table Styles */
+        table {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-form input[type="text"],
-form input[type="password"],
-form input[type="number"],
-form input[type="email"],
-form input[type="tel"],
-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        table thead {
+            background-color: #004080;
+            color: white;
+            text-align: left;
+        }
 
-form button {
-    width: 100%;
-    padding: 12px;
-    background-color: #004080;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+        table thead th {
+            padding: 10px;
+        }
 
-form button:hover {
-    background-color: #003366;
-}
+        table tbody tr {
+            background-color: white;
+            border-bottom: 1px solid #ccc;
+        }
 
-/* Table Styles */
-table {
-    width: 100%;
-    max-width: 600px;
-    margin-top: 20px;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-}
+        table tbody tr:last-child {
+            border-bottom: none;
+        }
 
-table thead {
-    background-color: #004080;
-    color: white;
-    text-align: left;
-}
+        table tbody td {
+            padding: 10px;
+        }
 
-table thead th {
-    padding: 10px;
-}
+        table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
 
-table tbody tr {
-    background-color: white;
-    border-bottom: 1px solid #ccc;
-}
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
 
-table tbody tr:last-child {
-    border-bottom: none;
-}
+            nav ul li {
+                margin: 0 10px;
+            }
 
-table tbody td {
-    padding: 10px;
-}
+            nav ul li a {
+                padding: 8px 12px;
+            }
 
-table tbody tr:hover {
-    background-color: #f2f2f2;
-}
+            #viewAdminsButton {
+                padding: 8px 12px;
+            }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-    body {
-        padding: 10px;
-    }
-
-    form {
-        padding: 15px;
-    }
-
-    table {
-        font-size: 14px;
-    }
-
-    nav ul li {
-        margin: 0 10px;
-    }
-
-    nav ul li a {
-        padding: 8px 12px;
-    }
-}
-
+            table {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -183,6 +149,9 @@ table tbody tr:hover {
     </nav>
 
     <h2>View All Admins</h2>
+
+   
+
     <table id="admins-table">
         <thead>
             <tr>
@@ -196,23 +165,48 @@ table tbody tr:hover {
         </tbody>
     </table>
 
-    <script>
-        // Fetch admins from the server and display them in the table
-        fetch('/api/admin/admins', {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}` // Pass the token for authentication
-            }
-        })
-        .then(response => response.json())
-        .then(admins => {
-            const tableBody = document.querySelector('#admins-table tbody');
-            admins.forEach(admin => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${admin.id}</td><td>${admin.username}</td><td>${admin.role}</td>`;
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching admins:', error));
-    </script>
+ <!-- Add the View Admins button -->
+ <button id="viewAdminsButton">View Admins</button>
+
+ <script>
+    let adminsVisible = false; // Track whether admins are currently visible
+
+    document.getElementById('viewAdminsButton').addEventListener('click', function() {
+        const table = document.getElementById('admins-table');
+        const button = document.getElementById('viewAdminsButton');
+
+        if (adminsVisible) {
+            // If admins are currently visible, hide the table and update button text
+            table.style.display = 'none';
+            button.textContent = 'View Admins';
+        } else {
+            // If admins are not visible, fetch data and show the table
+            fetch('http://localhost:3000/api/admin/admins', {
+                headers: {
+                    // 'Authorization': `Bearer ${localStorage.getItem('authToken')}`, // Ensure your token is stored here
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(admins => {
+                const tableBody = document.querySelector('#admins-table tbody');
+                tableBody.innerHTML = ''; // Clear existing rows before adding new data
+                admins.forEach(admin => {
+                    const row = document.createElement('tr');
+                    // Adjust to match your existing attribute structure
+                    row.innerHTML = `<td>${admin.id}</td><td>${admin.username}</td><td>${admin.role}</td>`;
+                    tableBody.appendChild(row);
+                });
+
+                // Show the table and update button text
+                table.style.display = '';
+                button.textContent = 'Hide Admins';
+            })
+            .catch(error => console.error('Error fetching admins:', error));
+        }
+
+        adminsVisible = !adminsVisible; // Toggle the state
+    });
+</script>
 </body>
 </html>

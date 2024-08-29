@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Admin</title>
     <link rel="stylesheet" href="styles.css"> <!-- Optional: Link to a CSS file -->
-
     <style>
         /* styles.css */
 
@@ -178,32 +177,73 @@ table tbody tr:hover {
             <li><a href="view-admins.html">View All Admins</a></li>
             <li><a href="update-admin.html">Update Admin</a></li>
             <li><a href="delete-admin.html">Delete Admin</a></li>
+            <li><a href="viewIssue.html">View Issues</a></li>
+            <li><a href="AdminLogin.html">Sign Out</a></li>
         </ul>
     </nav>
 
     <h2>Update Admin</h2>
-    <form action="/updateAdmin" method="post">
+    <form id="updateAdminForm">
         <label for="id">Admin ID:</label>
-        <input type="text" id="id" name="id" required><br><br>
+        <input type="text" id="id" name="id" required>
 
         <label for="username">New Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
+        <input type="text" id="username" name="username" required>
 
         <label for="password">New Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+        <input type="password" id="password" name="password" required>
 
         <label for="role">Select New Role:</label>
-            <select id="role" name="role" required>
-                <option value="systemAdmin">System Admin</option>
-                <option value="waterSupplyAdmin">Water Supply Admin</option>
-                <option value="healthSectorAdmin">Health Sector Admin</option>
-                <option value="securityAdmin">Security Admin</option>
-                <option value="tourismHotelAdmin">Tourism & Hotel Admin</option>
-                <option value="festivalEventAdmin">Festival & Event Admin</option>
-                <option value="transportationAdmin">Transportation Admin</option>
-            </select>
+        <select id="role" name="role" required>
+            <option value="systemAdmin">System Admin</option>
+            <option value="waterSupplyAdmin">Water Supply Admin</option>
+            <option value="healthSectorAdmin">Health Sector Admin</option>
+            <option value="securityAdmin">Security Admin</option>
+            <option value="tourismHotelAdmin">Tourism & Hotel Admin</option>
+            <option value="festivalEventAdmin">Festival & Event Admin</option>
+            <option value="transportationAdmin">Transportation Admin</option>
+        </select>
 
         <button type="submit">Update Admin</button>
     </form>
+
+    <script>
+        document.getElementById('updateAdminForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            // Gather form data
+            const id = document.getElementById('id').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+
+    
+            try {
+                // Send the data using Fetch API
+                const response = await fetch(`http://localhost:3000/api/admin/admin/` + encodeURIComponent(id), {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, password, role })
+});
+
+if (response.headers.get('Content-Type').includes('application/json')) {
+    const result = await response.json();
+    if (response.ok) {
+        alert('Admin updated successfully.');
+    } else {
+        alert('Error: ' + result.message);
+    }
+} else {
+    console.error('Unexpected response:', await response.text());
+    alert('An unexpected error occurred.');
+}
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while updating the admin.');
+            }
+        });
+    </script>
 </body>
 </html>
