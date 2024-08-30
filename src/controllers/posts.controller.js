@@ -138,6 +138,31 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+
+// Function to get a post by sector
+exports.getPostBySector = async (req, res) => {
+  const { sector } = req.params;
+
+  try {
+    const connection = await db;
+
+    const [post] = await connection.execute(
+      "SELECT * FROM Posts WHERE type = ?",
+      [id]
+    );
+
+    if (post.length === 0) {
+      return res.status(404).json({ message: "No not found." });
+    }
+    res.status(200).json(post[0]);
+  } catch (err) {
+    console.error("Error fetching post:", err);
+    res
+      .status(500)
+      .json({ message: "Error fetching post.", error: err.message });
+  }
+};
+
 // Function to update a post
 exports.updatePost = async (req, res) => {
   const { id } = req.params;
