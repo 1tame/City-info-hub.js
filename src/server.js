@@ -121,6 +121,11 @@ app.get('/IssueReporting.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'IssueReporting.html'));
 });
 
+// View a feedback
+app.get('/view-feedback.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'view-feedback.html'));
+});
+
 
 
 
