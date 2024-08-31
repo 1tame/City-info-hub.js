@@ -15,7 +15,8 @@ app.use(cors());
 // Ensure body-parser is set up correctly
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
+// Serve static files from the "uploads" directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Test Database Connection
 db.then((connection) => {
   console.log("Connected to the MySQL database.");

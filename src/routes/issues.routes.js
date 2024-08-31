@@ -14,4 +14,7 @@ router.post('/feedback/:id', issuesController.provideFeedback);
 // Route to get feedback for a specific issue
 router.get('/feedback/:id', issuesController.getFeedbackByIssueId);
 
+
+// Route to get feedback for a specific issue
+router.get('/feedback-by-admin/:admin_id', issuesController.getFeedbackForAdminIssues);
 module.exports = router;

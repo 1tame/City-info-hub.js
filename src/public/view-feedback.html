@@ -71,6 +71,15 @@
             margin-bottom: 30px;
         }
 
+        .issue-card {
+            background-color: #e6f2ff;
+            border: 1px solid #004080;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
         .feedback-container {
             display: flex;
             flex-direction: column;
@@ -120,7 +129,6 @@
 <body>
     <nav>
         <ul id="adminNav">
-           
             <li><a href="javascript:history.back()">Go Back</a></li>
             <li><a href="AdminLogin.html">Sign Out</a></li>
         </ul>
@@ -129,6 +137,10 @@
     <div id="feedbackPage">
         <h1>View Feedback for Issue</h1>
 
+        <div id="issueDetails" class="issue-card">
+            <!-- Issue details will be dynamically inserted here -->
+        </div>
+
         <div class="feedback-container" id="feedbackContainer">
             <!-- Feedback cards will be dynamically inserted here -->
         </div>
@@ -136,14 +148,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const issueId = new URLSearchParams(window.location.search).get('issueId');
-            if (!issueId) {
-                console.error('Issue ID is missing in the URL.');
-                alert('Issue ID is missing in the URL.');
-                return;
-            }
-    
-            fetch(`http://localhost:3000/issues/feedback/${issueId}`, {
+            const admin = JSON.parse(localStorage.getItem('admin'));
+
+            fetch(`http://localhost:3000/issues/feedback-by-admin/${admin.id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -155,24 +162,35 @@
                 }
                 return response.json();
             })
-            .then(feedback => {
-                console.log('Fetched feedback:', feedback);
+            .then(data => {
+                console.log('Fetched feedback and issues:', data);
+                const issueDetails = document.getElementById('issueDetails');
                 const feedbackContainer = document.getElementById('feedbackContainer');
-    
-                if (feedback.length === 0) {
-                    feedbackContainer.innerHTML = '<p>No feedback found for this issue.</p>';
+
+                if (data.length === 0) {
+                    issueDetails.innerHTML = '<p>No issues or feedback found for this admin.</p>';
                     return;
                 }
-    
-                feedback.forEach(item => {
+
+                // Displaying the issue details
+                const issue = data[0]; // Assuming all feedback is related to the same issue
+                issueDetails.innerHTML = `
+                    <p><strong>Issue ID:</strong> ${issue.issue_id}</p>
+                    <p><strong>Description:</strong> ${issue.issue_description}</p>
+                    <p><strong>Status:</strong> ${issue.status}</p>
+                    <p><strong>Created At:</strong> ${new Date(issue.issue_created_at).toLocaleString()}</p>
+                `;
+
+                // Displaying the feedback cards
+                data.forEach(item => {
                     const feedbackCard = document.createElement('div');
                     feedbackCard.classList.add('feedback-card');
-    
+
                     feedbackCard.innerHTML = `
                         <p><strong>Feedback:</strong> ${item.feedback_message}</p>
                         <div class="feedback-footer">
-                            <span class="admin-id"><strong>Admin ID:</strong> ${item.admin_id}</span>
-                            <span class="created-at"><strong>Submitted At:</strong> ${new Date(item.created_at).toLocaleString()}</span>
+                            <span class="admin-id"><strong>Admin ID:</strong> ${item.feedback_admin_id}</span>
+                            <span class="created-at"><strong>Submitted At:</strong> ${new Date(item.feedback_created_at).toLocaleString()}</span>
                         </div>
                     `;
                     feedbackContainer.appendChild(feedbackCard);
@@ -181,11 +199,11 @@
             .catch(error => {
                 console.error('Error fetching feedback:', error);
                 const feedbackContainer = document.getElementById('feedbackContainer');
-                feedbackContainer.innerHTML = '<p>Error fetching feedback. Please try again later.</p>';
+                feedbackContainer.innerHTML = '<p>Feedback will be given soon.</p>';
             });
         });
     </script>
-    
+
 </body>
 
 </html>

@@ -104,14 +104,14 @@
     </style>
 </head>
 <body>
-    <h1>Water Supply Information</h1>
+    <h1>Sector Information</h1>
     <nav>
         <ul>
-            <li><a href="insert_water_supply_info.html">Insert Water Supply Information</a></li>
-            <li><a href="/viewWaterSupplyInfo">View Water Supply Information</a></li>
-            <li><a href="IssueReporting.html">Report an Issue</a></li>
-            <li><a href="view-feedback.html">View Feedback</a></li>
-            <li><a href="AdminLogin.html">Sign Out</a></li>
+            <li><a href="viewWaterSupplyInfo.html" data-sector="Water Supply">Water Supply</a></li>
+            <!-- Uncomment and complete these as needed -->
+            <!-- <li><a href="/viewHealthSectorInfo" data-sector="Health sector">Health Sector</a></li>
+            <li><a href="viewPage.html" data-sector="Waste Management">Waste Management</a></li>
+            <li><a href="viewPage.html" data-sector="Electricity">Electricity</a></li> -->
         </ul>
     </nav>
 
@@ -121,11 +121,22 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
+            // Retrieve the selected sector from localStorage and decode it
+            const sector = decodeURIComponent(localStorage.getItem('selectedSector'));
+
+            if (!sector) {
+                document.getElementById('postsContainer').innerHTML = '<p style="color:red; text-align:center;">No sector selected.</p>';
+                return;
+            }
+
             try {
-                const response = await fetch('http://localhost:3000/api/post/');
+                // Fetch posts by the selected sector
+                const response = await fetch(`http://localhost:3000/api/post/posts_by_sector/${encodeURIComponent(sector)}`);
                 const posts = await response.json();
 
                 const postsContainer = document.getElementById('postsContainer');
+                postsContainer.innerHTML = ''; // Clear previous posts
+
                 posts.forEach(post => {
                     const postElement = document.createElement('div');
                     postElement.className = 'post';
@@ -136,7 +147,7 @@
 
                     const postCategory = document.createElement('p');
                     postCategory.className = 'category';
-                    postCategory.textContent = `Category: ${post.type}`;
+                    postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
                     postElement.appendChild(postCategory);
 
                     const postContent = document.createElement('p');
@@ -145,7 +156,8 @@
 
                     if (post.imageUrl) {
                         const postImage = document.createElement('img');
-                        postImage.src = post.imageUrl;
+                        // Assuming the server is serving static files from the root directory
+                        postImage.src = `http://localhost:3000${post.imageUrl}`;
                         postElement.appendChild(postImage);
                     }
 
@@ -170,6 +182,13 @@
                 errorMessage.style.textAlign = 'center';
                 document.getElementById('postsContainer').appendChild(errorMessage);
             }
+        });
+
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', function(event) {
+                const sector = encodeURIComponent(this.getAttribute('data-sector'));
+                localStorage.setItem('selectedSector', sector);
+            });
         });
     </script>
 </body>

@@ -140,28 +140,33 @@ exports.getPostById = async (req, res) => {
 
 
 // Function to get a post by sector
+// Function to get posts by sector
 exports.getPostBySector = async (req, res) => {
   const { sector } = req.params;
 
+  // Decode the URL-encoded sector name
+  const decodedSector = decodeURIComponent(sector);
+
   try {
-    const connection = await db;
+      const connection = await db;
 
-    const [post] = await connection.execute(
-      "SELECT * FROM Posts WHERE type = ?",
-      [id]
-    );
+      const [posts] = await connection.execute(
+          "SELECT * FROM Posts WHERE type = ?",
+          [decodedSector] // Use decoded sector name
+      );
 
-    if (post.length === 0) {
-      return res.status(404).json({ message: "No not found." });
-    }
-    res.status(200).json(post[0]);
+      if (posts.length === 0) {
+          return res.status(404).json({ message: "No posts found." });
+      }
+      res.status(200).json(posts);
   } catch (err) {
-    console.error("Error fetching post:", err);
-    res
-      .status(500)
-      .json({ message: "Error fetching post.", error: err.message });
+      console.error("Error fetching posts:", err);
+      res
+          .status(500)
+          .json({ message: "Error fetching posts.", error: err.message });
   }
 };
+
 
 // Function to update a post
 exports.updatePost = async (req, res) => {

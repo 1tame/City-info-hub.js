@@ -21,7 +21,7 @@
             color: white;
             text-align: center;
             position: relative;
-            height: 300px; /* Adjust the height as needed */
+            height: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,7 +34,6 @@
             position: relative;
         }
 
-        /* Overlay for better text readability */
         header::before {
             content: '';
             position: absolute;
@@ -42,7 +41,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Black overlay with 50% opacity */
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1;
         }
 
@@ -77,7 +76,7 @@
 
         /* Search Bar */
         .search-bar {
-            margin: -30px auto 20px auto; /* Adjust the top margin to overlap the header */
+            margin: -30px auto 20px auto;
             max-width: 600px;
             display: flex;
             justify-content: center;
@@ -115,7 +114,7 @@
 
         .content a {
             text-decoration: none;
-            color: inherit; /* Inherit color from parent */
+            color: inherit;
             display: block;
         }
 
@@ -126,7 +125,7 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease, transform 0.3s ease;
-            height: 100%; /* Ensure full height for flex alignment */
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -144,16 +143,16 @@
 
         .content div p {
             font-size: 1em;
-            color: #333; /* Dark grey for better readability */
+            color: #333;
         }
 
         /* Footer Styles */
         footer {
-            background-color: #ffffff; /* White background for footer */
-            border-top: 1px solid #ddd; /* Light border on top */
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
             padding: 20px;
             text-align: center;
-            color: #555; /* Medium grey for footer text */
+            color: #555;
         }
 
         footer p {
@@ -165,33 +164,32 @@
         }
 
         .footer-links a {
-            color: #007bff; /* Light blue color for footer links */
+            color: #007bff;
             text-decoration: none;
             font-weight: bold;
-            margin: 0 10px; /* Space between links */
+            margin: 0 10px;
             padding: 5px 10px;
             display: inline-block;
         }
 
         .footer-links a:hover {
-            color: #0056b3; /* Darker blue on hover */
+            color: #0056b3;
         }
 
-        /* Media query for devices with a max width of 768px (typical tablets and below) */
         @media screen and (max-width: 768px) {
             header h1 {
-                font-size: 2em; /* Reduce the header font size */
+                font-size: 2em;
             }
 
             .search-bar {
-                flex-direction: column; /* Stack the search bar vertically */
-                width: 90%; /* Make the search bar wider */
+                flex-direction: column;
+                width: 90%;
             }
 
             .search-bar input[type="text"] {
                 width: 100%;
                 border-radius: 4px;
-                margin-bottom: 10px; /* Add space between input and button */
+                margin-bottom: 10px;
             }
 
             .search-bar input[type="submit"] {
@@ -200,39 +198,37 @@
             }
 
             .content {
-                padding: 20px; /* Reduce padding */
-                gap: 20px; /* Reduce gap */
+                padding: 20px;
+                gap: 20px;
             }
 
             .content div {
-                padding: 15px; /* Adjust padding for smaller screens */
+                padding: 15px;
             }
         }
 
-        /* Media query for devices with a max width of 480px (typical smartphones) */
         @media screen and (max-width: 480px) {
             header {
-                height: 200px; /* Reduce header height */
+                height: 200px;
             }
 
             header h1 {
-                font-size: 1.5em; /* Further reduce header font size */
+                font-size: 1.5em;
             }
 
             .search-bar {
-                margin-top: -20px; /* Adjust overlap for smaller screens */
+                margin-top: -20px;
             }
 
             .content {
-                grid-template-columns: 1fr; /* Single column layout */
+                grid-template-columns: 1fr;
             }
 
             .footer-links a {
-                display: block; /* Stack footer links vertically */
-                margin: 10px 0; /* Add margin between links */
+                display: block;
+                margin: 10px 0;
             }
         }
-
     </style>
 </head>
 <body>
@@ -246,31 +242,32 @@
     </div>
 
     <div class="content">
-        <a href="/viewWaterSupplyInfo">
+        <!-- Use data-sector attributes and update href to point to viewPage.html -->
+        <a href="viewWaterSupplyInfo.html" data-sector="Water Supply">
             <div>
                 <h2>View Water Supply Information</h2>
                 <p>Access detailed information on city water supply services, including maintenance schedules and contact details.</p>
             </div>
         </a>
-        <a href="/viewHealthSectorInfo">
+        <a href="viewHealthSectorInfo.html" data-sector="Health sector">
             <div>
                 <h2>View Health Sector Information</h2>
                 <p>Find the contact details and services provided by the city's health departments and elected officials.</p>
             </div>
         </a>
-        <a href="/viewTourismHotelInfo">
+        <a href="viewTourismHotelInfo.html" data-sector="Tourism-info">
             <div>
                 <h2>View Tourism Hotel Information</h2>
                 <p>Explore available hotels and accommodations, along with information on COVID-19 vaccination and testing services.</p>
             </div>
         </a>
-        <a href="/viewEventFestivalInfo">
+        <a href="viewEventFestivalInfo.html" data-sector="Event&festival-info">
             <div>
                 <h2>View Event Festival Information</h2>
                 <p>Discover local events, festivals, and other community activities in Gondar.</p>
             </div>
         </a>
-        <a href="/viewTransportationInfo">
+        <a href="viewTransportationInfo.html" data-sector="Transportation">
             <div>
                 <h2>View Transportation Information</h2>
                 <p>Get details on public transportation options, including schedules and routes within the city.</p>
@@ -286,5 +283,14 @@
             <a href="AdminLogin.html">Admin Login</a>
         </div>
     </footer>
+
+    <script>
+        document.querySelectorAll('.content a').forEach(link => {
+            link.addEventListener('click', function() {
+                const sector = this.getAttribute('data-sector');
+                localStorage.setItem('selectedSector', sector);
+            });
+        });
+    </script>
 </body>
 </html>
