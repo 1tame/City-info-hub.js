@@ -7,7 +7,7 @@ const { log } = require("util");
 // Set up multer for storing uploaded files
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Specify the folder to store images
+    cb(null, "src/public/uploads/"); // Specify the folder to store images
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // Unique file name
@@ -47,7 +47,7 @@ exports.createPost = async (req, res) => {
   if (req.file) {
     console.log("Loading image");
 
-    imageUrl = `/uploads/${req.file.filename}`;
+    imageUrl = `src/public/uploads/${req.file.filename}`;
   }
 
   try {
@@ -172,6 +172,7 @@ exports.getPostBySector = async (req, res) => {
 exports.updatePost = async (req, res) => {
   const { id } = req.params;
   const { title, content, type, adminId } = req.body;
+console.log(title, content, type, adminId);
 
   if (!title || !content || !type || !adminId) {
     return res.status(400).json({ message: "All fields are required." });
@@ -179,7 +180,7 @@ exports.updatePost = async (req, res) => {
 
   let imageUrl = null;
   if (req.file) {
-    imageUrl = `/uploads/${req.file.filename}`;
+    imageUrl = `src/public/uploads/${req.file.filename}`;
   }
 
   try {

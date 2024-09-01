@@ -4,114 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Water Supply Information</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Assume styles.css is the main stylesheet for consistency -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        h1 {
-            text-align: center;
-            color: #006699;
-            margin-top: 20px;
-        }
-
-        nav {
-            background-color: #006699;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-
-        nav ul li:last-child {
-            margin-right: 0;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            color: #cce7ff;
-        }
-
-        .content-section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .post {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 20px;
-        }
-
-        .post:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .post h2 {
-            color: #006699;
-        }
-
-        .post p {
-            margin-bottom: 10px;
-        }
-
-        .post img {
-            max-width: 100%;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .post .category {
-            font-style: italic;
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .post .author {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .post .date {
-            color: #999;
-            font-size: 0.8em;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css"> <!-- Ensure this path is correct -->
 </head>
 <body>
-    <h1>Sector Information</h1>
     <nav>
+        <button class="nav-toggle">☰</button>
         <ul>
-            <li><a href="viewWaterSupplyInfo.html" data-sector="Water Supply">Water Supply</a></li>
-            <!-- Uncomment and complete these as needed -->
-            <!-- <li><a href="/viewHealthSectorInfo" data-sector="Health sector">Health Sector</a></li>
-            <li><a href="viewPage.html" data-sector="Waste Management">Waste Management</a></li>
-            <li><a href="viewPage.html" data-sector="Electricity">Electricity</a></li> -->
+            <li><a href="viewHealthSectorInfo.html" data-sector="Health sector">View Health Info</a></li>
+            <li><a href="viewTourismInfo.html" data-sector="Tourism-info">Tourism Info</a></li>
+            <li><a href="viewEventFestivalInfo.html" data-sector="Event&festival-info">View Event Info</a></li>
+            <li><a href="viewWaterSupplyInfo.html" data-sector="Water Supply">View Water Supply Info</a></li>
+            <li><a href="viewTransportationInfo.html" data-sector="Transportation">View Transportation Info</a></li>
+            <li><a href="viewSecurityInfo.html" data-sector="Security-info">Security Info</a></li>
         </ul>
     </nav>
 
@@ -121,7 +25,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
-            // Retrieve the selected sector from localStorage and decode it
             const sector = decodeURIComponent(localStorage.getItem('selectedSector'));
 
             if (!sector) {
@@ -130,7 +33,6 @@
             }
 
             try {
-                // Fetch posts by the selected sector
                 const response = await fetch(`http://localhost:3000/api/post/posts_by_sector/${encodeURIComponent(sector)}`);
                 const posts = await response.json();
 
@@ -155,10 +57,30 @@
                     postElement.appendChild(postContent);
 
                     if (post.imageUrl) {
+                        const postContainer = document.createElement('div');
+                        postContainer.className = 'post-container';
+
                         const postImage = document.createElement('img');
-                        // Assuming the server is serving static files from the root directory
                         postImage.src = `http://localhost:3000${post.imageUrl}`;
-                        postElement.appendChild(postImage);
+                        postImage.alt = 'Post image'; // Added alt text for accessibility
+                        postContainer.appendChild(postImage);
+
+                        const description = document.createElement('div');
+                        description.className = 'description';
+                        description.innerHTML = `
+                            <h2>${post.title}</h2>
+                            <p>Sector: ${post.type}, Category: ${post.category}</p>
+                            <p>${post.content}</p>
+                            <p class="author">Posted by Admin ID: ${post.adminId}</p>
+                            <p class="date">Posted on: ${new Date(post.createdAt).toDateString()}</p>
+                        `;
+                        postContainer.appendChild(description);
+
+                        postElement.appendChild(postContainer);
+                    } else {
+                        const noImageMessage = document.createElement('p');
+                        noImageMessage.textContent = 'No image available for this post.';
+                        postElement.appendChild(noImageMessage);
                     }
 
                     const postAuthor = document.createElement('p');
@@ -189,6 +111,10 @@
                 const sector = encodeURIComponent(this.getAttribute('data-sector'));
                 localStorage.setItem('selectedSector', sector);
             });
+        });
+
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('ul').classList.toggle('show');
         });
     </script>
 </body>

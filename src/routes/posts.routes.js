@@ -8,7 +8,7 @@ const path = require('path');
 // Set up multer for storing uploaded files
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Specify the folder to store images
+        cb(null, 'src/public/uploads/'); // Specify the folder to store images
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname)); // Unique file name
@@ -43,9 +43,9 @@ router.get('/posts/:id', postsController.getPostById);
 router.get('/posts_by_sector/:sector', postsController.getPostBySector);
 
 // Route to update a post by ID (Protected route)
-router.put('/posts/:id', authController.authenticateToken, upload.single('image'), postsController.updatePost);
+router.put('/posts/:id',  upload.single('image'), postsController.updatePost);
 
 // Route to delete a post by ID (Protected route)
-router.delete('/posts/:id', authController.authenticateToken, postsController.deletePost);
+router.delete('/posts/:id', postsController.deletePost);
 
 module.exports = router;

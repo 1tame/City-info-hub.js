@@ -11,6 +11,7 @@ const path = require("path");
 const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 
+
 app.use(cors());
 // Ensure body-parser is set up correctly
 app.use(bodyParser.json()); // for parsing application/json
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // Serve static files from the "uploads" directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Test Database Connection
+
 db.then((connection) => {
   console.log("Connected to the MySQL database.");
 
@@ -155,6 +157,16 @@ app.get('/viewTourismInfo.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'viewTourismInfo.html'));
 });
 
+// Route for View hotel Information
+app.get('/Hotels.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'Hotels.html'));
+});
+
+// Route for View historical places Information
+app.get('/HistoricalPlaces.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'HistoricalPlaces.html'));
+});
+
 // Route for Insert Transportation Information
 app.get('/InsertTransportationInfo.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'InsertTransportationInfo.html'));
@@ -173,6 +185,11 @@ app.get('/insert_water_supply_info.html', (req, res) => {
 // Route for View Water Supply Information
 app.get('/viewWaterSupplyInfo.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'viewWaterSupplyInfo.html'));
+});
+
+// Route for manage post Information
+app.get('/managePost.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'managePost.html'));
 });
 
 

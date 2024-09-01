@@ -139,6 +139,13 @@
             <p class="placeholder">View Feedbacks for the Report you submitted.</p>
         </div></a>
 
+         <!-- Card 4: manage post -->
+         <a href = "mangePost.html"data-sector="Event&festival-info" ><div class="card">
+            <img src="https://via.placeholder.com/300x150" alt="manage post">
+            <h2>Manage posts</h2>
+            <p class="placeholder">Update and delete posts.</p>
+        </div></a>
+
         <!-- Card 4: Sign Out -->
         <a href = "AdminLogin.html"><div class="card">
             <img src="https://via.placeholder.com/300x150" alt="Sign Out">
@@ -146,7 +153,14 @@
             <p class="placeholder">Securely sign out from the admin dashboard. Remember to save any work before logging out.</p>
         </div></a>
 
-
+        <script>
+            document.querySelectorAll('.content a').forEach(link => {
+                link.addEventListener('click', function() {
+                    const sector = this.getAttribute('data-sector');
+                    localStorage.setItem('selectedSector', sector);
+                });
+            });
+        </script>
     </div>
 </body>
 </html>
