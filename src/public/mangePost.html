@@ -184,13 +184,16 @@
                 document.getElementById('postsContainer').appendChild(errorMessage);
             }
         });
-
         function openUpdateModal(post) {
             document.getElementById('postId').value = post.id;
             document.getElementById('postIdField').value = post.id; // Display post ID
             document.getElementById('title').value = post.title;
             document.getElementById('content').value = post.content;
-
+        
+            // Set the type and adminId fields
+            document.getElementById('postType').value = post.type;
+            document.getElementById('adminId').value = post.adminId;
+        
             // Update image preview
             const imageUrl = post.imageUrl ? `http://localhost:3000${post.imageUrl}` : '';
             const imagePreview = document.getElementById('imagePreview');
@@ -202,10 +205,11 @@
             } else {
                 imagePreview.style.display = 'none'; // Hide image preview if no image
             }
-
+        
             imagePreviewContainer.style.display = 'block'; // Ensure container is visible
             document.getElementById('updateModal').style.display = 'block';
         }
+        
 
         function openDeleteModal(postId) {
             postIdToDelete = postId;
