@@ -135,7 +135,7 @@
     <section class="form-section">
         <h2>Insert Security Information</h2>
         <form id="securityInfoForm">
-            <label for="adminId">Admin ID:</label>
+      
             <input type="text" id="adminId" name="adminId" required>
 
             <label for="title">Title:</label>
@@ -147,18 +147,7 @@
             <label for="imageUrl">Upload Image:</label>
             <input type="file" id="imageUrl" name="image" accept="image/*">
 
-            <label for="type">Type:</label>
-            <select id="type" name="type" required>
-                <option value="">Select Type</option>
-                <option value="sys_admin">System Administration</option>
-                <option value="Event&festival-info">Event & Festival Information</option>
-                <option value="Security-info">Security Information</option>
-                <option value="Health sector">Health Sector</option>
-                <option value="Tourism-info">Tourism Information</option>
-                <option value="Transportation">Transportation</option>
-                <option value="Water Supply">Water Supply</option>
-            </select>
-
+           
             <button type="submit">Submit</button>
         </form>
         <p id="responseMessage"></p> <!-- Element to show the response message -->
@@ -167,15 +156,22 @@
     <script>
         window.onload = function() {
             const eventFestivalForm = document.getElementById('securityInfoForm');
+            const admin = JSON.parse(localStorage.getItem('admin')); // Parse the stored admin data
+
+            if (!admin || !admin.id) {
+                document.getElementById('responseDiv').innerHTML = "<p style='color:red;'>Admin not found. Please log in.</p>";
+                return;
+            }
+
             eventFestivalForm.onsubmit = async function(event) {
                 event.preventDefault(); // Prevent the default form submission
 
                 // Gather form data
                 const formData = new FormData();
-                formData.append('adminId', document.getElementById('adminId').value);
+                formData.append('adminId', admin.id); // Use admin.id from localStorage
                 formData.append('title', document.getElementById('title').value);
                 formData.append('content', document.getElementById('content').value);
-                formData.append('type', document.getElementById('type').value);
+                formData.append('type', 'Security-info');
                 const imageFile = document.getElementById('imageUrl').files[0];
                 if (imageFile) {
                     formData.append('image', imageFile);
