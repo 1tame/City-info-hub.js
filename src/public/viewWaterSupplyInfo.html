@@ -25,7 +25,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
-            const sector = decodeURIComponent(localStorage.getItem('selectedSector'));
+            const sector = decodeURIComponent('Water Supply');
 
             if (!sector) {
                 document.getElementById('postsContainer').innerHTML = '<p style="color:red; text-align:center;">No sector selected.</p>';
@@ -48,8 +48,8 @@
                     postElement.appendChild(postTitle);
 
                     const postCategory = document.createElement('p');
-                    postCategory.className = 'category';
-                    postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
+                    //postCategory.className = 'category';
+                   // postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
                     postElement.appendChild(postCategory);
 
                     const postContent = document.createElement('p');
@@ -61,19 +61,19 @@
                         postContainer.className = 'post-container';
 
                         const postImage = document.createElement('img');
-                        postImage.src = `http://localhost:3000${post.imageUrl}`;
-                        postImage.alt = 'Post image'; // Added alt text for accessibility
-                        postContainer.appendChild(postImage);
+                        const imagePath = post.imageUrl.replace(/^src\/public/, "");
+                        postImage.src =`http://localhost:3000${imagePath}`;
+                        postElement.appendChild(postImage)
 
                         const description = document.createElement('div');
                         description.className = 'description';
-                        description.innerHTML = `
+                        /*description.innerHTML = `
                             <h2>${post.title}</h2>
                             <p>Sector: ${post.type}, Category: ${post.category}</p>
                             <p>${post.content}</p>
                             <p class="author">Posted by Admin ID: ${post.adminId}</p>
                             <p class="date">Posted on: ${new Date(post.createdAt).toDateString()}</p>
-                        `;
+                        `;*/
                         postContainer.appendChild(description);
 
                         postElement.appendChild(postContainer);
@@ -84,8 +84,8 @@
                     }
 
                     const postAuthor = document.createElement('p');
-                    postAuthor.className = 'author';
-                    postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
+                    //postAuthor.className = 'author';
+                   // postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
                     postElement.appendChild(postAuthor);
 
                     const postDate = document.createElement('p');
@@ -104,13 +104,6 @@
                 errorMessage.style.textAlign = 'center';
                 document.getElementById('postsContainer').appendChild(errorMessage);
             }
-        });
-
-        document.querySelectorAll('nav ul li a').forEach(link => {
-            link.addEventListener('click', function(event) {
-                const sector = encodeURIComponent(this.getAttribute('data-sector'));
-                localStorage.setItem('selectedSector', sector);
-            });
         });
 
         document.querySelector('.nav-toggle').addEventListener('click', function() {

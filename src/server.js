@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const db = require("./config/db.config"); // Database configuration
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
+const postController = require('./controllers/posts.controller');
 // Load environment variables
 dotenv.config();
 
@@ -183,7 +183,7 @@ app.get('/insert_water_supply_info.html', (req, res) => {
 });
 
 // Route for View Water Supply Information
-app.get('/viewWaterSupplyInfo.html', (req, res) => {
+app.get('/viewWaterSupplyInfo', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'viewWaterSupplyInfo.html'));
 });
 
@@ -192,6 +192,7 @@ app.get('/managePost.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'managePost.html'));
 });
 
+app.get('/view-count-report', postController.getViewCountReport);
 
   // Optionally, you can close the connection if it's not needed immediately
   // connection.end();

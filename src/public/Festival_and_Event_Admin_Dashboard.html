@@ -152,15 +152,6 @@
             <h2>Sign Out</h2>
             <p class="placeholder">Securely sign out from the admin dashboard. Remember to save any work before logging out.</p>
         </div></a>
-
-        <script>
-            document.querySelectorAll('.content a').forEach(link => {
-                link.addEventListener('click', function() {
-                    const sector = this.getAttribute('data-sector');
-                    localStorage.setItem('selectedSector', sector);
-                });
-            });
-        </script>
     </div>
 </body>
 </html>

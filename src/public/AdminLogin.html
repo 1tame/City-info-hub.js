@@ -1,199 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Login</title>
-   <!--<link rel="stylesheet" href="styles.css">-->
+    <!--<link rel="stylesheet" href="styles.css">-->
     <style>
-    
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f2f2f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
-        #loginPage {
-            background-color: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-        }
+      #loginPage {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+      }
 
-        h2 {
-            text-align: center;
-            color: #004080;
-            margin-bottom: 20px;
-        }
+      h2 {
+        text-align: center;
+        color: #004080;
+        margin-bottom: 20px;
+      }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: bold;
+      }
 
-        select, input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
+      select,
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #004080;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #004080;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-        button:hover {
-            background-color: #003366;
-        }
+      button:hover {
+        background-color: #003366;
+      }
 
-        .general-options {
-            text-align: center;
-            margin-top: 20px;
-        }
+      .general-options {
+        text-align: center;
+        margin-top: 20px;
+      }
 
-        .general-options h3 {
-            margin-bottom: 10px;
-            color: #004080;
-        }
+      .general-options h3 {
+        margin-bottom: 10px;
+        color: #004080;
+      }
 
-        .general-options ul {
-            list-style: none;
-            padding: 0;
-        }
+      .general-options ul {
+        list-style: none;
+        padding: 0;
+      }
 
-        .general-options ul li {
-            margin-bottom: 10px;
-        }
+      .general-options ul li {
+        margin-bottom: 10px;
+      }
 
-        .general-options ul li a {
-            color: #004080;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
+      .general-options ul li a {
+        color: #004080;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+      }
 
-        .general-options ul li a:hover {
-            color: #003366;
-        }
+      .general-options ul li a:hover {
+        color: #003366;
+      }
 
-        #errorDiv {
-            text-align: center;
-            margin-top: 20px;
-        }
-    
+      #errorDiv {
+        text-align: center;
+        margin-top: 20px;
+      }
     </style>
     <script>
-    window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const errorMessage = urlParams.get('errorMessage');
-    if (errorMessage) {
-        const errorDiv = document.getElementById("errorDiv");
-        errorDiv.innerHTML = "<p style='color:red;'>" + errorMessage + "</p>";
-    }
+      window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const errorMessage = urlParams.get("errorMessage");
+        if (errorMessage) {
+          const errorDiv = document.getElementById("errorDiv");
+          errorDiv.innerHTML = "<p style='color:red;'>" + errorMessage + "</p>";
+        }
 
-    // Form submission handler
-    const loginForm = document.getElementById('loginForm');
-    loginForm.onsubmit = async function(event) {
-        event.preventDefault(); // Prevent the default form submission
+        // Form submission handler
+        const loginForm = document.getElementById("loginForm");
+        loginForm.onsubmit = async function (event) {
+          event.preventDefault(); // Prevent the default form submission
 
-        // Gather form data
-        const formData = {
-            
-            username: document.getElementById('username').value,
-            password: document.getElementById('password').value,
-        };
+          // Gather form data
+          const formData = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+          };
 
-        try {
+          try {
             // Make API call using Fetch
-            const response = await fetch('http://localhost:3000/api/auth/login', {
-                method: 'POST',
+            const response = await fetch(
+              "http://localhost:3000/api/auth/login",
+              {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                  "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData)
-            });
+                body: JSON.stringify(formData),
+              }
+            );
 
             const result = await response.json();
 
             if (response.ok) {
-    // Save the token to localStorage
-    console.log('Token:', result.token);
-    localStorage.setItem('authToken', result.token);
-    
-    // Assuming "admin" is an object that contains role details
-    localStorage.setItem('admin', JSON.stringify(result.admin));
+              // Save the token to localStorage
+              console.log("Token:", result.token);
+              localStorage.setItem("authToken", result.token);
 
-    // Route based on role
-    let dashboardUrl = '/default-dashboard'; // Default URL
-    switch (result.admin?.role) {
-        case 'sys_admin':
-            dashboardUrl = 'sysAdminHomePage.html';
-            break;
-        case 'Water Supply Admin':
-            dashboardUrl = 'Water_Supply_Admin_Dashboard.html';
-            break;
-        case 'Health sector Admin':
-            dashboardUrl = 'Health_Sector_Admin_Dashboard.html';
-            break;
-        case 'Security-info Admin':
-            dashboardUrl = 'Security_Admin_Dashboard.html';
-            break;
-        case 'Tourism-info Admin':
-            dashboardUrl = 'Tourism_and_Hotel_Admin_Dashboard.html';
-            break;
-        case 'Event&festival-info admin':
-            dashboardUrl = 'Festival_and_Event_Admin_Dashboard.html';
-            break;
-        case 'Transportation Admin':
-            dashboardUrl = 'Transportation_Admin_Dashboard.html';
-            break;
-        default:
-            dashboardUrl = '/default-dashboard'; // Default in case of unknown role
-            break;
-    }
+              // Assuming "admin" is an object that contains role details
+              localStorage.setItem("admin", JSON.stringify(result.admin));
 
-    // Redirect to the appropriate dashboard
-    window.location.href = dashboardUrl;
-} else {
-    // Show error message
-    const errorMessage = result.message || "An unexpected error occurred.";
-    document.getElementById('errorDiv').innerHTML = `<p style='color:red;'>${errorMessage}</p>`;
-}
+              // Route based on role
+              let dashboardUrl = "/default-dashboard"; // Default URL
+              switch (result.admin?.role) {
+                case "sys_admin":
+                  dashboardUrl = "sysAdminHomePage.html";
+                  break;
+                case "Water Supply Admin":
+                  localStorage.setItem("selectedSector", "Water Supply");
+                  dashboardUrl = "Water_Supply_Admin_Dashboard.html";
+                  break;
+                case "Health sector Admin":
+                localStorage.setItem('selectedSector','Health sector')
+                  dashboardUrl = "Health_Sector_Admin_Dashboard.html";
+                  break;
+                case "Security-info Admin":
+                localStorage.setItem('selectedSector','Security-info')
+                  dashboardUrl = "Security_Admin_Dashboard.html";
+                  break;
+                case "Tourism-info Admin":
+                localStorage.setItem('selectedSector','Tourism-info')
+                  dashboardUrl = "Tourism_and_Hotel_Admin_Dashboard.html";
+                  break;
+                case "Event&festival-info admin":
+                localStorage.setItem('selectedSector','Event&festival-info')
+                  dashboardUrl = "Festival_and_Event_Admin_Dashboard.html";
+                  break;
+                case "Transportation Admin":
+                localStorage.setItem('selectedSector','Transportation')
+                  dashboardUrl = "Transportation_Admin_Dashboard.html";
+                  break;
+                default:
+                  dashboardUrl = "/default-dashboard"; // Default in case of unknown role
+                  break;
+              }
 
-            
-        } catch (error) {
+              // Redirect to the appropriate dashboard
+              window.location.href = dashboardUrl;
+            } else {
+              // Show error message
+              const errorMessage =
+                result.message || "An unexpected error occurred.";
+              document.getElementById(
+                "errorDiv"
+              ).innerHTML = `<p style='color:red;'>${errorMessage}</p>`;
+            }
+          } catch (error) {
             // Handle network or server errors
-            document.getElementById('errorDiv').innerHTML = "<p style='color:red;'>An error occurred: " + error.message + "</p>";
-        }
-    };
-};
-
+            document.getElementById("errorDiv").innerHTML =
+              "<p style='color:red;'>An error occurred: " +
+              error.message +
+              "</p>";
+          }
+        };
+      };
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="loginPage">
-        <h2>Admin Login</h2>
-        <form id="loginForm">
-            <!-- <label for="role">Select Role:</label>
+      <h2>Admin Login</h2>
+      <form id="loginForm">
+        <!-- <label for="role">Select Role:</label>
             <select id="role" name="role" required>
                 <option value="systemAdmin">System Admin</option>
                 <option value="waterSupplyAdmin">Water Supply Admin</option>
@@ -204,24 +215,24 @@
                 <option value="transportationAdmin">Transportation Admin</option>
             </select> -->
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
 
-            <button type="submit">Login</button>
-        </form>
+        <button type="submit">Login</button>
+      </form>
 
-        <div class="general-options">
-            <ul>
-                <li><a href="javascript:history.back()">Go Back</a></li>
-                <li><a href="#">Forgot Password?</a></li>
-                <li><a href="#">Help & Support</a></li>
-                <li><a href="index.html">Return to Main Website</a></li>
-            </ul>
-        </div>
+      <div class="general-options">
+        <ul>
+          <li><a href="javascript:history.back()">Go Back</a></li>
+          <li><a href="#">Forgot Password?</a></li>
+          <li><a href="#">Help & Support</a></li>
+          <li><a href="index.html">Return to Main Website</a></li>
+        </ul>
+      </div>
     </div>
     <div id="errorDiv"></div>
-</body>
+  </body>
 </html>

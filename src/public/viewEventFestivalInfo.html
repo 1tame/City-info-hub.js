@@ -13,12 +13,12 @@
         <ul>
             <li><a href="viewHealthSectorInfo.html" data-sector="Health sector">View Health Info</a></li>
             <!-- Uncomment and complete these as needed -->
-            <li><a href="viewTourismInfo.html" data-sector="Tourism-info">Tourism Info</li>
+            <li><a href="viewTourismInfo.html" data-sector="Tourism-info">Tourism Info</a></li>
 
             <li><a href="viewEventFestivalInfo.html" data-sector="Event&festival-info">view Event Info</a></li>
             <li><a href="viewWaterSupplyInfo.html" data-sector="Water Supply">view Water supply Info</a></li>
             <li><a href="viewTransportationInfo.html" data-sector="Transportation">view Transportation info</a></li>
-            <li><a href="viewSecurityInfo.html" data-sector="Security-info">Security info</li>
+            <li><a href="viewSecurityInfo.html" data-sector="Security-info">Security info</a></li>
         </ul>
     </nav>
 
@@ -29,7 +29,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", async function() {
             // Retrieve the selected sector from localStorage and decode it
-            const sector = decodeURIComponent(localStorage.getItem('selectedSector'));
+            const sector = decodeURIComponent('Event&festival-info');
+console.log("mmmmmmmmmmmmmmmm",sector);
 
             if (!sector) {
                 document.getElementById('postsContainer').innerHTML = '<p style="color:red; text-align:center;">No sector selected.</p>';
@@ -52,10 +53,10 @@
                     postTitle.textContent = post.title;
                     postElement.appendChild(postTitle);
 
-                    const postCategory = document.createElement('p');
+                  /*  const postCategory = document.createElement('p');
                     postCategory.className = 'category';
                     postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
-                    postElement.appendChild(postCategory);
+                    postElement.appendChild(postCategory);*/
 
                     const postContent = document.createElement('p');
                     postContent.textContent = post.content;
@@ -63,15 +64,18 @@
 
                     if (post.imageUrl) {
                         const postImage = document.createElement('img');
-                        // Assuming the server is serving static files from the root directory
-                        postImage.src = `http://localhost:3000${post.imageUrl}`;
+                        const imagePath = post.imageUrl.replace(/^src\/public/, "");
+                        postImage.src = `http://localhost:3000${imagePath}`;
                         postElement.appendChild(postImage);
+                        // // Assuming the server is serving static files from the root directory
+                        // postImage.src = `http://localhost:3000${post.imageUrl}`;
+                      
                     }
 
-                    const postAuthor = document.createElement('p');
+                    /*const postAuthor = document.createElement('p');
                     postAuthor.className = 'author';
                     postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
-                    postElement.appendChild(postAuthor);
+                    postElement.appendChild(postAuthor);*/
 
                     const postDate = document.createElement('p');
                     postDate.className = 'date';
@@ -91,12 +95,6 @@
             }
         });
 
-        document.querySelectorAll('nav ul li a').forEach(link => {
-            link.addEventListener('click', function(event) {
-                const sector = encodeURIComponent(this.getAttribute('data-sector'));
-                localStorage.setItem('selectedSector', sector);
-            });
-        });
     </script>
 </body>
 </html>

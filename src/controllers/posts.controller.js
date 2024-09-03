@@ -90,13 +90,15 @@ exports.createPost = async (req, res) => {
       .json({ message: "Error creating post.", error: err.message });
   }
 };
-
 // Function to get all posts
 exports.getAllPosts = async (req, res) => {
   try {
     const connection = await db;
 
-    const [posts] = await connection.execute("SELECT * FROM Posts");
+    // Query to get all posts ordered by createdAt in descending order
+    const [posts] = await connection.execute(
+      "SELECT * FROM Posts ORDER BY createdAt DESC"
+    );
 
     res.status(200).json(posts);
   } catch (err) {
@@ -106,6 +108,7 @@ exports.getAllPosts = async (req, res) => {
       .json({ message: "Error fetching posts.", error: err.message });
   }
 };
+
 
 // Function to get a post by ID
 exports.getPostById = async (req, res) => {
@@ -138,6 +141,27 @@ exports.getPostById = async (req, res) => {
   }
 };
 
+// Function to get the view count report
+exports.getViewCountReport = async (req, res) => {
+  try {
+    const connection = await db;
+
+    // Query to get the view count for each post
+    const [viewCounts] = await connection.execute(
+      "SELECT title, viewCount FROM Posts ORDER BY viewCount DESC"
+    );
+
+    if (viewCounts.length === 0) {
+      return res.status(404).json({ message: "No posts found." });
+    }
+
+    res.status(200).json(viewCounts);
+  } catch (err) {
+    console.error("Error fetching view count report:", err);
+    res.status(500).json({ message: "Error fetching view count report.", error: err.message });
+  }
+};
+
 
 // Function to get a post by sector
 // Function to get posts by sector
@@ -148,22 +172,23 @@ exports.getPostBySector = async (req, res) => {
   const decodedSector = decodeURIComponent(sector);
 
   try {
-      const connection = await db;
+    const connection = await db;
 
-      const [posts] = await connection.execute(
-          "SELECT * FROM Posts WHERE type = ?",
-          [decodedSector] // Use decoded sector name
-      );
+    // Query to get posts by sector ordered by createdAt in descending order
+    const [posts] = await connection.execute(
+      "SELECT * FROM Posts WHERE type = ? ORDER BY createdAt DESC",
+      [decodedSector] // Use decoded sector name
+    );
 
-      if (posts.length === 0) {
-          return res.status(404).json({ message: "No posts found." });
-      }
-      res.status(200).json(posts);
+    if (posts.length === 0) {
+      return res.status(404).json({ message: "No posts found." });
+    }
+    res.status(200).json(posts);
   } catch (err) {
-      console.error("Error fetching posts:", err);
-      res
-          .status(500)
-          .json({ message: "Error fetching posts.", error: err.message });
+    console.error("Error fetching posts:", err);
+    res
+      .status(500)
+      .json({ message: "Error fetching posts.", error: err.message });
   }
 };
 
@@ -229,7 +254,7 @@ console.log(title, content, type, adminId);
 
     // If a new image was uploaded and there's an old image, delete the old image file
     if (req.file && currentPost[0].imageUrl) {
-      const oldImagePath = path.join(__dirname, "..", currentPost[0].imageUrl);
+      const oldImagePath = path.join(__dirname, "../..", currentPost[0].imageUrl);
       fs.unlink(oldImagePath, (err) => {
         if (err) console.error("Error deleting old image:", err);
       });

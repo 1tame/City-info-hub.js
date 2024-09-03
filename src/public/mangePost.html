@@ -1,289 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Posts</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="modalStyle.css">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="modalStyle.css" />
     <script src="modal.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <button class="nav-toggle">☰</button>
-        <ul>
-            <li><a href="viewHealthSectorInfo.html" data-sector="Health sector">View Health Info</a></li>
-            <li><a href="viewTourismInfo.html" data-sector="Tourism-info">Tourism Info</a></li>
-            <li><a href="viewEventFestivalInfo.html" data-sector="Event&festival-info">View Event Info</a></li>
-            <li><a href="viewWaterSupplyInfo.html" data-sector="Water Supply">View Water Supply Info</a></li>
-            <li><a href="viewTransportationInfo.html" data-sector="Transportation">View Transportation Info</a></li>
-            <li><a href="viewSecurityInfo.html" data-sector="Security-info">Security Info</a></li>
-        </ul>
+      <button class="nav-toggle">☰</button>
+      <ul>
+        <li>
+          <a href="viewHealthSectorInfo.html" data-sector="Health sector"
+            >View Health Info</a
+          >
+        </li>
+        <li>
+          <a href="viewTourismInfo.html" data-sector="Tourism-info"
+            >Tourism Info</a
+          >
+        </li>
+        <li>
+          <a href="viewEventFestivalInfo.html" data-sector="Event&festival-info"
+            >View Event Info</a
+          >
+        </li>
+        <li>
+          <a href="viewWaterSupplyInfo.html" data-sector="Water Supply"
+            >View Water Supply Info</a
+          >
+        </li>
+        <li>
+          <a href="viewTransportationInfo.html" data-sector="Transportation"
+            >View Transportation Info</a
+          >
+        </li>
+        <li>
+          <a href="viewSecurityInfo.html" data-sector="Security-info"
+            >Security Info</a
+          >
+        </li>
+      </ul>
     </nav>
 
     <section class="content-section" id="postsContainer">
-        <!-- Posts will be dynamically loaded here -->
+      <!-- Posts will be dynamically loaded here -->
     </section>
 
     <!-- Update Modal -->
-<div id="updateModal" class="modal">
-    <div class="modal-content">
+    <div id="updateModal" class="modal">
+      <div class="modal-content">
         <div class="modal-header">
-            <h2>Update Post</h2>
-            <span class="modal-close" onclick="closeModal()">&times;</span>
+          <h2>Update Post</h2>
+          <span class="modal-close" onclick="closeModal()">&times;</span>
         </div>
         <div class="modal-body">
-            <form id="updateForm" enctype="multipart/form-data">
-                <input type="hidden" id="postId" name="id">
-                <label for="postIdField">Post ID:</label>
-                <input type="text" id="postIdField" name="postId" readonly>
-                
-                <!-- Hidden fields for type and adminId -->
-                <input type="hidden" id="postType" name="type">
-                <input type="hidden" id="adminId" name="adminId">
+          <form id="updateForm" enctype="multipart/form-data">
+            <input type="hidden" id="postId" name="id" />
+            <label for="postIdField">Post ID:</label>
+            <input type="text" id="postIdField" name="postId" readonly />
 
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" required>
-                
-                <label for="content">Content:</label>
-                <textarea id="content" name="content" required></textarea>
-                
-                <div id="imagePreviewContainer">
-                    <img id="imagePreview" src="" alt="Current Image" style="display: none;">
-                </div>
-                
-                <label for="image">Image:</label>
-                <input type="file" id="image" name="image">
-                
-                <div class="modal-footer">
-                    <button type="submit">Update</button>
-                    <button type="button" class="cancel" onclick="closeModal()">Cancel</button>
-                </div>
-            </form>
+            <!-- Hidden fields for type and adminId -->
+            <input type="hidden" id="postType" name="type" />
+            <input type="hidden" id="adminId" name="adminId" />
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required />
+
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" required></textarea>
+
+            <div id="imagePreviewContainer">
+              <img
+                id="imagePreview"
+                src=""
+                alt="Current Image"
+                style="display: none"
+              />
+            </div>
+
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" />
+
+            <div class="modal-footer">
+              <button type="submit">Update</button>
+              <button type="button" class="cancel" onclick="closeModal()">
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
-</div>
 
     <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Confirm Deletion</h2>
-                <span class="modal-close" onclick="closeDeleteModal()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this post?</p>
-                <input type="hidden" id="deletePostId">
-                <div class="modal-footer">
-                    <button id="confirmDelete" type="button">Delete</button>
-                    <button type="button" class="cancel" onclick="closeDeleteModal()">Cancel</button>
-                </div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Confirm Deletion</h2>
+          <span class="modal-close" onclick="closeDeleteModal()">&times;</span>
         </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this post?</p>
+          <input type="hidden" id="deletePostId" />
+          <div class="modal-footer">
+            <button id="confirmDelete" type="button">Delete</button>
+            <button type="button" class="cancel" onclick="closeDeleteModal()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        let postIdToDelete = null;
+      let postIdToDelete = null;
 
-        document.addEventListener("DOMContentLoaded", async function() {
-            // Get the sector from localStorage
-            const sector = decodeURIComponent(localStorage.getItem('selectedSector'));
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Get the sector from localStorage
+        const sector = decodeURIComponent(
+          localStorage.getItem("selectedSector")
+        );
 
-            if (!sector) {
-                document.getElementById('postsContainer').innerHTML = '<p style="color:red; text-align:center;">No sector selected.</p>';
-                return;
-            }
+        if (!sector) {
+          document.getElementById("postsContainer").innerHTML =
+            '<p style="color:red; text-align:center;">No sector selected.</p>';
+          return;
+        }
 
-            try {
-                // Fetch posts filtered by sector from the API
-                const response = await fetch(`http://localhost:3000/api/post/posts_by_sector/${encodeURIComponent(sector)}`);
-                const posts = await response.json();
+        try {
+          // Fetch posts filtered by sector from the API
+          const response = await fetch(
+            `http://localhost:3000/api/post/posts_by_sector/${encodeURIComponent(
+              sector
+            )}`
+          );
+          const posts = await response.json();
 
-                if (response.ok) {
-                    const postsContainer = document.getElementById('postsContainer');
-                    postsContainer.innerHTML = ''; // Clear previous posts
+          if (response.ok) {
+            const postsContainer = document.getElementById("postsContainer");
+            postsContainer.innerHTML = ""; // Clear previous posts
 
-                    // Iterate over the posts and append only those that match the selected sector
-                    posts.forEach(post => {
-                        const postElement = document.createElement('div');
-                        postElement.className = 'post';
+            // Iterate over the posts and append only those that match the selected sector
+            posts.forEach((post) => {
+              const postElement = document.createElement("div");
+              postElement.className = "post";
 
-                        const postTitle = document.createElement('h2');
-                        postTitle.textContent = post.title;
-                        postElement.appendChild(postTitle);
+              const postTitle = document.createElement("h2");
+              postTitle.textContent = post.title;
+              postElement.appendChild(postTitle);
 
-                        const postCategory = document.createElement('p');
-                        postCategory.className = 'category';
-                        postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
-                        postElement.appendChild(postCategory);
+              const postCategory = document.createElement("p");
+              postCategory.className = "category";
+              postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
+              postElement.appendChild(postCategory);
 
-                        const postContent = document.createElement('p');
-                        postContent.textContent = post.content;
-                        postElement.appendChild(postContent);
+              const postContent = document.createElement("p");
+              postContent.textContent = post.content;
+              postElement.appendChild(postContent);
 
-                        if (post.imageUrl) {
-                            const postContainer = document.createElement('div');
-                            postContainer.className = 'post-container';
+              if (post.imageUrl) {
+                const postContainer = document.createElement("div");
+                postContainer.className = "post-container";
 
-                            const postImage = document.createElement('img');
-                            postImage.src = `http://localhost:3000${post.imageUrl}`;
-                            postImage.alt = 'Post image'; 
-                            postContainer.appendChild(postImage);
+                const postImage = document.createElement("img");
+                // Remove 'src/public' from the imageUrl
+                const imagePath = post.imageUrl.replace(/^src\/public/, "");
+                postImage.src = `http://localhost:3000${imagePath}`;
+                postImage.alt = "Post image";
+                postContainer.appendChild(postImage);
 
-                            const description = document.createElement('div');
-                            description.className = 'description';
-                            description.innerHTML = `
+                const description = document.createElement("div");
+                description.className = "description";
+                description.innerHTML = `
                                 <h2>${post.title}</h2>
-                                <p>Sector: ${post.type}, Category: ${post.category}</p>
+                                <p>Sector: ${post.type}, Category: ${
+                  post.category
+                }</p>
                                 <p>${post.content}</p>
-                                <p class="author">Posted by Admin ID: ${post.adminId}</p>
-                                <p class="date">Posted on: ${new Date(post.createdAt).toDateString()}</p>
+                                <p class="author">Posted by Admin ID: ${
+                                  post.adminId
+                                }</p>
+                                <p class="date">Posted on: ${new Date(
+                                  post.createdAt
+                                ).toDateString()}</p>
                             `;
-                            postContainer.appendChild(description);
+                postContainer.appendChild(description);
 
-                            postElement.appendChild(postContainer);
-                        } else {
-                            const noImageMessage = document.createElement('p');
-                            noImageMessage.textContent = 'No image available for this post.';
-                            postElement.appendChild(noImageMessage);
-                        }
+                postElement.appendChild(postContainer);
+              } else {
+                const noImageMessage = document.createElement("p");
+                noImageMessage.textContent =
+                  "No image available for this post.";
+                postElement.appendChild(noImageMessage);
+              }
 
-                        const postAuthor = document.createElement('p');
-                        postAuthor.className = 'author';
-                        postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
-                        postElement.appendChild(postAuthor);
+              const postAuthor = document.createElement("p");
+              postAuthor.className = "author";
+              postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
+              postElement.appendChild(postAuthor);
 
-                        const postDate = document.createElement('p');
-                        postDate.className = 'date';
-                        const postDateObj = new Date(post.createdAt);
-                        postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
-                        postElement.appendChild(postDate);
+              const postDate = document.createElement("p");
+              postDate.className = "date";
+              const postDateObj = new Date(post.createdAt);
+              postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
+              postElement.appendChild(postDate);
 
-                        // Add Update and Delete buttons
-                        const updateButton = document.createElement('button');
-                        updateButton.textContent = 'Update';
-                        updateButton.onclick = () => openUpdateModal(post);
-                        postElement.appendChild(updateButton);
+              // Add Update and Delete buttons
+              const updateButton = document.createElement("button");
+              updateButton.textContent = "Update";
+              updateButton.onclick = () => openUpdateModal(post);
+              postElement.appendChild(updateButton);
 
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Delete';
-                        deleteButton.onclick = () => openDeleteModal(post.id);
-                        postElement.appendChild(deleteButton);
+              const deleteButton = document.createElement("button");
+              deleteButton.textContent = "Delete";
+              deleteButton.onclick = () => openDeleteModal(post.id);
+              postElement.appendChild(deleteButton);
 
-                        postsContainer.appendChild(postElement);
-                    });
-                } else {
-                    document.getElementById('postsContainer').innerHTML = '<p style="color:red; text-align:center;">No posts found for this sector.</p>';
-                }
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-                const errorMessage = document.createElement('p');
-                errorMessage.textContent = 'Error fetching posts.';
-                errorMessage.style.color = 'red';
-                errorMessage.style.textAlign = 'center';
-                document.getElementById('postsContainer').appendChild(errorMessage);
-            }
-        });
-        function openUpdateModal(post) {
-            document.getElementById('postId').value = post.id;
-            document.getElementById('postIdField').value = post.id; // Display post ID
-            document.getElementById('title').value = post.title;
-            document.getElementById('content').value = post.content;
-        
-            // Set the type and adminId fields
-            document.getElementById('postType').value = post.type;
-            document.getElementById('adminId').value = post.adminId;
-        
-            // Update image preview
-            const imageUrl = post.imageUrl ? `http://localhost:3000${post.imageUrl}` : '';
-            const imagePreview = document.getElementById('imagePreview');
-            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-            
-            if (imageUrl) {
-                imagePreview.src = imageUrl;
-                imagePreview.style.display = 'block'; // Show image preview
-            } else {
-                imagePreview.style.display = 'none'; // Hide image preview if no image
-            }
-        
-            imagePreviewContainer.style.display = 'block'; // Ensure container is visible
-            document.getElementById('updateModal').style.display = 'block';
+              postsContainer.appendChild(postElement);
+            });
+          } else {
+            document.getElementById("postsContainer").innerHTML =
+              '<p style="color:red; text-align:center;">No posts found for this sector.</p>';
+          }
+        } catch (error) {
+          console.error("Error fetching posts:", error);
+          const errorMessage = document.createElement("p");
+          errorMessage.textContent = "Error fetching posts.";
+          errorMessage.style.color = "red";
+          errorMessage.style.textAlign = "center";
+          document.getElementById("postsContainer").appendChild(errorMessage);
         }
-        
+      });
+      function openUpdateModal(post) {
+        document.getElementById("postId").value = post.id;
+        document.getElementById("postIdField").value = post.id; // Display post ID
+        document.getElementById("title").value = post.title;
+        document.getElementById("content").value = post.content;
 
-        function openDeleteModal(postId) {
-            postIdToDelete = postId;
-            document.getElementById('deletePostId').value = postId;
-            document.getElementById('deleteModal').style.display = 'block';
-        }
+        // Set the type and adminId fields
+        document.getElementById("postType").value = post.type;
+        document.getElementById("adminId").value = post.adminId;
 
-        function closeModal() {
-            document.getElementById('updateModal').style.display = 'none';
-        }
+        // Update image preview
+        const imageUrl = post.imageUrl
+          ? `http://localhost:3000${post.imageUrl}`
+          : "";
+        const imagePreview = document.getElementById("imagePreview");
+        const imagePreviewContainer = document.getElementById(
+          "imagePreviewContainer"
+        );
 
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').style.display = 'none';
-        }
-
-        document.getElementById('updateForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-    
-    // Log form data to debug
-    for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
-    // Extract the ID from the formData
-    const postId = formData.get('id');
-    if (!postId) {
-        alert('Post ID is missing');
-        return;
-    }
-
-    try {
-       
-        
-        // Make the PUT request with the form data
-        const response = await fetch(`http://localhost:3000/api/post/posts/${postId}`, {
-            method: 'PUT',
-            body: formData
-        });
-
-        // Handle the response
-        if (response.ok) {
-            const result = await response.json();
-            alert(result.message || 'Post updated successfully');
-            closeModal();
-            location.reload(); // Refresh the page to reflect changes
+        if (imageUrl) {
+          imagePreview.src = imageUrl;
+          imagePreview.style.display = "block"; // Show image preview
         } else {
-            const error = await response.json();
-            alert(error.message || 'Error updating post');
+          imagePreview.style.display = "none"; // Hide image preview if no image
         }
-    } catch (error) {
-        console.error('Error updating post:', error);
-        alert('Error updating post');
-    }
-});
 
-        document.getElementById('confirmDelete').addEventListener('click', async function() {
-            try {
-                const response = await fetch(`http://localhost:3000/api/post/delete/${postIdToDelete}`, {
-                    method: 'DELETE'
-                });
+        imagePreviewContainer.style.display = "block"; // Ensure container is visible
+        document.getElementById("updateModal").style.display = "block";
+      }
 
-                if (response.ok) {
-                    alert('Post deleted successfully');
-                    closeDeleteModal();
-                    location.reload(); // Refresh the page to reflect changes
-                } else {
-                    alert('Error deleting post');
-                }
-            } catch (error) {
-                console.error('Error deleting post:', error);
-                alert('Error deleting post');
+      function openDeleteModal(postId) {
+        postIdToDelete = postId;
+        document.getElementById("deletePostId").value = postId;
+        document.getElementById("deleteModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("updateModal").style.display = "none";
+      }
+
+      function closeDeleteModal() {
+        document.getElementById("deleteModal").style.display = "none";
+      }
+
+      document
+        .getElementById("updateForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          const formData = new FormData(this);
+
+          // Log form data to debug
+          for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+          }
+
+          // Extract the ID from the formData
+          const postId = formData.get("id");
+          if (!postId) {
+            alert("Post ID is missing");
+            return;
+          }
+
+          try {
+            // Make the PUT request with the form data
+            const response = await fetch(
+              `http://localhost:3000/api/post/posts/${postId}`,
+              {
+                method: "PUT",
+                body: formData,
+              }
+            );
+
+            // Handle the response
+            if (response.ok) {
+              const result = await response.json();
+              alert(result.message || "Post updated successfully");
+              closeModal();
+              location.reload(); // Refresh the page to reflect changes
+            } else {
+              const error = await response.json();
+              alert(error.message || "Error updating post");
             }
+          } catch (error) {
+            console.error("Error updating post:", error);
+            alert("Error updating post");
+          }
+        });
+
+      document
+        .getElementById("confirmDelete")
+        .addEventListener("click", async function () {
+          try {
+            const response = await fetch(
+              `http://localhost:3000/api/post/delete/${postIdToDelete}`,
+              {
+                method: "DELETE",
+              }
+            );
+
+            if (response.ok) {
+              alert("Post deleted successfully");
+              closeDeleteModal();
+              location.reload(); // Refresh the page to reflect changes
+            } else {
+              alert("Error deleting post");
+            }
+          } catch (error) {
+            console.error("Error deleting post:", error);
+            alert("Error deleting post");
+          }
         });
     </script>
-</body>
+  </body>
 </html>

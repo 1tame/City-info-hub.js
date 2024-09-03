@@ -1,303 +1,315 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gondar City Information Provider</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
 
-        /* Header Style */
-        header {
-            background-image: url("https://a1auto.sfo2.cdn.digitaloceanspaces.com/media/car-shipping-quote-gondar.jpg?hash=27a9948d5465c2ce9869667e50d03390");
-            background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
-            position: relative;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+      /* Header Style */
+      header {
+        background-image: url("https://a1auto.sfo2.cdn.digitaloceanspaces.com/media/car-shipping-quote-gondar.jpg?hash=27a9948d5465c2ce9869667e50d03390");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        position: relative;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
+      header h1 {
+        font-size: 2.5em;
+        margin: 0;
+        z-index: 2;
+        position: relative;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+
+      /* Navigation Bar */
+      nav {
+        background-color: #004080;
+        overflow: hidden;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin: 0 15px;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+        padding: 14px 20px;
+        display: block;
+      }
+
+      nav ul li a:hover {
+        background-color: #003366;
+      }
+
+      /* Search Bar */
+      .search-bar {
+        margin: -30px auto 20px auto;
+        max-width: 600px;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+        position: relative;
+      }
+
+      .search-bar input[type="text"] {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px 0 0 4px;
+      }
+
+      .search-bar input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #004080;
+        color: white;
+        border: none;
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+      }
+
+      .search-bar input[type="submit"]:hover {
+        background-color: #003366;
+      }
+
+      /* Main Content */
+      .content {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 60px;
+        padding: 60px;
+      }
+
+      .content a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+
+      .content div {
+        padding: 20px;
+        background-color: #f2f2f2;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .content div:hover {
+        background-color: #e0e0e0;
+        transform: translateY(-5px);
+      }
+
+      .content div h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+
+      .content div p {
+        font-size: 1em;
+        color: #333;
+      }
+
+      /* Footer Styles */
+      footer {
+        background-color: #ffffff;
+        border-top: 1px solid #ddd;
+        padding: 20px;
+        text-align: center;
+        color: #555;
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      .footer-links {
+        margin-top: 10px;
+      }
+
+      .footer-links a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: bold;
+        margin: 0 10px;
+        padding: 5px 10px;
+        display: inline-block;
+      }
+
+      .footer-links a:hover {
+        color: #0056b3;
+      }
+
+      @media screen and (max-width: 768px) {
         header h1 {
-            font-size: 2.5em;
-            margin: 0;
-            z-index: 2;
-            position: relative;
+          font-size: 2em;
         }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1;
-        }
-
-        /* Navigation Bar */
-        nav {
-            background-color: #004080;
-            overflow: hidden;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
-
-        nav ul li {
-            margin: 0 15px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            padding: 14px 20px;
-            display: block;
-        }
-
-        nav ul li a:hover {
-            background-color: #003366;
-        }
-
-        /* Search Bar */
         .search-bar {
-            margin: -30px auto 20px auto;
-            max-width: 600px;
-            display: flex;
-            justify-content: center;
-            z-index: 2;
-            position: relative;
+          flex-direction: column;
+          width: 90%;
         }
 
         .search-bar input[type="text"] {
-            width: 80%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px 0 0 4px;
+          width: 100%;
+          border-radius: 4px;
+          margin-bottom: 10px;
         }
 
         .search-bar input[type="submit"] {
-            padding: 10px 20px;
-            background-color: #004080;
-            color: white;
-            border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
+          width: 100%;
+          border-radius: 4px;
         }
 
-        .search-bar input[type="submit"]:hover {
-            background-color: #003366;
-        }
-
-        /* Main Content */
         .content {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 60px;
-            padding: 60px;
-        }
-
-        .content a {
-            text-decoration: none;
-            color: inherit;
-            display: block;
+          padding: 20px;
+          gap: 20px;
         }
 
         .content div {
-            padding: 20px;
-            background-color: #f2f2f2;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+          padding: 15px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        header {
+          height: 200px;
         }
 
-        .content div:hover {
-            background-color: #e0e0e0;
-            transform: translateY(-5px);
+        header h1 {
+          font-size: 1.5em;
         }
 
-        .content div h2 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
+        .search-bar {
+          margin-top: -20px;
         }
 
-        .content div p {
-            font-size: 1em;
-            color: #333;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: #ffffff;
-            border-top: 1px solid #ddd;
-            padding: 20px;
-            text-align: center;
-            color: #555;
-        }
-
-        footer p {
-            margin: 0;
-        }
-
-        .footer-links {
-            margin-top: 10px;
+        .content {
+          grid-template-columns: 1fr;
         }
 
         .footer-links a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 0 10px;
-            padding: 5px 10px;
-            display: inline-block;
+          display: block;
+          margin: 10px 0;
         }
-
-        .footer-links a:hover {
-            color: #0056b3;
-        }
-
-        @media screen and (max-width: 768px) {
-            header h1 {
-                font-size: 2em;
-            }
-
-            .search-bar {
-                flex-direction: column;
-                width: 90%;
-            }
-
-            .search-bar input[type="text"] {
-                width: 100%;
-                border-radius: 4px;
-                margin-bottom: 10px;
-            }
-
-            .search-bar input[type="submit"] {
-                width: 100%;
-                border-radius: 4px;
-            }
-
-            .content {
-                padding: 20px;
-                gap: 20px;
-            }
-
-            .content div {
-                padding: 15px;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            header {
-                height: 200px;
-            }
-
-            header h1 {
-                font-size: 1.5em;
-            }
-
-            .search-bar {
-                margin-top: -20px;
-            }
-
-            .content {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-links a {
-                display: block;
-                margin: 10px 0;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Gondar City Information Provider</h1>
+      <h1>Gondar City Information Provider</h1>
     </header>
 
     <div class="search-bar">
-        <input type="text" placeholder="Search Gondar City Information...">
-        <input type="submit" value="Search">
+      <input type="text" placeholder="Search Gondar City Information..." />
+      <input type="submit" value="Search" />
     </div>
 
     <div class="content">
-        <!-- Use data-sector attributes and update href to point to viewPage.html -->
-        <a href="viewWaterSupplyInfo.html" data-sector="Water Supply">
-            <div>
-                <h2>View Water Supply Information</h2>
-                <p>Access detailed information on city water supply services, including maintenance schedules and contact details.</p>
-            </div>
-        </a>
-        <a href="viewHealthSectorInfo.html" data-sector="Health sector">
-            <div>
-                <h2>View Health Sector Information</h2>
-                <p>Find the contact details and services provided by the city's health departments and elected officials.</p>
-            </div>
-        </a>
-        <a href="viewTourismInfo.html" data-sector="Tourism-info">
-            <div>
-                <h2>View Tourism Hotel Information</h2>
-                <p>Explore available hotels and accommodations, along with information on COVID-19 vaccination and testing services.</p>
-            </div>
-        </a>
-        <a href="viewEventFestivalInfo.html" data-sector="Event&festival-info">
-            <div>
-                <h2>View Event Festival Information</h2>
-                <p>Discover local events, festivals, and other community activities in Gondar.</p>
-            </div>
-        </a>
-        <a href="viewTransportationInfo.html" data-sector="Transportation">
-            <div>
-                <h2>View Transportation Information</h2>
-                <p>Get details on public transportation options, including schedules and routes within the city.</p>
-            </div>
-        </a>
-        <a href="viewSecurityInfo.html" data-sector="Security-info">
-            <div>
-                <h2>View Security Information</h2>
-                <p>Get details on Security issues.</p>
-            </div>
-        </a>
-
+      <!-- Adding onclick event listeners to save the sector to localStorage -->
+      <a href="viewWaterSupplyInfo.html" data-sector="Water Supply" onclick="saveSector('Water Supply')">
+        <div>
+          <h2>View Water Supply Information</h2>
+          <p>
+            Access detailed information on city water supply services, including
+            maintenance schedules and contact details.
+          </p>
+        </div>
+      </a>
+      <a href="viewHealthSectorInfo.html" data-sector="Health sector" onclick="saveSector('Health sector')">
+        <div>
+          <h2>View Health Sector Information</h2>
+          <p>
+            Find the contact details and services provided by the city's health
+            departments and elected officials.
+          </p>
+        </div>
+      </a>
+      <a href="viewTourismInfo.html" data-sector="Tourism-info" onclick="saveSector('Tourism-info')">
+        <div>
+          <h2>View Tourism Hotel Information</h2>
+          <p>
+            Explore available hotels and accommodations, along with information
+            on COVID-19 vaccination and testing services.
+          </p>
+        </div>
+      </a>
+      <a href="viewEventFestivalInfo.html" data-sector="Event&festival-info" onclick="saveSector('Event&festival-info')">
+        <div>
+          <h2>View Event Festival Information</h2>
+          <p>
+            Discover local events, festivals, and other community activities in
+            Gondar.
+          </p>
+        </div>
+      </a>
+      <a href="viewTransportationInfo.html" data-sector="Transportation" onclick="saveSector('Transportation')">
+        <div>
+          <h2>View Transportation Information</h2>
+          <p>
+            Get details on public transportation options, including schedules
+            and routes within the city.
+          </p>
+        </div>
+      </a>
+      <a href="viewSecurityInfo.html" data-sector="Security-info" onclick="saveSector('Security-info')">
+        <div>
+          <h2>View Security Information</h2>
+          <p>Get details on Security issues.</p>
+        </div>
+      </a>
     </div>
 
     <footer>
-        <p>&copy; 2024 City Information Provider</p>
-        <div class="footer-links">
-            <a href="/contact">Contact Us</a>
-            <a href="/about">About Us</a>
-            <a href="AdminLogin.html">Admin Login</a>
-        </div>
+      <p>&copy; 2024 City Information Provider</p>
+      <div class="footer-links">
+        <a href="/contact">Contact Us</a>
+        <a href="/about">About Us</a>
+        <a href="AdminLogin.html">Admin Login</a>
+      </div>
     </footer>
 
+    <!-- JavaScript to handle sector selection -->
     <script>
-        document.querySelectorAll('.content a').forEach(link => {
-            link.addEventListener('click', function() {
-                const sector = this.getAttribute('data-sector');
-                localStorage.setItem('selectedSector', sector);
-            });
-        });
+      function saveSector(sectorName) {
+        localStorage.setItem("selectedSector", sectorName);
+      }
     </script>
-</body>
+  </body>
 </html>
