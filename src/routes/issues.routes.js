@@ -14,6 +14,8 @@ router.post('/feedback/:id', issuesController.provideFeedback);
 // Route to get feedback for a specific issue
 router.get('/feedback/:id', issuesController.getFeedbackByIssueId);
 
+// Add the route for handling likes/dislikes
+router.post('/feedback-like', issuesController.likeOrDislikeFeedback);
 
 // Route to get feedback for a specific issue
 router.get('/feedback-by-admin/:admin_id', issuesController.getFeedbackForAdminIssues);

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gondar City Information Provider</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -237,8 +238,14 @@
     </header>
 
     <div class="search-bar">
-      <input type="text" placeholder="Search Gondar City Information..." />
-      <input type="submit" value="Search" />
+      <form id="searchForm">
+        <input type="text" id="searchInput" placeholder="Search Gondar City Information..." />
+        <input type="submit" value="Search" />
+      </form>
+    </div>
+
+    <div id="postsContainer">
+      <!-- Search results will be displayed here -->
     </div>
 
     <div class="content">
@@ -297,7 +304,7 @@
     </div>
 
     <footer>
-      <p>&copy; 2024 City Information Provider</p>
+      <p>© 2024 City Information Provider</p>
       <div class="footer-links">
         <a href="/contact">Contact Us</a>
         <a href="/about">About Us</a>

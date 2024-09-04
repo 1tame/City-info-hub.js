@@ -143,6 +143,9 @@
 
               // Assuming "admin" is an object that contains role details
               localStorage.setItem("admin", JSON.stringify(result.admin));
+              // Store only the adminId in localStorage
+             //localStorage.setItem("adminId", result.admin.id); 
+
 
               // Route based on role
               let dashboardUrl = "/default-dashboard"; // Default URL

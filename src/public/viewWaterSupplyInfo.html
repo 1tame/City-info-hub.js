@@ -4,7 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Water Supply Information</title>
-    <link rel="stylesheet" href="style.css"> <!-- Ensure this path is correct -->
+    <!--<link rel="stylesheet" href="style.css">  Ensure this path is correct -->
+    <link rel="stylesheet" href="forAll.css"> 
+
+    <script src="main.js"></script> <!-- Assuming you need React for other parts of your project -->
+   <!-- <style>
+        .like-btn, .dislike-btn {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .like-btn:hover {
+        background-color: #e0ffe0;
+    }
+
+    .dislike-btn:hover {
+        background-color: #ffe0e0;
+    }
+
+    </style>-->
 </head>
 <body>
     <nav>
@@ -48,13 +71,26 @@
                     postElement.appendChild(postTitle);
 
                     const postCategory = document.createElement('p');
-                    //postCategory.className = 'category';
-                   // postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
                     postElement.appendChild(postCategory);
 
                     const postContent = document.createElement('p');
                     postContent.textContent = post.content;
                     postElement.appendChild(postContent);
+
+                    // Add Like and Dislike buttons
+const likeButton = document.createElement('button');
+likeButton.textContent = `👍 ${post.likes || 0}`;
+likeButton.className = 'like-btn';
+likeButton.dataset.postId = post.id; // Set the data-post-id attribute here
+
+const dislikeButton = document.createElement('button');
+dislikeButton.textContent = `👎 ${post.dislikes || 0}`;
+dislikeButton.className = 'dislike-btn';
+dislikeButton.dataset.postId = post.id; // Set the data-post-id attribute here
+
+postElement.appendChild(likeButton);
+postElement.appendChild(dislikeButton);
+
 
                     if (post.imageUrl) {
                         const postContainer = document.createElement('div');
@@ -62,18 +98,11 @@
 
                         const postImage = document.createElement('img');
                         const imagePath = post.imageUrl.replace(/^src\/public/, "");
-                        postImage.src =`http://localhost:3000${imagePath}`;
-                        postElement.appendChild(postImage)
+                        postImage.src = `http://localhost:3000${imagePath}`;
+                        postElement.appendChild(postImage);
 
                         const description = document.createElement('div');
                         description.className = 'description';
-                        /*description.innerHTML = `
-                            <h2>${post.title}</h2>
-                            <p>Sector: ${post.type}, Category: ${post.category}</p>
-                            <p>${post.content}</p>
-                            <p class="author">Posted by Admin ID: ${post.adminId}</p>
-                            <p class="date">Posted on: ${new Date(post.createdAt).toDateString()}</p>
-                        `;*/
                         postContainer.appendChild(description);
 
                         postElement.appendChild(postContainer);
@@ -84,8 +113,6 @@
                     }
 
                     const postAuthor = document.createElement('p');
-                    //postAuthor.className = 'author';
-                   // postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
                     postElement.appendChild(postAuthor);
 
                     const postDate = document.createElement('p');
@@ -110,5 +137,8 @@
             document.querySelector('ul').classList.toggle('show');
         });
     </script>
+    
+    <script src="main.js"></script> <!-- External JavaScript file for like/dislike and other functionalities -->
+
 </body>
 </html>

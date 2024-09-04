@@ -48,4 +48,13 @@ router.put('/posts/:id',  upload.single('image'), postsController.updatePost);
 // Route to delete a post by ID (Protected route)
 router.delete('/posts/:id', postsController.deletePost);
 
+// Route to get the view count report (Public route)
+router.get('/view-count-report', postsController.getViewCountReport);
+
+// Route to like a post (Public route, no authentication needed)
+router.post('/posts/like/:postId', postsController.likePost);
+
+// Route to dislike a post (Public route, no authentication needed)
+router.post('/posts/dislike/:postId', postsController.dislikePost);
+
 module.exports = router;

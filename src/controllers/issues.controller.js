@@ -94,6 +94,46 @@ exports.getFeedbackByIssueId = async (req, res) => {
 };
 
 
+// issues.controller.js
+
+// Handle like or dislike for feedback
+exports.likeOrDislikeFeedback = async (req, res) => {
+    const { feedbackId, adminId, action } = req.body;
+
+    try {
+        const connection = await db;
+
+        // Check if admin has already liked or disliked this feedback
+        const [existingRecord] = await connection.execute(
+            `SELECT * FROM feedback_likes WHERE feedback_id = ? AND admin_id = ?`,
+            [feedbackId, adminId]
+        );
+
+        if (existingRecord.length > 0) {
+            return res.status(400).json({ message: 'Admin has already liked or disliked this feedback.' });
+        }
+
+        // Insert the like or dislike action into feedback_likes
+        await connection.execute(
+            `INSERT INTO feedback_likes (feedback_id, admin_id, action) VALUES (?, ?, ?)`,
+            [feedbackId, adminId, action]
+        );
+
+        // Update the feedback table to increment likes or dislikes
+        const updateColumn = action === 'like' ? 'likes' : 'dislikes';
+        await connection.execute(
+            `UPDATE feedback SET ${updateColumn} = ${updateColumn} + 1 WHERE id = ?`,
+            [feedbackId]
+        );
+
+        res.status(200).json({ message: `${action} registered successfully.` });
+    } catch (err) {
+        console.error('Error handling feedback like/dislike:', err);
+        res.status(500).json({ message: 'Error handling feedback like/dislike.', error: err.message });
+    }
+};
+
+
 // Get feedback provided by a specific admin (Admin Role)
 exports.getFeedbackByAdminId = async (req, res) => {
     const { admin_id } = req.params;

@@ -54,7 +54,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2>Update Post</h2>
-          <span class="modal-close" onclick="closeModal()">&times;</span>
+          <span class="modal-close" onclick="closeModal()">×</span>
         </div>
         <div class="modal-body">
           <form id="updateForm" enctype="multipart/form-data">
@@ -100,11 +100,14 @@
       <div class="modal-content">
         <div class="modal-header">
           <h2>Confirm Deletion</h2>
-          <span class="modal-close" onclick="closeDeleteModal()">&times;</span>
+          <span class="modal-close" onclick="closeDeleteModal()">×</span>
         </div>
         <div class="modal-body">
           <p>Are you sure you want to delete this post?</p>
-          <input type="hidden" id="deletePostId" />
+          <input type="hidden" id="deletePostId" name="id" /> 
+          <label for="deletePostIdField">Post ID:</label>
+          <input type="text" id="deletePostIdField" readonly />
+
           <div class="modal-footer">
             <button id="confirmDelete" type="button">Delete</button>
             <button type="button" class="cancel" onclick="closeDeleteModal()">
@@ -114,6 +117,33 @@
         </div>
       </div>
     </div>
+
+   <!-- Update Success Modal -->
+    <div id="updateSuccessModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Success</h2>
+          <span class="modal-close" onclick="closeSuccessModal('updateSuccessModal')">×</span>
+        </div>
+        <div class="modal-body">
+          <p>Post updated successfully!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Success Modal -->
+    <div id="deleteSuccessModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Success</h2>
+          <span class="modal-close" onclick="closeSuccessModal('deleteSuccessModal')">×</span>
+        </div>
+        <div class="modal-body">
+          <p>Post deleted successfully!</p>
+        </div>
+      </div>
+    </div>
+
 
     <script>
       let postIdToDelete = null;
@@ -267,6 +297,7 @@
       function openDeleteModal(postId) {
         postIdToDelete = postId;
         document.getElementById("deletePostId").value = postId;
+        document.getElementById("deletePostIdField").value = postId; // Set the visible Post ID field 
         document.getElementById("deleteModal").style.display = "block";
       }
 
@@ -277,6 +308,18 @@
       function closeDeleteModal() {
         document.getElementById("deleteModal").style.display = "none";
       }
+
+      // Function to open a success modal
+      function openSuccessModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+      }
+
+      // Function to close a success modal
+      function closeSuccessModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+        location.reload(); // Refresh the page 
+      }
+
 
       document
         .getElementById("updateForm")
@@ -309,9 +352,9 @@
             // Handle the response
             if (response.ok) {
               const result = await response.json();
-              alert(result.message || "Post updated successfully");
-              closeModal();
-              location.reload(); // Refresh the page to reflect changes
+              // alert(result.message || "Post updated successfully"); <--- Remove this alert
+              closeModal(); // Close the update modal
+              openSuccessModal('updateSuccessModal'); // Open the update success modal             
             } else {
               const error = await response.json();
               alert(error.message || "Error updating post");
@@ -322,29 +365,29 @@
           }
         });
 
-      document
-        .getElementById("confirmDelete")
-        .addEventListener("click", async function () {
-          try {
-            const response = await fetch(
-              `http://localhost:3000/api/post/delete/${postIdToDelete}`,
-              {
-                method: "DELETE",
-              }
-            );
+        document.getElementById("confirmDelete").addEventListener("click", async function () {
+  try {
+    // Use postIdToDelete in the fetch request
+    const response = await fetch(
+      `http://localhost:3000/api/post/posts/${postIdToDelete}`, 
+      {
+        method: "DELETE",
+      }
+    );
 
-            if (response.ok) {
-              alert("Post deleted successfully");
-              closeDeleteModal();
-              location.reload(); // Refresh the page to reflect changes
-            } else {
-              alert("Error deleting post");
-            }
-          } catch (error) {
-            console.error("Error deleting post:", error);
-            alert("Error deleting post");
-          }
-        });
+    if (response.ok) {
+      //alert("Post deleted successfully"); <--- Remove this alert
+      closeDeleteModal(); // Close the delete confirmation modal
+      openSuccessModal('deleteSuccessModal'); // Open the delete success modal      
+    } else {
+      alert("Error deleting post");
+    }
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    alert("Error deleting post");       
+  }
+});
+
     </script>
   </body>
 </html>

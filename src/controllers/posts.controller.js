@@ -163,6 +163,7 @@ exports.getViewCountReport = async (req, res) => {
 };
 
 
+
 // Function to get a post by sector
 // Function to get posts by sector
 exports.getPostBySector = async (req, res) => {
@@ -312,3 +313,81 @@ exports.deletePost = async (req, res) => {
       .json({ message: "Error deleting post.", error: err.message });
   }
 };
+
+
+// ... (other controller functions)
+
+// Function to like a post
+exports.likePost = async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const connection = await db; // Assuming you have a database connection object
+
+    // Fetch the post by ID
+    const [postRows] = await connection.execute(
+      "SELECT * FROM Posts WHERE id = ?",
+      [postId]
+    );
+
+    if (postRows.length === 0) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+
+    // Update the likes count
+    const updatedPost = await connection.execute(
+      "UPDATE Posts SET likes = likes + 1 WHERE id = ?",
+      [postId]
+    );
+
+    // Fetch the updated post (optional, but recommended to send back to client)
+    const [updatedPostRows] = await connection.execute(
+      "SELECT likes, dislikes FROM Posts WHERE id = ?",
+      [postId]
+    );
+
+    res.status(200).json(updatedPostRows[0]); // Send updated like and dislike counts
+  } catch (err) {
+    console.error("Error liking post:", err);
+    res.status(500).json({ message: "Error liking post.", error: err.message });
+  }
+};
+
+// Function to dislike a post
+exports.dislikePost = async (req, res) => {
+  const { postId } = req.params;
+
+  try {
+    const connection = await db; // Assuming you have a database connection object
+
+    // Fetch the post by ID
+    const [postRows] = await connection.execute(
+      "SELECT * FROM Posts WHERE id = ?",
+      [postId]
+    );
+
+    if (postRows.length === 0) {
+      return res.status(404).json({ message: "Post not found." });
+    }
+
+    // Update the dislikes count
+    const updatedPost = await connection.execute(
+      "UPDATE Posts SET dislikes = dislikes + 1 WHERE id = ?",
+      [postId]
+    );
+
+    // Fetch the updated post (optional, but recommended to send back to client)
+    const [updatedPostRows] = await connection.execute(
+      "SELECT likes, dislikes FROM Posts WHERE id = ?",
+      [postId]
+    );
+
+    res.status(200).json(updatedPostRows[0]); // Send updated like and dislike counts
+  } catch (err) {
+    console.error("Error disliking post:", err);
+    res.status(500).json({ message: "Error disliking post.", error: err.message });
+  }
+};
+
+
+

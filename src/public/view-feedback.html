@@ -148,9 +148,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const admin = JSON.parse(localStorage.getItem('admin'));
+            const adminId = localStorage.getItem("adminId"); // Get adminId from localStorage
 
-            fetch(`http://localhost:3000/issues/feedback-by-admin/${admin.id}`, {
+            fetch(`http://localhost:3000/issues/feedback-by-admin/${adminId}`, { // Your API endpoint
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -186,6 +186,16 @@
                     const feedbackCard = document.createElement('div');
                     feedbackCard.classList.add('feedback-card');
 
+                    const likeButton = document.createElement('button');
+                    likeButton.textContent = `👍 ${item.likes || 0}`;
+                    likeButton.className = 'like-btn';
+                    likeButton.dataset.feedbackId = item.id;
+
+                    const dislikeButton = document.createElement('button');
+                    dislikeButton.textContent = `👎 ${item.dislikes || 0}`;
+                    dislikeButton.className = 'dislike-btn';
+                    dislikeButton.dataset.feedbackId = item.id;
+
                     feedbackCard.innerHTML = `
                         <p><strong>Feedback:</strong> ${item.feedback_message}</p>
                         <div class="feedback-footer">
@@ -193,8 +203,88 @@
                             <span class="created-at"><strong>Submitted At:</strong> ${new Date(item.feedback_created_at).toLocaleString()}</span>
                         </div>
                     `;
+
+                    // Append buttons to the feedback card
+                    feedbackCard.appendChild(likeButton);
+                    feedbackCard.appendChild(dislikeButton);
+
                     feedbackContainer.appendChild(feedbackCard);
+
+                    // Add event listeners for like and dislike buttons
+                    likeButton.addEventListener('click', handleLikeClick);
+                    dislikeButton.addEventListener('click', handleDislikeClick);
                 });
+
+                // Function to handle like button click
+                function handleLikeClick(event) {
+                    const feedbackId = event.target.dataset.feedbackId;
+                    console.log('Like button clicked:', feedbackId); // Debug - check if the listener fires
+
+                    fetch(`http://localhost:3000/feedback-like`, { // Your backend URL
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            feedbackId: feedbackId,
+                            adminId: adminId,
+                            action: 'like'
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Like response:', data); // Debug - check the backend response
+                        if (data.action === 'like') {
+                            event.target.textContent = `👍 ${data.likes}`; 
+                        } else if (data.action === 'dislike') { 
+                            event.target.textContent = `👎 ${data.dislikes}`; 
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating likes:', error);
+                    });
+                }
+
+                // Function to handle dislike button click (similar to handleLikeClick)
+                function handleDislikeClick(event) {
+                    const feedbackId = event.target.dataset.feedbackId;
+                    console.log('Dislike button clicked:', feedbackId); // Debug - check if the listener fires
+
+                    fetch(`http://localhost:3000/feedback-like`, { // Replace with your backend URL
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            feedbackId: feedbackId,
+                            adminId: adminId,
+                            action: 'dislike'
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Dislike response:', data); // Debug - check the backend response
+                        if (data.action === 'dislike') {
+                            event.target.textContent = `👎 ${data.dislikes}`; 
+                        } else if (data.action === 'like') { 
+                            event.target.textContent = `👍 ${data.likes}`; 
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error updating dislikes:', error);
+                    });
+                }
+
             })
             .catch(error => {
                 console.error('Error fetching feedback:', error);

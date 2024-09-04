@@ -4,8 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Event Information</title>
-    <link rel="stylesheet" href="style.css"> <!-- Assume styles.css is the main stylesheet for consistency -->
-    
+    <!--<link rel="stylesheet" href="style.css">  Assume styles.css is the main stylesheet for consistency --> 
+    <link rel="stylesheet" href="forAll.css"> 
+
+    <script src="main.js"></script>
+
+    <!--<style>
+        .like-btn, .dislike-btn {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .like-btn:hover {
+        background-color: #e0ffe0;
+    }
+
+    .dislike-btn:hover {
+        background-color: #ffe0e0;
+    }
+
+    </style>-->
 </head>
 <body>
     <h1>Sector Information</h1>
@@ -61,6 +84,20 @@ console.log("mmmmmmmmmmmmmmmm",sector);
                     const postContent = document.createElement('p');
                     postContent.textContent = post.content;
                     postElement.appendChild(postContent);
+
+                    // Add Like and Dislike buttons
+                    const likeButton = document.createElement('button');
+                    likeButton.textContent = `👍 ${post.likes || 0}`;
+                    likeButton.className = 'like-btn';
+                    likeButton.dataset.postId = post._id;
+
+                    const dislikeButton = document.createElement('button');
+                    dislikeButton.textContent = `👎 ${post.dislikes || 0}`;
+                    dislikeButton.className = 'dislike-btn';
+                    dislikeButton.dataset.postId = post._id;
+
+                    postElement.appendChild(likeButton);
+                    postElement.appendChild(dislikeButton);
 
                     if (post.imageUrl) {
                         const postImage = document.createElement('img');

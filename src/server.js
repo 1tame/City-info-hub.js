@@ -12,6 +12,8 @@ const app = express();
 app.use(express.static(path.join(__dirname, "public")));
 
 
+
+
 app.use(cors());
 // Ensure body-parser is set up correctly
 app.use(bodyParser.json()); // for parsing application/json
@@ -37,11 +39,17 @@ db.then((connection) => {
   const postRoutes = require("./routes/posts.routes");
   const authRoutes = require("./routes/auth.routes");
   const issuesRoutes = require("./routes/issues.routes");
+  const searchRoutes = require('./routes/search.routes');
 
   app.use("/api/admin", adminRoutes);
   app.use("/api/post", postRoutes);
   app.use("/api/auth", authRoutes);
   app.use("/issues", issuesRoutes);
+  app.use("/api/search", searchRoutes); // Register search routes
+
+  // app.js or server.js
+
+
 
   /*app.post('/api/post/posts', (req, res) => {
     // Extract data from the form submission
@@ -63,6 +71,8 @@ db.then((connection) => {
   app.get("/AdminLogin", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "AdminLogin.html"));
   });
+
+ 
 
   app.get("/admin-dashboard", (req, res) => {
     console.log("User authenticated, accessing admin dashboard");
@@ -192,7 +202,23 @@ app.get('/managePost.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'managePost.html'));
 });
 
-app.get('/view-count-report', postController.getViewCountReport);
+// Route for manage post Information
+app.get('/view-count-report.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'view-count-report.html'));
+});
+
+// ... (your existing server.js code)
+app.get('/api/post/view-count-report', async (req, res) => {
+  try {
+    const result = await postsController.getViewCountReport();
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching view count report:", error);
+    res.status(500).json({ message: "Error fetching view count report.", error: error.message });
+  }
+});
+// ... (rest of your server.js code)
+
 
   // Optionally, you can close the connection if it's not needed immediately
   // connection.end();
