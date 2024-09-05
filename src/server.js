@@ -203,6 +203,12 @@ app.get('/managePost.html', (req, res) => {
 });
 
 // Route for manage post Information
+app.get('/managePersonalInfo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'managePersonalInfo.html'));
+});
+
+
+// Route for manage post Information
 app.get('/view-count-report.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'view-count-report.html'));
 });

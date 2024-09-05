@@ -90,6 +90,39 @@ exports.createPost = async (req, res) => {
       .json({ message: "Error creating post.", error: err.message });
   }
 };
+
+
+// Function to get all posts with optional search query
+exports.getAllPostsBySearch = async (req, res) => {
+ 
+  const { search = "" } = req.query; // Get search from query string
+
+  try {
+    const connection = await db;
+
+    // Query to get posts with LIKE for title, content, and type
+    const query =
+      "SELECT * FROM Posts WHERE title LIKE ? OR content LIKE ? OR type LIKE ? ORDER BY createdAt DESC";
+
+    const searchPattern = `%${search}%`; // Prepare the search pattern for title, content, and type
+
+    // Execute the query with the search pattern for all three fields
+    const [posts] = await connection.execute(query, [
+      searchPattern,
+      searchPattern,
+      searchPattern,
+    ]);
+
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error("Error fetching posts:", err);
+    res
+      .status(500)
+      .json({ message: "Error fetching posts.", error: err.message });
+  }
+   
+};
+
 // Function to get all posts
 exports.getAllPosts = async (req, res) => {
   try {

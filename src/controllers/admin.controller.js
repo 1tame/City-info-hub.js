@@ -106,6 +106,51 @@ exports.updateAdmin = async (req, res) => {
     }
 };
 
+
+// Function to update admin details, including password change
+// Function to update admin details, including password change
+exports.updateAdminDetails = async (req, res) => {
+    const { id } = req.params; // Assuming ID is passed as part of the URL
+    const { username, oldPassword, newPassword, role } = req.body;
+
+    try {
+        const connection = await db;
+
+        // Fetch the existing admin data
+        const [admin] = await connection.execute('SELECT * FROM admins WHERE id = ?', [id]);
+
+        if (admin.length === 0) {
+            return res.status(404).json({ message: 'Admin not found.' });
+        }
+
+        const existingAdmin = admin[0];
+
+        // Only perform actions if the field is provided in the request
+        if (username) {
+            await connection.execute('UPDATE admins SET username = ? WHERE id = ?', [username, id]);
+        }
+        if (newPassword && oldPassword) {
+            // Compare old password with the existing password 
+            const passwordMatch = await bcrypt.compare(oldPassword, existingAdmin.password);
+
+            if (!passwordMatch) {
+                return res.status(400).json({ message: 'Old password is incorrect.' });
+            }
+
+            // Hash the new password
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            await connection.execute('UPDATE admins SET password = ? WHERE id = ?', [hashedPassword, id]);
+        }
+
+        // **Don't update the role, it's read-only**
+
+        res.status(200).json({ message: 'Admin details updated successfully.' });
+    } catch (err) {
+        console.error('Error updating admin details:', err);
+        res.status(500).json({ message: 'Error updating admin details.', error: err.message });
+    }
+};
+
 // Function to delete an admin
 exports.deleteAdmin = async (req, res) => {
     const { id } = req.params;

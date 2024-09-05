@@ -1,113 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Admin Info</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Admin Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
             background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 400px; /* Reduced width */
+            width: 100%;
             background-color: #fff;
+            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            margin: 20px;
         }
         h2 {
             text-align: center;
+            color: #333;
             margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
         }
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin: 10px 0 5px;
+            color: #333;
         }
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
+        input[type="text"], input[type="password"] {
+            width: calc(100% - 22px); /* Adjusted width for padding */
             padding: 10px;
-            margin-top: 5px;
+            margin: 5px 0 15px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 5px;
         }
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        .read-only {
+        input[readonly] {
             background-color: #e9ecef;
         }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color:  #004080;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color:   #004080;
+        }
+        #errorDiv {
+            text-align: center;
+            margin-top: 20px;
+            color: red;
+        }
+        .nav {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+.nav a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 16px;
+}
+.nav a:hover {
+    text-decoration: underline;
+}
+
     </style>
+    
+    <script>
+       window.onload = function () {
+    const updateForm = document.getElementById("updateForm");
+    const usernameField = document.getElementById("username");
+    const roleField = document.getElementById("role");
+
+    // Retrieve admin information from localStorage
+    const admin = JSON.parse(localStorage.getItem("admin"));
+    if (!admin) {
+        alert("No admin data found in local storage.");
+        return;
+    }
+
+    // Pre-fill the form fields
+    usernameField.value = admin.username || '';
+    roleField.value = admin.role || '';
+
+    // Set the role field as read-only
+    roleField.readOnly = true;
+
+    updateForm.onsubmit = async function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Gather form data
+        const formData = {
+            username: usernameField.value,
+            oldPassword: document.getElementById("oldPassword").value,
+            newPassword: document.getElementById("newPassword").value,
+            role: roleField.value, // Role is read-only
+        };
+
+        try {
+            // Send the data using Fetch API
+            const response = await fetch(
+                `http://localhost:3000/api/admin/admin/${encodeURIComponent(admin.id)}`, // Ensure the URL is correct
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem("authToken")}`
+                    },
+                    body: JSON.stringify(formData)
+                }
+            );
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(`Server responded with status ${response.status}: ${errorMessage}`);
+            }
+
+            const result = await response.json();
+            alert("Admin details updated successfully.");
+        } catch (error) {
+            document.getElementById("errorDiv").innerHTML =
+                `<p style='color:red;'>An error occurred: ${error.message}</p>`;
+        }
+    };
+};
+    </script>
 </head>
 <body>
-
-<div class="container">
-    <h2>Update Admin Info</h2>
-    <form id="updateAdminForm">
-        <div class="form-group">
-            <label for="adminId">Admin ID</label>
-            <input type="text" id="adminId" name="adminId" class="read-only" readonly>
+    <div class="container">
+        <div class="nav">
+            <a href="admin-dashboard.html"><i class="fas fa-arrow-left"></i> Go Back</a>
+            <a href="AdminLogin.html"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
         </div>
-        <div class="form-group">
-            <label for="username">New Username</label>
-            <input type="text" id="username" name="username" required>
-        </div>
-        <div class="form-group">
-            <label for="oldPassword">Old Password</label>
-            <input type="password" id="oldPassword" name="oldPassword" required>
-        </div>
-        <div class="form-group">
-            <label for="newPassword">New Password</label>
-            <input type="password" id="newPassword" name="newPassword" required>
-        </div>
-        <input type="submit" value="Update Info">
-    </form>
-</div>
-
-<script>
-    // JavaScript to handle form submission
-    document.getElementById('updateAdminForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
         
-        const adminId = document.getElementById('adminId').value;
-        const username = document.getElementById('username').value;
-        const oldPassword = document.getElementById('oldPassword').value;
-        const newPassword = document.getElementById('newPassword').value;
+        <h2>Update Admin Details</h2>
+        <form id="updateForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required />
 
-        const response = await fetch(`/api/admin/${adminId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, oldPassword, newPassword })
-        });
+            <label for="oldPassword">Old Password:</label>
+            <input type="password" id="oldPassword" name="oldPassword" required />
 
-        const result = await response.json();
-        if (response.ok) {
-            alert('Admin info updated successfully');
-        } else {
-            alert('Error: ' + result.message);
-        }
-    });
-</script>
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required />
 
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role" required />
+
+            <button type="submit">Update</button>
+        </form>
+
+        <div id="errorDiv"></div>
+    </div>
 </body>
 </html>

@@ -184,6 +184,8 @@
 
               // Redirect to the appropriate dashboard
               window.location.href = dashboardUrl;
+              // Redirect to the appropriate dashboard
+            window.location.href = `${dashboardUrl}?adminId=${result.admin.id}`;
             } else {
               // Show error message
               const errorMessage =

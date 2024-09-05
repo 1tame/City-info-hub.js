@@ -5,123 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Hotels Information</title>
     <link rel="stylesheet" href="forAll.css"> 
-   <!-- <style>
-
-.like-btn, .dislike-btn {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 5px 10px;
-        margin: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .like-btn:hover {
-        background-color: #e0ffe0;
-    }
-
-    .dislike-btn:hover {
-        background-color: #ffe0e0;
-    }
-
-        /* Your CSS here */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        h1 {
-            text-align: center;
-            color: #006699;
-            margin-top: 20px;
-        }
-
-        nav {
-            background-color: #006699;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-
-        nav ul li:last-child {
-            margin-right: 0;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: white;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        nav ul li a:hover {
-            color: #cce7ff;
-        }
-
-        .content-section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .post {
-            margin-bottom: 30px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 20px;
-        }
-
-        .post:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .post h2 {
-            color: #006699;
-        }
-
-        .post p {
-            margin-bottom: 10px;
-        }
-
-        .post img {
-            max-width: 100%;
-            border-radius: 5px;
-            margin-top: 10px;
-        }
-
-        .post .category {
-            font-style: italic;
-            color: #666;
-            font-size: 0.9em;
-        }
-
-        .post .author {
-            font-weight: bold;
-            color: #333;
-        }
-
-        .post .date {
-            color: #999;
-            font-size: 0.8em;
-        }
-    </style>-->
 </head>
 <body>
     <h1>Tourism Sector Information</h1>
@@ -129,8 +12,6 @@
         <ul>
             <li><a href="Hotels.html" data-sector="Tourism-info">Hotels</a></li>
             <li><a href="HistoricalPlaces.html" data-sector="Tourism-info">Historical Places</a></li>
-            
-
         </ul>
     </nav>
 
@@ -157,7 +38,7 @@
                 postsContainer.innerHTML = ''; // Clear previous posts
 
                 // Filter posts to include only those with the category "HistoricalPlaces"
-                const filteredPosts = posts.filter(post => post.category === "Hotels");
+                const filteredPosts = posts.filter(post => post.category === "HistoricalPlaces");
                 
                 if (filteredPosts.length === 0) {
                     postsContainer.innerHTML = '<p style="color:red; text-align:center;">No posts available for the "HistoricalPlaces" category.</p>';
@@ -172,10 +53,10 @@
                     postTitle.textContent = post.title;
                     postElement.appendChild(postTitle);
 
-                   /* const postCategory = document.createElement('p');
+                    const postCategory = document.createElement('p');
                     postCategory.className = 'category';
                     postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
-                    postElement.appendChild(postCategory);*/
+                    postElement.appendChild(postCategory);
 
                     const postContent = document.createElement('p');
                     postContent.textContent = post.content;
@@ -200,21 +81,44 @@
                         const imagePath = post.imageUrl.replace(/^src\/public/, "");
                         postImage.src = `http://localhost:3000${imagePath}`;
                         postElement.appendChild(postImage);
-                        // // Assuming the server is serving static files from the root directory
-                        // postImage.src = `http://localhost:3000${post.imageUrl}`;
-                      
                     }
-
-                    /*const postAuthor = document.createElement('p');
-                    postAuthor.className = 'author';
-                    postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
-                    postElement.appendChild(postAuthor);*/
 
                     const postDate = document.createElement('p');
                     postDate.className = 'date';
                     const postDateObj = new Date(post.createdAt);
                     postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
                     postElement.appendChild(postDate);
+
+                    // Add Share button
+                    const shareButton = document.createElement('button');
+                    shareButton.textContent = 'Share';
+                    shareButton.className = 'share-btn';
+
+                    shareButton.addEventListener('click', function() {
+                        const pageUrl = window.location.href; // Use the current page URL instead of a specific post URL
+                        const pageTitle = document.title;
+
+                        if (navigator.share) {
+                            // Use Web Share API if available
+                            navigator.share({
+                                title: pageTitle,
+                                url: pageUrl
+                            }).then(() => {
+                                console.log('Page shared successfully');
+                            }).catch((error) => {
+                                console.error('Error sharing page:', error);
+                            });
+                        } else {
+                            // Fallback to copying the page URL to clipboard
+                            navigator.clipboard.writeText(pageUrl).then(() => {
+                                alert('Page URL copied to clipboard');
+                            }).catch((error) => {
+                                console.error('Error copying URL to clipboard:', error);
+                            });
+                        }
+                    });
+
+                    postElement.appendChild(shareButton);
 
                     postsContainer.appendChild(postElement);
                 });
@@ -227,7 +131,6 @@
                 document.getElementById('postsContainer').appendChild(errorMessage);
             }
         });
-
     </script>
 </body>
 </html>

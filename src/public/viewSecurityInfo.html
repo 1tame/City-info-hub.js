@@ -94,6 +94,38 @@
                     dislikeButton.className = 'dislike-btn';
                     dislikeButton.dataset.postId = post._id;
 
+                    // Add Share button
+                    const shareButton = document.createElement('button');
+                    shareButton.textContent = 'Share';
+                    shareButton.className = 'share-btn';
+
+                    shareButton.addEventListener('click', function() {
+                        const pageUrl = window.location.href; // Use the current page URL instead of a specific post URL
+                        const pageTitle = document.title;
+
+                        if (navigator.share) {
+                            // Use Web Share API if available
+                            navigator.share({
+                                title: pageTitle,
+                                url: pageUrl
+                            }).then(() => {
+                                console.log('Page shared successfully');
+                            }).catch((error) => {
+                                console.error('Error sharing page:', error);
+                            });
+                        } else {
+                            // Fallback to copying the page URL to clipboard
+                            navigator.clipboard.writeText(pageUrl).then(() => {
+                                alert('Page URL copied to clipboard');
+                            }).catch((error) => {
+                                console.error('Error copying URL to clipboard:', error);
+                            });
+                        }
+                    });
+
+                    postElement.appendChild(shareButton);
+
+
                     postElement.appendChild(likeButton);
                     postElement.appendChild(dislikeButton);
 

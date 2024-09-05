@@ -40,6 +40,8 @@ router.get('/posts', postsController.getAllPosts);
 // Route to get a post by ID (Public route, no authentication needed)
 router.get('/posts/:id', postsController.getPostById);
 
+router.get('/posts_by_search/:search', postsController.getAllPostsBySearch);
+
 router.get('/posts_by_sector/:sector', postsController.getPostBySector);
 
 // Route to update a post by ID (Protected route)
