@@ -18,7 +18,7 @@
             height: 100vh;
         }
         .container {
-            max-width: 400px; /* Reduced width */
+            max-width: 400px; 
             width: 100%;
             background-color: #fff;
             padding: 20px;
@@ -37,7 +37,7 @@
             color: #333;
         }
         input[type="text"], input[type="password"] {
-            width: calc(100% - 22px); /* Adjusted width for padding */
+            width: calc(100% - 22px); 
             padding: 10px;
             margin: 5px 0 15px;
             border: 1px solid #ccc;
@@ -77,68 +77,12 @@
 .nav a:hover {
     text-decoration: underline;
 }
-
-    </style>
-    
-    <script>
-       window.onload = function () {
-    const updateForm = document.getElementById("updateForm");
-    const usernameField = document.getElementById("username");
-    const roleField = document.getElementById("role");
-
-    // Retrieve admin information from localStorage
-    const admin = JSON.parse(localStorage.getItem("admin"));
-    if (!admin) {
-        alert("No admin data found in local storage.");
-        return;
-    }
-
-    // Pre-fill the form fields
-    usernameField.value = admin.username || '';
-    roleField.value = admin.role || '';
-
-    // Set the role field as read-only
-    roleField.readOnly = true;
-
-    updateForm.onsubmit = async function (event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Gather form data
-        const formData = {
-            username: usernameField.value,
-            oldPassword: document.getElementById("oldPassword").value,
-            newPassword: document.getElementById("newPassword").value,
-            role: roleField.value, // Role is read-only
-        };
-
-        try {
-            // Send the data using Fetch API
-            const response = await fetch(
-                `http://localhost:3000/api/admin/admin/${encodeURIComponent(admin.id)}`, // Ensure the URL is correct
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem("authToken")}`
-                    },
-                    body: JSON.stringify(formData)
-                }
-            );
-
-            if (!response.ok) {
-                const errorMessage = await response.text();
-                throw new Error(`Server responded with status ${response.status}: ${errorMessage}`);
-            }
-
-            const result = await response.json();
-            alert("Admin details updated successfully.");
-        } catch (error) {
-            document.getElementById("errorDiv").innerHTML =
-                `<p style='color:red;'>An error occurred: ${error.message}</p>`;
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
         }
-    };
-};
-    </script>
+    </style>
 </head>
 <body>
     <div class="container">
@@ -150,21 +94,107 @@
         <h2>Update Admin Details</h2>
         <form id="updateForm">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required />
+            <input type="text" id="username" name="username"  />
+            <div class="error" id="usernameError"></div>
 
             <label for="oldPassword">Old Password:</label>
-            <input type="password" id="oldPassword" name="oldPassword" required />
+            <input type="password" id="oldPassword" name="oldPassword"  />
+            <div class="error" id="oldPasswordError"></div>
 
             <label for="newPassword">New Password:</label>
-            <input type="password" id="newPassword" name="newPassword" required />
+            <input type="password" id="newPassword" name="newPassword"  />
+            <div class="error" id="newPasswordError"></div>
+
+            <label for="confirmPassword">Confirm New Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" />
+            <div class="error" id="confirmPasswordError"></div>
 
             <label for="role">Role:</label>
-            <input type="text" id="role" name="role" required />
+            <input type="text" id="role" name="role" readonly /> 
 
             <button type="submit">Update</button>
         </form>
 
         <div id="errorDiv"></div>
     </div>
+
+    <script>
+        window.onload = function() {
+            const updateForm = document.getElementById("updateForm");
+            const usernameField = document.getElementById("username");
+            const roleField = document.getElementById("role");
+
+            // Retrieve admin information from localStorage
+            const admin = JSON.parse(localStorage.getItem("admin"));
+            if (!admin) {
+                alert("No admin data found in local storage.");
+                return;
+            }
+
+            // Pre-fill the form fields
+            usernameField.value = admin.username || '';
+            roleField.value = admin.role || '';
+
+            // Set the role field as read-only
+            roleField.readOnly = true;
+
+            updateForm.onsubmit = async function(event) {
+                event.preventDefault(); 
+                
+                // Clear previous errors
+                document.getElementById("usernameError").textContent = "";
+                document.getElementById("oldPasswordError").textContent = "";
+                document.getElementById("newPasswordError").textContent = "";
+                document.getElementById("confirmPasswordError").textContent = "";
+
+                const username = document.getElementById("username").value;
+                const oldPassword = document.getElementById("oldPassword").value;
+                const newPassword = document.getElementById("newPassword").value;
+                const confirmPassword = document.getElementById("confirmPassword").value;
+
+                let isValid = true; 
+
+                // Client-side validation
+                if (newPassword && newPassword !== confirmPassword) {
+                    document.getElementById("confirmPasswordError").textContent = "Passwords do not match.";
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    // Gather form data
+                    const formData = {
+                        username: username,
+                        oldPassword: oldPassword,
+                        newPassword: newPassword,
+                    };
+
+                    try {
+                        const response = await fetch(
+                            `http://localhost:3000/api/admin/admin/${encodeURIComponent(admin.id)}`, 
+                            {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${localStorage.getItem("authToken")}`
+                                },
+                                body: JSON.stringify(formData)
+                            }
+                        );
+
+                        if (!response.ok) {
+                            const errorMessage = await response.text();
+                            throw new Error(`Server responded with status ${response.status}: ${errorMessage}`);
+                        }
+
+                        const result = await response.json();
+                        alert("Admin details updated successfully."); 
+                    } catch (error) {
+                        document.getElementById("errorDiv").innerHTML =
+                            `<p style='color:red;'>An error occurred: ${error.message}</p>`;
+                    }
+                }
+            };
+        };
+    </script>
 </body>
 </html>

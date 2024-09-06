@@ -126,7 +126,19 @@ exports.likeOrDislikeFeedback = async (req, res) => {
             [feedbackId]
         );
 
-        res.status(200).json({ message: `${action} registered successfully.` });
+        // Get updated like/dislike counts 
+        const [updatedFeedback] = await connection.execute(
+            `SELECT likes, dislikes FROM feedback WHERE id = ?`,
+            [feedbackId]
+        );
+
+        res.status(200).json({
+            message: `${action} registered successfully.`,
+            action: action, 
+            likes: updatedFeedback[0].likes,
+            dislikes: updatedFeedback[0].dislikes
+        });
+
     } catch (err) {
         console.error('Error handling feedback like/dislike:', err);
         res.status(500).json({ message: 'Error handling feedback like/dislike.', error: err.message });
@@ -216,5 +228,40 @@ exports.getFeedbackForAdminIssues = async (req, res) => {
     } catch (err) {
         console.error('Error fetching feedback and issues:', err);
         res.status(500).json({ message: 'Error fetching feedback and issues.', error: err.message });
+    }
+};
+
+
+
+
+// ... your other controller functions ...
+
+// Get all feedback with issue details and reactions
+exports.getAllFeedbackWithDetails = async (req, res) => {
+    try {
+        const connection = await db;
+
+        const [results] = await connection.execute(
+            `SELECT 
+                i.id AS issue_id, 
+                i.issue_description, 
+                i.status, 
+                i.created_at AS issue_created_at, 
+                f.id AS feedback_id, 
+                f.feedback_message, 
+                f.created_at AS feedback_created_at, 
+                f.admin_id AS feedback_admin_id,
+                SUM(CASE WHEN fl.action = 'like' THEN 1 ELSE 0 END) as likes,
+                SUM(CASE WHEN fl.action = 'dislike' THEN 1 ELSE 0 END) as dislikes
+            FROM issues i
+            INNER JOIN feedback f ON i.id = f.issue_id
+            LEFT JOIN feedback_likes fl ON f.id = fl.feedback_id 
+            GROUP BY f.id;` // No WHERE clause to get all feedback
+        );
+
+        res.status(200).json(results);
+    } catch (err) {
+        console.error('Error fetching feedback and details:', err);
+        res.status(500).json({ message: 'Error fetching feedback and details.', error: err.message });
     }
 };

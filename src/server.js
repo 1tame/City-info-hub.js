@@ -223,9 +223,10 @@ app.get('/api/post/view-count-report', async (req, res) => {
     res.status(500).json({ message: "Error fetching view count report.", error: error.message });
   }
 });
-// ... (rest of your server.js code)
 
-
+app.get('/view-sysadmin-likes.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'view-sysadmin-likes.html'));
+});
   // Optionally, you can close the connection if it's not needed immediately
   // connection.end();
 }).catch((err) => {
