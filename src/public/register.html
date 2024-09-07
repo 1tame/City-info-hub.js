@@ -29,7 +29,16 @@
             <p>Already have an account? <a href="login.html">Login</a></p>
         </div>
         <div class="image-container">
-            <img src="C:\Users\weshu\Desktop\imagesforproj\historical places\loign" alt="Registration Animation">
+            <img src="images/registration-animation.svg" alt="Registration Animation">
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h3>Registration Successful!</h3>
+            <p>You will be redirected to the login page shortly.</p>
+            <div class="loader"></div>
         </div>
     </div>
 
@@ -50,8 +59,14 @@
 
             const result = await response.json();
             if (response.ok) {
-                alert(result.message);
-                window.location.href = 'login.html';
+                // Show the success modal
+                const modal = document.getElementById('successModal');
+                modal.style.display = 'block';
+
+                // Redirect to login page after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 3000);
             } else {
                 alert(result.message);
             }

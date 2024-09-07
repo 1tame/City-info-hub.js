@@ -29,6 +29,14 @@
         </div>
     </div>
 
+    <!-- Full-page loader (initially hidden) -->
+    <div class="loader-overlay" id="loaderOverlay">
+        <div class="loader-content">
+            <img src="gondar-city-logo.svg" alt="Gondar City Logo" class="loader-logo">
+            <p>Wellcome</p>
+        </div>
+    </div>
+
     <script>
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -45,8 +53,14 @@
 
             const result = await response.json();
             if (response.ok) {
-                alert(result.message);
-                window.location.href = 'index.html';
+                // Show the loader with animation
+                const loaderOverlay = document.getElementById('loaderOverlay');
+                loaderOverlay.style.display = 'flex';
+
+                // Redirect after 3 seconds (after animation ends)
+                setTimeout(() => {
+                    window.location.href = 'index.html'; // Redirect to the dashboard
+                }, 3000);
             } else {
                 alert(result.message);
             }
