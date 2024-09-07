@@ -151,7 +151,7 @@
                 const oldPassword = document.getElementById("oldPassword").value;
                 const newPassword = document.getElementById("newPassword").value;
                 const confirmPassword = document.getElementById("confirmPassword").value;
-
+                const role=document.getElementById("role").value;
                 let isValid = true; 
 
                 // Client-side validation
@@ -165,7 +165,8 @@
                     const formData = {
                         username: username,
                         oldPassword: oldPassword,
-                        newPassword: newPassword,
+                        password: newPassword,
+                        role:role
                     };
 
                     try {

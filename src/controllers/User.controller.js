@@ -1,3 +1,6 @@
+const db = require('../config/db.config');
+const bcrypt = require('bcrypt');
+
 // Function to create a new user
 exports.createUser = async (req, res) => {
     const { username, email, password } = req.body;
@@ -79,7 +82,7 @@ exports.loginUser = async (req, res) => {
         }
 
         // Store the user ID in the session (using Express.js)
-        req.session.userId = user.id; 
+        //req.session.userId = user.id; 
 
         res.status(200).json({ message: 'Authentication successful.' }); 
     } catch (error) {
@@ -150,4 +153,4 @@ exports.dislikePost = async (req, res) => {
         console.error('Error disliking post:', error);
         res.status(500).json({ message: 'Error disliking post.' });
     }
-};
+};                 

@@ -38,14 +38,19 @@ db.then((connection) => {
   const adminRoutes = require("./routes/admin.routes");
   const postRoutes = require("./routes/posts.routes");
   const authRoutes = require("./routes/auth.routes");
+  const userRoutes = require("./routes/user.routes");
   const issuesRoutes = require("./routes/issues.routes");
   const searchRoutes = require('./routes/search.routes');
+
+
 
   app.use("/api/admin", adminRoutes);
   app.use("/api/post", postRoutes);
   app.use("/api/auth", authRoutes);
+  app.use("/api/user", userRoutes);
   app.use("/issues", issuesRoutes);
   app.use("/api/search", searchRoutes); // Register search routes
+ 
 
   // app.js or server.js
 

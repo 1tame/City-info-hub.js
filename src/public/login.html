@@ -3,38 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
 </head>
 <body>
-    <h2>Register</h2>
-    <form id="registerForm">
+    <h2>Login</h2>
+    <form id="loginForm">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username"><br><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br><br>
         <label for="password">Password:</label><br>
         <input type="password" id="password" name="password"><br><br>
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
     </form>
-    
+
     <script>
-        document.getElementById('registerForm').addEventListener('submit', async (event) => {
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
             event.preventDefault();
             const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const response = await fetch('http://localhost:3000/api/user/register', {
+
+            const response = await fetch('http://localhost:3000/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, email, password }),
+                body: JSON.stringify({ username, password }),
             });
 
             const result = await response.json();
             if (response.ok) {
                 alert(result.message);
-                window.location.href = 'login.html'; // Redirect to login page after successful registration
+                window.location.href = 'index.html'; // Redirect to dashboard after login
             } else {
                 alert(result.message);
             }
