@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <link rel="stylesheet" href="userloginStyle.css">
 </head>
 <body>
-    <h2>Login</h2>
-    <form id="loginForm">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-        <button type="submit">Login</button>
-    </form>
+    <div class="container">
+        <div class="form-container">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+        <div class="image-container">
+            <img src="login-animation.svg" alt="Login Animation">
+        </div>
+    </div>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
@@ -32,7 +46,7 @@
             const result = await response.json();
             if (response.ok) {
                 alert(result.message);
-                window.location.href = 'index.html'; // Redirect to dashboard after login
+                window.location.href = 'index.html';
             } else {
                 alert(result.message);
             }

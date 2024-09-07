@@ -4,25 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <link rel="stylesheet" href="userloginStyle.css">
 </head>
 <body>
-    <h2>Register</h2>
-    <form id="registerForm">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username"><br><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br><br>
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-        <button type="submit">Register</button>
-    </form>
-    
+    <div class="container">
+        <div class="form-container">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+        <div class="image-container">
+            <img src="C:\Users\weshu\Desktop\imagesforproj\historical places\loign" alt="Registration Animation">
+        </div>
+    </div>
+
     <script>
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
             event.preventDefault();
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+
             const response = await fetch('http://localhost:3000/api/user/register', {
                 method: 'POST',
                 headers: {
@@ -34,7 +51,7 @@
             const result = await response.json();
             if (response.ok) {
                 alert(result.message);
-                window.location.href = 'login.html'; // Redirect to login page after successful registration
+                window.location.href = 'login.html';
             } else {
                 alert(result.message);
             }
