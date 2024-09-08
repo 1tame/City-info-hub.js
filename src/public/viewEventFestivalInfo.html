@@ -1,168 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>View Event Information</title>
-    <!--<link rel="stylesheet" href="style.css">  Assume styles.css is the main stylesheet for consistency --> 
-    <link rel="stylesheet" href="forAll.css"> 
-
+    <link rel="stylesheet" href="forAll.css" />
+    <!-- Global stylesheet -->
     <script src="main.js"></script>
+    <!-- External JavaScript -->
+  </head>
+  <body>
+    <h1>Event and Festival Sector Information</h1>
 
-    <!--<style>
-        .like-btn, .dislike-btn {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 5px 10px;
-        margin: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .like-btn:hover {
-        background-color: #e0ffe0;
-    }
-
-    .dislike-btn:hover {
-        background-color: #ffe0e0;
-    }
-
-    </style>-->
-</head>
-<body>
-    <h1>Event and Fesitval Sector Information</h1>
     <nav>
-        <ul>
-            <li><a href="viewHealthSectorInfo.html" data-sector="Health sector">View Health Info</a></li>
-            <!-- Uncomment and complete these as needed -->
-            <li><a href="viewTourismInfo.html" data-sector="Tourism-info">Tourism Info</a></li>
-
-            <li><a href="viewEventFestivalInfo.html" data-sector="Event&festival-info">view Event Info</a></li>
-            <li><a href="viewWaterSupplyInfo.html" data-sector="Water Supply">view Water supply Info</a></li>
-            <li><a href="viewTransportationInfo.html" data-sector="Transportation">view Transportation info</a></li>
-            <li><a href="viewSecurityInfo.html" data-sector="Security-info">Security info</a></li>
-        </ul>
+      <ul>
+        <li>
+          <a href="viewHealthSectorInfo.html" data-sector="Health sector"
+            >View Health Info</a
+          >
+        </li>
+        <li>
+          <a href="viewTourismInfo.html" data-sector="Tourism-info"
+            >Tourism Info</a
+          >
+        </li>
+        <li>
+          <a href="viewEventFestivalInfo.html" data-sector="Event&festival-info"
+            >View Event Info</a
+          >
+        </li>
+        <li>
+          <a href="viewWaterSupplyInfo.html" data-sector="Water Supply"
+            >View Water Supply Info</a
+          >
+        </li>
+        <li>
+          <a href="viewTransportationInfo.html" data-sector="Transportation"
+            >View Transportation Info</a
+          >
+        </li>
+        <li>
+          <a href="viewSecurityInfo.html" data-sector="Security-info"
+            >Security Info</a
+          >
+        </li>
+      </ul>
     </nav>
 
     <section class="content-section" id="postsContainer">
-        <!-- Posts will be dynamically loaded here -->
+      <!-- Posts will be dynamically loaded here -->
     </section>
 
     <script>
-        document.addEventListener("DOMContentLoaded", async function() {
-            // Retrieve the selected sector from localStorage and decode it
-            const sector = decodeURIComponent('Event&festival-info');
-console.log("mmmmmmmmmmmmmmmm",sector);
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Get sector either from localStorage or set a default sector
+        let sector =
+          localStorage.getItem("selectedSector") || "Event&festival-info";
+        sector = decodeURIComponent(sector);
+        console.log("Selected sector:", sector);
 
-            if (!sector) {
-                document.getElementById('postsContainer').innerHTML = '<p style="color:red; text-align:center;">No sector selected.</p>';
-                return;
+        // If sector isn't valid, show error
+        if (!sector) {
+          document.getElementById("postsContainer").innerHTML =
+            '<p style="color:red; text-align:center;">No sector selected.</p>';
+          return;
+        }
+
+        try {
+          // Fetch posts for the selected sector
+          const response = await fetch(
+            `http://localhost:3000/api/post/posts_by_sector/${encodeURIComponent(
+              sector
+            )}`
+          );
+          const posts = await response.json();
+
+          const postsContainer = document.getElementById("postsContainer");
+          postsContainer.innerHTML = ""; // Clear previous posts
+
+          posts.forEach((post) => {
+            const postElement = document.createElement("div");
+            postElement.className = "post";
+
+            // Post Title
+            const postTitle = document.createElement("h2");
+            postTitle.textContent = post.title;
+            postElement.appendChild(postTitle);
+
+            // Post Content
+            const postContent = document.createElement("p");
+            postContent.textContent = post.content;
+            postElement.appendChild(postContent);
+
+            // Like Button
+            const likeButton = document.createElement("button");
+            likeButton.textContent = `👍 ${post.likes || 0}`;
+            likeButton.className = "like-btn";
+            likeButton.dataset.postId = post._id;
+
+            // Dislike Button
+            const dislikeButton = document.createElement("button");
+            dislikeButton.textContent = `👎 ${post.dislikes || 0}`;
+            dislikeButton.className = "dislike-btn";
+            dislikeButton.dataset.postId = post._id;
+
+            postElement.appendChild(likeButton);
+            postElement.appendChild(dislikeButton);
+
+            // Image Handling
+            if (post.imageUrl) {
+              const postImage = document.createElement("img");
+              const imagePath = post.imageUrl.replace(/^src\/public/, "");
+              postImage.src = `http://localhost:3000${imagePath}`;
+              postElement.appendChild(postImage);
             }
 
-            try {
-                // Fetch posts by the selected sector
-                const response = await fetch(`http://localhost:3000/api/post/posts_by_sector/${encodeURIComponent(sector)}`);
-                const posts = await response.json();
+            // Post Date
+            const postDate = document.createElement("p");
+            postDate.className = "date";
+            const postDateObj = new Date(post.createdAt);
+            postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
+            postElement.appendChild(postDate);
+            const user = JSON.parse(localStorage.getItem("user"));
+            // Like Button Click Event
+            likeButton.addEventListener("click", async function () {
+              try {
+                if (!user) {
+                  alert("Please login to like");
+                  window.location.href = "Login.html";
+                } else {
+                  const likeResponse = await fetch(
+                    `http://localhost:3000/api/user/like`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
 
-                const postsContainer = document.getElementById('postsContainer');
-                postsContainer.innerHTML = ''; // Clear previous posts
-
-                posts.forEach(post => {
-                    const postElement = document.createElement('div');
-                    postElement.className = 'post';
-
-                    const postTitle = document.createElement('h2');
-                    postTitle.textContent = post.title;
-                    postElement.appendChild(postTitle);
-
-                  /*  const postCategory = document.createElement('p');
-                    postCategory.className = 'category';
-                    postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
-                    postElement.appendChild(postCategory);*/
-
-                    const postContent = document.createElement('p');
-                    postContent.textContent = post.content;
-                    postElement.appendChild(postContent);
-
-                    // Add Like and Dislike buttons
-                    const likeButton = document.createElement('button');
-                    likeButton.textContent = `👍 ${post.likes || 0}`;
-                    likeButton.className = 'like-btn';
-                    likeButton.dataset.postId = post._id;
-
-                    const dislikeButton = document.createElement('button');
-                    dislikeButton.textContent = `👎 ${post.dislikes || 0}`;
-                    dislikeButton.className = 'dislike-btn';
-                    dislikeButton.dataset.postId = post._id;
-
-                    postElement.appendChild(likeButton);
-                    postElement.appendChild(dislikeButton);
-
-                    if (post.imageUrl) {
-                        const postImage = document.createElement('img');
-                        const imagePath = post.imageUrl.replace(/^src\/public/, "");
-                        postImage.src = `http://localhost:3000${imagePath}`;
-                        postElement.appendChild(postImage);
-                        // // Assuming the server is serving static files from the root directory
-                        // postImage.src = `http://localhost:3000${post.imageUrl}`;
-                      
+                      body: JSON.stringify({
+                        postId: post.id,
+                        userId: user.id,
+                      }),
                     }
+                  );
+                  if (likeResponse.ok) {
+                    const updatedPost = await likeResponse.json();
+                    likeButton.textContent = `👍 ${updatedPost.likes}`;
+                  }
+                }
+              } catch (error) {
+                console.error("Error liking post:", error);
+              }
+            });
 
-                    /*const postAuthor = document.createElement('p');
-                    postAuthor.className = 'author';
-                    postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
-                    postElement.appendChild(postAuthor);*/
+            // Dislike Button Click Event
+            dislikeButton.addEventListener("click", async function () {
+              try {
+                const dislikeResponse = await fetch(
+                  `http://localhost:3000/api/user/dislike`,
+                  {   method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
 
-                    const postDate = document.createElement('p');
-                    postDate.className = 'date';
-                    const postDateObj = new Date(post.createdAt);
-                    postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
-                    postElement.appendChild(postDate);
-                    // Add Share button
-                    const shareButton = document.createElement('button');
-                    shareButton.textContent = 'Share';
-                    shareButton.className = 'share-btn';
+                  body: JSON.stringify({
+                    postId: post.id,
+                    userId: user.id,
+                  }),}
+                );
+                if (dislikeResponse.ok) {
+                  const updatedPost = await dislikeResponse.json();
+                  dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
+                }
+              } catch (error) {
+                console.error("Error disliking post:", error);
+              }
+            });
 
-                    shareButton.addEventListener('click', function() {
-                        const pageUrl = window.location.href; // Use the current page URL instead of a specific post URL
-                        const pageTitle = document.title;
+            // Share Button
+            const shareButton = document.createElement("button");
+            shareButton.textContent = "Share";
+            shareButton.className = "share-btn";
+            shareButton.addEventListener("click", function () {
+              const pageUrl = window.location.href;
+              const pageTitle = document.title;
 
-                        if (navigator.share) {
-                            // Use Web Share API if available
-                            navigator.share({
-                                title: pageTitle,
-                                url: pageUrl
-                            }).then(() => {
-                                console.log('Page shared successfully');
-                            }).catch((error) => {
-                                console.error('Error sharing page:', error);
-                            });
-                        } else {
-                            // Fallback to copying the page URL to clipboard
-                            navigator.clipboard.writeText(pageUrl).then(() => {
-                                alert('Page URL copied to clipboard');
-                            }).catch((error) => {
-                                console.error('Error copying URL to clipboard:', error);
-                            });
-                        }
-                    });
+              if (navigator.share) {
+                navigator
+                  .share({
+                    title: pageTitle,
+                    url: pageUrl,
+                  })
+                  .then(() => {
+                    console.log("Page shared successfully");
+                  })
+                  .catch((error) => {
+                    console.error("Error sharing page:", error);
+                  });
+              } else {
+                navigator.clipboard
+                  .writeText(pageUrl)
+                  .then(() => {
+                    alert("Page URL copied to clipboard");
+                  })
+                  .catch((error) => {
+                    console.error("Error copying URL to clipboard:", error);
+                  });
+              }
+            });
 
-                    postElement.appendChild(shareButton);
-
-
-                    postsContainer.appendChild(postElement);
-                });
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-                const errorMessage = document.createElement('p');
-                errorMessage.textContent = 'Error fetching posts.';
-                errorMessage.style.color = 'red';
-                errorMessage.style.textAlign = 'center';
-                document.getElementById('postsContainer').appendChild(errorMessage);
-            }
-        });
-
+            postElement.appendChild(shareButton);
+            postsContainer.appendChild(postElement);
+          });
+        } catch (error) {
+          console.error("Error fetching posts:", error);
+          const errorMessage = document.createElement("p");
+          errorMessage.textContent = "Error fetching posts.";
+          errorMessage.style.color = "red";
+          errorMessage.style.textAlign = "center";
+          document.getElementById("postsContainer").appendChild(errorMessage);
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
