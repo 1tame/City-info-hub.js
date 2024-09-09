@@ -4,30 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Transportation Information</title>
-    <!-- <link rel="stylesheet" href="style.css">  Ensure this path is correct -->
     <link rel="stylesheet" href="forAll.css"> 
-
     <script src="main.js"></script>
-    <!--<style>
-        .like-btn, .dislike-btn {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 5px 10px;
-        margin: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .like-btn:hover {
-        background-color: #e0ffe0;
-    }
-
-    .dislike-btn:hover {
-        background-color: #ffe0e0;
-    }
-
-    </style>-->
 </head>
 <body>
     <h1>Transportation Sector Information</h1>
@@ -71,11 +49,6 @@
                     postTitle.textContent = post.title;
                     postElement.appendChild(postTitle);
 
-                    const postCategory = document.createElement('p');
-                   // postCategory.className = 'category';
-                    //postCategory.textContent = `Sector: ${post.type}, Category: ${post.category}`;
-                    postElement.appendChild(postCategory);
-
                     const postContent = document.createElement('p');
                     postContent.textContent = post.content;
                     postElement.appendChild(postContent);
@@ -99,15 +72,7 @@
                         const imagePath = post.imageUrl.replace(/^src\/public/, "");
                         postImage.src = `http://localhost:3000${imagePath}`;
                         postElement.appendChild(postImage);
-                        // // Assuming the server is serving static files from the root directory
-                        // postImage.src = `http://localhost:3000${post.imageUrl}`;
-                      
                     }
-
-                    const postAuthor = document.createElement('p');
-                    //postAuthor.className = 'author';
-                    //postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
-                    //postElement.appendChild(postAuthor);
 
                     const postDate = document.createElement('p');
                     postDate.className = 'date';
@@ -115,37 +80,62 @@
                     postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
                     postElement.appendChild(postDate);
 
+                    // Event listeners for Like/Dislike buttons
+                    const user = JSON.parse(localStorage.getItem("user"));
+            // Like Button Click Event
+            likeButton.addEventListener("click", async function () {
+              try {
+                if (!user) {
+                  alert("Please login to like");
+                  window.location.href = "Login.html";
+                } else {
+                  const likeResponse = await fetch(
+                    `http://localhost:3000/api/user/like`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
 
-                    // Add Share button
-                    const shareButton = document.createElement('button');
-                    shareButton.textContent = 'Share';
-                    shareButton.className = 'share-btn';
+                      body: JSON.stringify({
+                        postId: post.id,
+                        userId: user.id,
+                      }),
+                    }
+                  );
+                  if (likeResponse.ok) {
+                    const updatedPost = await likeResponse.json();
+                    likeButton.textContent = `👍 ${updatedPost.likes}`;
+                  }
+                }
+              } catch (error) {
+                console.error("Error liking post:", error);
+              }
+            });
 
-                    shareButton.addEventListener('click', function() {
-                        const pageUrl = window.location.href; // Use the current page URL instead of a specific post URL
-                        const pageTitle = document.title;
+            // Dislike Button Click Event
+            dislikeButton.addEventListener("click", async function () {
+              try {
+                const dislikeResponse = await fetch(
+                  `http://localhost:3000/api/user/dislike`,
+                  {   method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
 
-                        if (navigator.share) {
-                            // Use Web Share API if available
-                            navigator.share({
-                                title: pageTitle,
-                                url: pageUrl
-                            }).then(() => {
-                                console.log('Page shared successfully');
-                            }).catch((error) => {
-                                console.error('Error sharing page:', error);
-                            });
-                        } else {
-                            // Fallback to copying the page URL to clipboard
-                            navigator.clipboard.writeText(pageUrl).then(() => {
-                                alert('Page URL copied to clipboard');
-                            }).catch((error) => {
-                                console.error('Error copying URL to clipboard:', error);
-                            });
-                        }
-                    });
-
-                    postElement.appendChild(shareButton);
+                  body: JSON.stringify({
+                    postId: post.id,
+                    userId: user.id,
+                  }),}
+                );
+                if (dislikeResponse.ok) {
+                  const updatedPost = await dislikeResponse.json();
+                  dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
+                }
+              } catch (error) {
+                console.error("Error disliking post:", error);
+              }
+            });
 
                     postsContainer.appendChild(postElement);
                 });
@@ -159,7 +149,21 @@
             }
         });
 
+        // Function to handle Like and Dislike updates
+        async function updateLikeDislike(postId, action) {
+            try {
+                await fetch(`http://localhost:3000/api/post/${action}/${postId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            } catch (error) {
+                console.error(`Error updating ${action}:`, error);
+            }
+        }
 
+        // Toggle navigation menu
         document.querySelector('.nav-toggle').addEventListener('click', function() {
             document.querySelector('ul').classList.toggle('show');
         });

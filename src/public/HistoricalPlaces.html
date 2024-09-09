@@ -186,19 +186,89 @@
                     postContent.textContent = post.content;
                     postElement.appendChild(postContent);
 
-                    // Add Like and Dislike buttons
-                    const likeButton = document.createElement('button');
-                    likeButton.textContent = `👍 ${post.likes || 0}`;
-                    likeButton.className = 'like-btn';
-                    likeButton.dataset.postId = post._id;
+                    const likeButton = document.createElement("button");
+            likeButton.textContent = `👍 ${post.likes || 0}`;
+            likeButton.className = "like-btn";
+            likeButton.dataset.postId = post._id;
 
-                    const dislikeButton = document.createElement('button');
-                    dislikeButton.textContent = `👎 ${post.dislikes || 0}`;
-                    dislikeButton.className = 'dislike-btn';
-                    dislikeButton.dataset.postId = post._id;
+            // Dislike Button
+            const dislikeButton = document.createElement("button");
+            dislikeButton.textContent = `👎 ${post.dislikes || 0}`;
+            dislikeButton.className = "dislike-btn";
+            dislikeButton.dataset.postId = post._id;
 
-                    postElement.appendChild(likeButton);
-                    postElement.appendChild(dislikeButton);
+            postElement.appendChild(likeButton);
+            postElement.appendChild(dislikeButton);
+
+            // Image Handling
+            if (post.imageUrl) {
+              const postImage = document.createElement("img");
+              const imagePath = post.imageUrl.replace(/^src\/public/, "");
+              postImage.src = `http://localhost:3000${imagePath}`;
+              postElement.appendChild(postImage);
+            }
+
+            // Post Date
+            const postDate = document.createElement("p");
+            postDate.className = "date";
+            const postDateObj = new Date(post.createdAt);
+            postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
+            postElement.appendChild(postDate);
+            const user = JSON.parse(localStorage.getItem("user"));
+            // Like Button Click Event
+            likeButton.addEventListener("click", async function () {
+              try {
+                if (!user) {
+                  alert("Please login to like");
+                  window.location.href = "Login.html";
+                } else {
+                  const likeResponse = await fetch(
+                    `http://localhost:3000/api/user/like`,
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+
+                      body: JSON.stringify({
+                        postId: post.id,
+                        userId: user.id,
+                      }),
+                    }
+                  );
+                  if (likeResponse.ok) {
+                    const updatedPost = await likeResponse.json();
+                    likeButton.textContent = `👍 ${updatedPost.likes}`;
+                  }
+                }
+              } catch (error) {
+                console.error("Error liking post:", error);
+              }
+            });
+
+            // Dislike Button Click Event
+            dislikeButton.addEventListener("click", async function () {
+              try {
+                const dislikeResponse = await fetch(
+                  `http://localhost:3000/api/user/dislike`,
+                  {   method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+
+                  body: JSON.stringify({
+                    postId: post.id,
+                    userId: user.id,
+                  }),}
+                );
+                if (dislikeResponse.ok) {
+                  const updatedPost = await dislikeResponse.json();
+                  dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
+                }
+              } catch (error) {
+                console.error("Error disliking post:", error);
+              }
+            });
 
                     if (post.imageUrl) {
                         const postImage = document.createElement('img');
@@ -215,9 +285,7 @@
                     postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
                     postElement.appendChild(postAuthor);*/
 
-                    const postDate = document.createElement('p');
-                    postDate.className = 'date';
-                    const postDateObj = new Date(post.createdAt);
+                    
                     postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
                     postElement.appendChild(postDate);// Add Share button
                     const shareButton = document.createElement('button');
