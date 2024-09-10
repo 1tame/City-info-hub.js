@@ -105,7 +105,8 @@
                   );
                   if (likeResponse.ok) {
                     const updatedPost = await likeResponse.json();
-                    likeButton.textContent = `👍 ${updatedPost.likes}`;
+                    likeButton.textContent = `👍 ${updatedPost.likes}`
+                    dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
                   }
                 }
               } catch (error) {
@@ -130,6 +131,7 @@
                 );
                 if (dislikeResponse.ok) {
                   const updatedPost = await dislikeResponse.json();
+                  likeButton.textContent = `👍 ${updatedPost.likes}`
                   dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
                 }
               } catch (error) {

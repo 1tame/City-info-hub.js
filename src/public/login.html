@@ -3,13 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login | Gondar City Website</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
     <link rel="stylesheet" href="userloginStyle.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f4; /* Light gray background */
+            overflow-x: hidden; /* Prevent horizontal scrollbar */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center align text within the form */
+        }
+
+        .logo {
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .image-container {
+            display: none; /* Initially hide the image */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%;
+            height: auto;
+            z-index: -1; /* Place behind the form */
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .loader-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loader-logo {
+            width: 100px;
+            height: auto;
+        }
+
+        
+
+        /* Welcome Animation */
+        .welcome-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0; /* Light gray background */
+            font-size: 2.5rem;
+            font-weight: 600;
+            opacity: 1;
+            transition: opacity 2s ease-in-out;
+            color: #333; /* Dark gray text color */
+            text-align: center; /* Center the text */
+            background-image: url('https://unsplash.com/s/photos/gondar'); /* Replace with a relevant image */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-blend-mode: multiply; /* Adjust blend mode as needed */
+            filter: blur(1px); /* Optional blur effect */
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Admin link style */
+        .admin-login {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .admin-login a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .admin-login a:hover {
+            text-decoration: underline;
+        }
+
+        /* Introduction Quote */
+        .intro-quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #555; /* Slightly darker gray for the quote */
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Welcome animation container -->
+    <div class="welcome-message" id="welcomeMessage">
+        Welcome to Gondar City Website
+    </div>
+
+    <div class="container" id="loginContainer">
         <div class="form-container">
+            <!-- Logo Placeholder -->
+            <div class="logo">
+                <img src="C:\Users\weshu\Desktop\imagesforproj\website logo\Screenshot 2024-09-10 235918.png" alt="Gondar City Logo">
+            </div>
+            
+            <div class="intro-quote">
+                "Discover the rich history and vibrant culture of Gondar, Ethiopia."
+            </div>
+
             <h2>Login</h2>
             <form id="loginForm">
                 <div class="form-group">
@@ -23,6 +204,10 @@
                 <button type="submit" class="submit-btn">Login</button>
             </form>
             <p>Don't have an account? <a href="register.html">Register</a></p>
+            <!-- Admin login link -->
+            <div class="admin-login">
+                <p>Admin? <a href="adminlogin.html">Login here</a></p>
+            </div>
         </div>
         <div class="image-container">
             <img src="C:\Users\weshu\Desktop\imagesforproj\historical places\loign.jpg" alt="Login Animation">
@@ -32,12 +217,31 @@
     <!-- Full-page loader (initially hidden) -->
     <div class="loader-overlay" id="loaderOverlay">
         <div class="loader-content">
-            <img src="file:///C:/Users/weshu/Downloads/DALL%C2%B7E%202024-09-09%2023.46.42%20-%20A%20minimalist%20logo%20combining%20elements%20of%20Ethiopian%20heritage.%20The%20central%20focus%20is%20a%20stylized%20outline%20of%20Emperor%20Fasilides'%20face%20with%20a%20clean%20and%20minima.webp" alt="Gondar City Logo" class="loader-logo">
-            <p>Wellcome</p>
+            <img src="C:\Users\weshu\Desktop\imagesforproj\website logo\Screenshot 2024-09-10 235918.png" alt="Gondar City Logo" class="loader-logo">
         </div>
     </div>
 
     <script>
+        // Show welcome message first, then load login page
+        window.addEventListener('load', () => {
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const loginContainer = document.getElementById('loginContainer');
+            const imageContainer = document.querySelector('.image-container');
+
+            setTimeout(() => {
+                welcomeMessage.classList.add('hidden');
+                setTimeout(() => {
+                    loginContainer.style.display = 'flex';
+                    setTimeout(() => { // Fade in image with a slight delay
+                        imageContainer.style.display = 'block';
+                        imageContainer.style.opacity = 0;
+                        imageContainer.style.transition = 'opacity 1s ease-in-out';
+                        imageContainer.style.opacity = 1;
+                    }, 500);
+                }, 500);
+            }, 2000); // Adjust the duration of the welcome message
+        });
+
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
             event.preventDefault();
             const username = document.getElementById('username').value;
@@ -53,8 +257,8 @@
 
             const result = await response.json();
             if (response.ok) {
-
                 localStorage.setItem("user", JSON.stringify(result.user));
+
                 // Show the loader with animation
                 const loaderOverlay = document.getElementById('loaderOverlay');
                 loaderOverlay.style.display = 'flex';

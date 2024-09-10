@@ -109,13 +109,13 @@
             postElement.appendChild(postContent);
 
             const likeButton = document.createElement("button");
-            likeButton.textContent = `👍 ${post.likes || 0}`;
+            likeButton.textContent = `👍 ${post.likes??0}`;
             likeButton.className = "like-btn";
             likeButton.dataset.postId = post._id;
 
             // Dislike Button
             const dislikeButton = document.createElement("button");
-            dislikeButton.textContent = `👎 ${post.dislikes || 0}`;
+            dislikeButton.textContent = `👎 ${post.dislikes ??0}`;
             dislikeButton.className = "dislike-btn";
             dislikeButton.dataset.postId = post._id;
 
@@ -161,6 +161,7 @@
                   if (likeResponse.ok) {
                     const updatedPost = await likeResponse.json();
                     likeButton.textContent = `👍 ${updatedPost.likes}`;
+                    location.reload();
                   }
                 }
               } catch (error) {

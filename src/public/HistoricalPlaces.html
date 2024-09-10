@@ -134,7 +134,7 @@
         <ul>
             <li><a href="Hotels.html" data-sector="Tourism-info">Hotels</a></li>
             <li><a href="HistoricalPlaces.html" data-sector="Tourism-info">Historical Places</a></li>
-            
+            <li><a href="javascript:history.back()">Go Back</a></li>
 
         </ul>
     </nav>
@@ -238,7 +238,8 @@
                   );
                   if (likeResponse.ok) {
                     const updatedPost = await likeResponse.json();
-                    likeButton.textContent = `👍 ${updatedPost.likes}`;
+                    likeButton.textContent = `👍 ${updatedPost.likes}`
+                    dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
                   }
                 }
               } catch (error) {
@@ -263,6 +264,7 @@
                 );
                 if (dislikeResponse.ok) {
                   const updatedPost = await dislikeResponse.json();
+                  likeButton.textContent = `👍 ${updatedPost.likes}`
                   dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
                 }
               } catch (error) {
