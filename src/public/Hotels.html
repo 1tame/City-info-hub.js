@@ -38,7 +38,7 @@
                 postsContainer.innerHTML = ''; // Clear previous posts
 
                 // Filter posts to include only those with the category "HistoricalPlaces"
-                const filteredPosts = posts.filter(post => post.category === "HistoricalPlaces");
+                const filteredPosts = posts.filter(post => post.category === "Hotels");
                 
                 if (filteredPosts.length === 0) {
                     postsContainer.innerHTML = '<p style="color:red; text-align:center;">No posts available for the "HistoricalPlaces" category.</p>';
@@ -146,15 +146,7 @@
                     });
         
 
-                    if (post.imageUrl) {
-                        const postImage = document.createElement('img');
-                        const imagePath = post.imageUrl.replace(/^src\/public/, "");
-                        postImage.src = `http://localhost:3000${imagePath}`;
-                        postElement.appendChild(postImage);
-                    }
-
-                  
-                    postElement.appendChild(postDate);
+                    
 
                     // Add Share button
                     const shareButton = document.createElement('button');

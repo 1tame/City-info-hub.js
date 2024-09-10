@@ -7,41 +7,56 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="modalStyle.css" />
     <script src="modal.js"></script>
+
+    <style>
+       h1 {
+            text-align: center;
+            color: #006699;
+            margin-top: 20px;
+        }
+
+        nav {
+            background-color: #006699;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #cce7ff;
+        }
+    </style>
   </head>
   <body>
+    <h1>Mange Your Posts here</h1>
     <nav>
       <button class="nav-toggle">☰</button>
-      <ul>
-        <li>
-          <a href="viewHealthSectorInfo.html" data-sector="Health sector"
-            >View Health Info</a
-          >
-        </li>
-        <li>
-          <a href="viewTourismInfo.html" data-sector="Tourism-info"
-            >Tourism Info</a
-          >
-        </li>
-        <li>
-          <a href="viewEventFestivalInfo.html" data-sector="Event&festival-info"
-            >View Event Info</a
-          >
-        </li>
-        <li>
-          <a href="viewWaterSupplyInfo.html" data-sector="Water Supply"
-            >View Water Supply Info</a
-          >
-        </li>
-        <li>
-          <a href="viewTransportationInfo.html" data-sector="Transportation"
-            >View Transportation Info</a
-          >
-        </li>
-        <li>
-          <a href="viewSecurityInfo.html" data-sector="Security-info"
-            >Security Info</a
-          >
-        </li>
+      
+        <ul id="adminNav">
+          <li><a href="javascript:history.back()">Go Back</a></li>
+          <li><a href="AdminLogin.html">Sign Out</a></li>
+     
       </ul>
     </nav>
 
@@ -217,7 +232,7 @@
                                   post.createdAt
                                 ).toDateString()}</p>
                             `;
-                postContainer.appendChild(description);
+                
 
                 postElement.appendChild(postContainer);
               } else {

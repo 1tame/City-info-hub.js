@@ -124,7 +124,7 @@
     <nav>
         <ul>
             <li><a href="InsertHotlTourismInfo.html">Insert Tourism Information</a></li>
-            <li><a href="/viewTourismInfo">View Tourism Information</a></li>
+            <li><a href="mangePost.html">Manage Post</a></li>
             <li><a href="IssueReporting.html">Report an Issue</a></li>
             <li><a href="view-feedback.html">View Feedback</a></li>
             <li><a href="AdminLogin.html">Sign Out</a></li>
@@ -173,48 +173,51 @@
             const eventFestivalForm = document.getElementById('tourismInfoForm');
             eventFestivalForm.onsubmit = async function(event) {
                 event.preventDefault(); // Prevent the default form submission
-                const admin = JSON.parse(localStorage.getItem('admin')); // Parse the stored admin data
-
+                const admin = JSON.parse(localStorage.getItem('admin')); 
+    
                 if (!admin || !admin.id) {
                     document.getElementById('responseDiv').innerHTML = "<p style='color:red;'>Admin not found. Please log in.</p>";
                     return;
                 }
-
+    
                 // Gather form data
                 const formData = new FormData();
-                formData.append('adminId', admin.id); // Use admin.id from localStorage
+                formData.append('adminId', admin.id); 
                 formData.append('title', document.getElementById('title').value);
                 formData.append('content', document.getElementById('content').value);
                 formData.append('type', 'Tourism-info');
                 formData.append('category', document.getElementById('category').value);
                 const imageFile = document.getElementById('imageUrl').files[0];
+    
+                // *** Image Validation *** 
                 if (imageFile) {
+                    const allowedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+                    if (!allowedFormats.includes(imageFile.type)) {
+                        alert('Error: Only .jpeg, .jpg, and .png formats are allowed!');
+                        return; // Stop form submission
+                    }
                     formData.append('image', imageFile);
                 }
-
+    
                 try {
                     // Make API call using Fetch
                     const response = await fetch('http://localhost:3000/api/post/posts', {
                         method: 'POST',
                         body: formData
                     });
-
+    
                     const result = await response.json();
-
+    
                     if (response.ok) {
-                        // Show success message or redirect
                         document.getElementById('responseMessage').innerHTML = "<p style='color:green;'>Post created successfully.</p>";
                     } else {
-                        // Show error message
                         document.getElementById('responseMessage').innerHTML = "<p style='color:red;'>" + result.message + "</p>";
                     }
                 } catch (error) {
-                    // Handle any unexpected errors
                     document.getElementById('responseMessage').innerHTML = "<p style='color:red;'>An error occurred while creating the post.</p>";
                 }
             };
         };
     </script>
-
 </body>
 </html>

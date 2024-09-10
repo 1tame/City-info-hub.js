@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Sector Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -111,61 +112,69 @@
 
     <div class="content">
         <!-- Card 1: Insert Information -->
-        <a href = "InsertHospitaInfo.html"><div class="card">
-            <img src="https://via.placeholder.com/300x150" alt="Insert Health Sector Info">
+        <a href="InsertHospitaInfo.html">
+          <div class="card">
+            <i class="fas fa-notes-medical fa-2x"></i> <!— Notes Medical Icon -->
             <h2>Insert Health Sector Information</h2>
-            <p class="placeholder">Add new Health Sector details to the system. Ensure all necessary information is included.</p>
-        </div></a>
-
-        <!-- Card 2: View Information -->
-       <a href="viewHealthsectorInfo.html" ><div class="card">
-            <img src="https://via.placeholder.com/300x150" alt="View Health Sector info">
-            <h2>View Health Sector Information</h2>
-            <p class="placeholder">Browse and manage existing Health Sector data. Update or delete as needed.</p>
-        </div></a>
-
+            <p class="placeholder">Add new Health Sector details...</p>
+          </div>
+        </a>
+      
         <!-- Card 3: Report an Issue -->
-       <a href="IssueReporting.html"> <div class="card">
-            <img src="https://via.placeholder.com/300x150" alt="Report an Issue">
+        <a href="IssueReporting.html"> 
+          <div class="card">
+            <i class="fas fa-exclamation-circle fa-2x"></i> <!— Exclamation Circle Icon -->
             <h2>Report an Issue</h2>
-            <p class="placeholder">Log any problems or issues encountered during event management. Ensure timely resolution.</p>
-        </div></a>
-
-         <!-- Card 4: view feedback -->
-         <a href = "view-feedback.html"><div class="card">
-            <img src="https://via.placeholder.com/300x150" alt="view feedback">
+            <p class="placeholder">Log any problems...</p>
+          </div>
+        </a>
+      
+        <!-- Card 4: View Feedback -->
+        <a href="view-feedback.html">
+          <div class="card">
+            <i class="fas fa-comments fa-2x"></i> <!— Comments Icon -->
             <h2>View Feedback</h2>
-            <p class="placeholder">View Feedbacks for the Report you submitted.</p>
-        </div></a>
-
-         <!-- Card 4: manage post -->
-         <a href = "mangePost.html"data-sector="Health sector" ><div class="card">
-            <img src="https://via.placeholder.com/300x150" alt="manage post">
+            <p class="placeholder">View Feedbacks...</p>
+          </div>
+        </a>
+      
+        <!-- Card 5: Manage Posts -->
+        <a href="mangePost.html" data-sector="Health sector">
+          <div class="card">
+            <i class="fas fa-file-medical fa-2x"></i> <!— File Medical Icon -->
             <h2>Manage posts</h2>
             <p class="placeholder">Update and delete posts.</p>
-        </div></a>
-
-        <a href = "managePersonalInfo.html" data-sector="Health sector"><div class="card">
-            <img src="https://via.placeholder.com/300x150" alt="View Count Report">
+          </div>
+        </a>
+      
+        <!-- Card 6: Manage Personal Info -->
+        <a href="managePersonalInfo.html" data-sector="Health sector">
+          <div class="card">
+            <i class="fas fa-user-md fa-2x"></i> <!— User MD Icon --> 
             <h2>Manage Personal Info</h2>
             <p class="placeholder">Manage your Information</p>
-        </div></a>
-
-    <!-- Card 4: Sign Out -->
-    <a href = "view-count-report.html" data-sector="Health sector"><div class="card">
-        <img src="https://via.placeholder.com/300x150" alt="View Count Report">
-        <h2>View Count Report</h2>
-        <p class="placeholder">View how may view you post Got.</p>
-    </div></a>
-
-        <!-- Card 4: Sign Out -->
-        <a href="AdminLogin.html"><div class="card">
-            <img src="https://via.placeholder.com/300x150" alt="Sign Out">
+          </div>
+        </a>
+      
+        <!-- Card 7: View Count Report -->
+        <a href="view-count-report.html" data-sector="Health sector">
+          <div class="card">
+            <i class="fas fa-chart-bar fa-2x"></i> <!— Chart Bar Icon -->
+            <h2>View Count Report</h2>
+            <p class="placeholder">View how many views...</p>
+          </div>
+        </a>
+      
+        <!-- Card 8: Sign Out -->
+        <a href="AdminLogin.html">
+          <div class="card">
+            <i class="fas fa-sign-out-alt fa-2x"></i> <!— Sign Out Icon -->
             <h2>Sign Out</h2>
-            <p class="placeholder">Securely sign out from the admin dashboard. Remember to save any work before logging out.</p>
-        </div></a>
-    </div>
-
+            <p class="placeholder">Securely sign out...</p>
+          </div>
+        </a>
+      </div>
+      
 
 </body>
 </html>

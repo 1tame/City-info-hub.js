@@ -197,32 +197,7 @@
             postElement.appendChild(likeButton);
             postElement.appendChild(dislikeButton);
 
-            if (post.imageUrl) {
-              const postContainer = document.createElement("div");
-              postContainer.className = "post-container";
-
-              const postImage = document.createElement("img");
-              const imagePath = post.imageUrl.replace(/^src\/public/, "");
-              postImage.src = `http://localhost:3000${imagePath}`;
-              postElement.appendChild(postImage);
-
-              const description = document.createElement("div");
-              description.className = "description";
-              postContainer.appendChild(description);
-
-              postElement.appendChild(postContainer);
-            } else {
-              const noImageMessage = document.createElement("p");
-              noImageMessage.textContent = "No image available for this post.";
-              postElement.appendChild(noImageMessage);
-            }
-
-            const postAuthor = document.createElement("p");
-            postElement.appendChild(postAuthor);
-
-            postDate.textContent = `Posted on: ${postDateObj.toDateString()}`;
-            postElement.appendChild(postDate);
-
+            
             // Add Share button
             const shareButton = document.createElement("button");
             shareButton.textContent = "Share";

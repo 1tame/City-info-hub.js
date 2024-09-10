@@ -204,28 +204,8 @@
 
                     postElement.appendChild(shareButton);
 
-
-                    postElement.appendChild(likeButton);
-                    postElement.appendChild(dislikeButton);
-
-                    if (post.imageUrl) {
-                        const postImage = document.createElement('img');
-                        const imagePath = post.imageUrl.replace(/^src\/public/, "");
-                        postImage.src = `http://localhost:3000${imagePath}`;
-                        postElement.appendChild(postImage);
-                        // // Assuming the server is serving static files from the root directory
-                        // postImage.src = `http://localhost:3000${post.imageUrl}`;
-                      
-                    }
-
-                    const postAuthor = document.createElement('p');
-                    /*postAuthor.className = 'author';
-                    postAuthor.textContent = `Posted by Admin ID: ${post.adminId}`;
-                    postElement.appendChild(postAuthor);*/
-;
-                    postElement.appendChild(postDate);
-
                     postsContainer.appendChild(postElement);
+                    
                 });
             } catch (error) {
                 console.error('Error fetching posts:', error);
