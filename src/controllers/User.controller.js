@@ -71,26 +71,43 @@ exports.findUserByUsername = async (username) => {
 exports.loginUser = async (req, res) => {
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required.' });
+  }
+
   try {
-    const user = await exports.findUserByUsername(username);
+    const connection = await db;
 
-    if (!user) {
-      return res.status(401).json({ message: "Invalid username or password." });
+    // Fetch user data from the Users table
+    const [user] = await connection.execute(
+      'SELECT * FROM Users WHERE username = ?',
+      [username]
+    );
+
+    if (user.length === 0) {
+      return res.status(401).json({ message: 'Invalid username or password.' });
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const foundUser = user[0];
 
-    if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid username or password." });
+    // Compare the provided password with the stored hashed password
+    const isPasswordValid = await bcrypt.compare(password, foundUser.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid username or password.' });
     }
 
-    // Store the user ID in the session (using Express.js)
-    // req.session.userId = user.id;
+    // If password is valid, set the session data
+    req.session.user = {
+      id: foundUser.id,
+      username: foundUser.username,
+      role: 'user' // Since this is an ordinary user, assign 'user' role by default
+    };
 
-    res.status(200).json({ user: user, message: "Authentication successful." });
+    res.status(200).json({ message: 'Login successful', user: req.session.user });
   } catch (error) {
-    console.error("Error logging in user:", error);
-    res.status(500).json({ message: "Error logging in user." });
+    console.error('Error during login:', error);
+    res.status(500).json({ message: 'Server error during login.' });
   }
 };
 

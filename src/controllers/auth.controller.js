@@ -51,9 +51,29 @@ exports.loginAdmin = async (req, res) => {
         // Generate a JWT token
         const token = jwt.sign({ id: admin.id, role: admin.role }, SECRET_KEY, { expiresIn: '1h' });
 
+
+        //set session data
+        req.session.admin = {
+            id: admin.id,
+            username: admin.username,
+            role: admin.role
+        }
+    
+        console.log('After login:', req.session); // Debug statement
         res.status(200).json({ message: 'Login successful.', token,admin });
     } catch (err) {
         console.error('Error during login:', err);
         res.status(500).json({ message: 'Error during login.', error: err.message });
     }
 };
+
+
+// Function to log out
+exports.logout = (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Logout failed.' });
+      }
+      res.status(200).json({ message: 'Logged out successfully!' });
+    });
+  };
