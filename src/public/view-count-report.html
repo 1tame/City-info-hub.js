@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>View Count Report</title>
     <style>
-      body {
+            body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 20px;
@@ -30,16 +30,74 @@
         text-align: left;
       }
       th {
-        background-color: #4caf50;
+        background-color: #006699;
         color: white;
       }
       tr:nth-child(even) {
         background-color: #f2f2f2;
       }
+
+      nav a {
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #006699; /* Blue text for good contrast */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+}
+
+nav a:hover {
+    background-color: #e8f5ff; /* Light blue background on hover */
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1), -5px -5px 10px rgba(255, 255, 255, 0.1); /* Neumorphism hover effect */
+}
+nav {
+    background-color: #fff; /* White background for neumorphism */
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1), -5px -5px 10px rgba(255, 255, 255, 0.1); /* Neumorphism shadow */
+    margin-bottom: 20px;
+    position: relative; /* For absolute positioning of toggle button */
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around; /* Evenly distribute menu items */
+}
+
+nav li {
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    display: block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #006699; /* Blue text for good contrast */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+}
+
+nav a:hover {
+    background-color: #e8f5ff; /* Light blue background on hover */
+    box-shadow: 5px 5px 10px #006699, -5px -5px 10px rgba(255, 255, 255, 0.1); /* Neumorphism hover effect */
+}
+
+
     </style>
   </head>
   <body>
     <h1>View Count Report</h1>
+    <nav>
+    <ul>
+     
+      <li><a href="javascript:history.back()">Go Back</a></li>
+  </ul>
+</nav>
     <table>
       <thead>
         <tr>
@@ -51,6 +109,8 @@
         <!-- Data will be dynamically inserted here -->
       </tbody>
     </table>
+
+    <button id="downloadCSV">Download as CSV</button> 
 
     <script>
       document.addEventListener("DOMContentLoaded", async function () {
@@ -75,6 +135,12 @@
 
             tableBody.appendChild(row);
           });
+
+          // Download CSV functionality
+          const downloadBtn = document.getElementById('downloadCSV');
+          downloadBtn.addEventListener('click', () => {
+            downloadCSV(viewCounts, 'view_count_report.csv');
+          });
         } catch (error) {
           console.error("Error fetching view count data:", error);
           const errorRow = document.createElement("tr");
@@ -85,6 +151,21 @@
           tableBody.appendChild(errorRow);
         }
       });
+
+      // Function to convert data to CSV and trigger download
+      function downloadCSV(data, filename) {
+        const csvContent = "data:text/csv;charset=utf-8," 
+              + "Post Title,View Count\n" 
+              + data.map(post => `${post.title},${post.viewCount}`).join("\n");
+
+        const encodedContent = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedContent);
+        link.setAttribute("download", filename);
+        document.body.appendChild(link); // Required for Firefox
+        link.click(); 
+        document.body.removeChild(link); 
+      }
     </script>
   </body>
 </html>
