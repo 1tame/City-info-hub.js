@@ -101,8 +101,6 @@ exports.isLoggedIn = (req, res, next) => {
   }
   next();
 };
-
-// Like a post
 exports.likePost = async (req, res) => {
   const { postId, userId } = req.body;
 
@@ -125,10 +123,31 @@ exports.likePost = async (req, res) => {
     );
 
     if (existingLike.length > 0) {
-      await connection.rollback();
-      return res
-        .status(400)
-        .json({ message: "You have already liked this post." });
+      // Remove the like
+      await connection.execute(
+        "DELETE FROM Reactions WHERE postId = ? AND userId = ? AND type = ?",
+        [postId, userId, "like"]
+      );
+
+      // Update likes count in Posts table
+      await connection.execute(
+        "UPDATE Posts SET likes = likes - 1 WHERE id = ?",
+        [postId]
+      );
+
+      // Commit transaction
+      await connection.commit();
+
+      // Fetch the updated post data
+      const [updatedPost] = await connection.execute(
+        "SELECT * FROM Posts WHERE id = ?",
+        [postId]
+      );
+
+      return res.status(200).json({
+        message: "Like removed successfully.",
+   ...updatedPost[0],  // Return updated post data
+      });
     }
 
     // Check if the user disliked the post
@@ -151,7 +170,7 @@ exports.likePost = async (req, res) => {
       );
     }
 
-    // Insert reaction into Reactions table
+    // Insert like into Reactions table
     await connection.execute(
       "INSERT INTO Reactions (postId, userId, type) VALUES (?, ?, ?)",
       [postId, userId, "like"]
@@ -166,20 +185,15 @@ exports.likePost = async (req, res) => {
     // Commit transaction
     await connection.commit();
 
-    // Re-fetch updated post data
+    // Fetch the updated post data
     const [updatedPost] = await connection.execute(
       "SELECT * FROM Posts WHERE id = ?",
       [postId]
     );
 
-    if (updatedPost.length === 0) {
-      return res.status(404).json({ message: "Post not found." });
-    }
-
-    // Send response with updated post data
     res.status(200).json({
       message: "Post liked successfully.",
-      ...updatedPost[0], // Spread the updated post data directly into the response object
+      ... updatedPost[0],  // Return updated post data
     });
   } catch (error) {
     console.error("Error liking post:", error);
@@ -192,6 +206,7 @@ exports.likePost = async (req, res) => {
     res.status(500).json({ message: "Error liking post." });
   }
 };
+
 
 exports.dislikePost = async (req, res) => {
   const { postId, userId } = req.body;
@@ -215,10 +230,31 @@ exports.dislikePost = async (req, res) => {
     );
 
     if (existingDislike.length > 0) {
-      await connection.rollback();
-      return res
-        .status(400)
-        .json({ message: "You have already disliked this post." });
+      // Remove the dislike
+      await connection.execute(
+        "DELETE FROM Reactions WHERE postId = ? AND userId = ? AND type = ?",
+        [postId, userId, "dislike"]
+      );
+
+      // Update dislikes count in Posts table
+      await connection.execute(
+        "UPDATE Posts SET dislikes = dislikes - 1 WHERE id = ?",
+        [postId]
+      );
+
+      // Commit transaction
+      await connection.commit();
+
+      // Fetch the updated post data
+      const [updatedPost] = await connection.execute(
+        "SELECT * FROM Posts WHERE id = ?",
+        [postId]
+      );
+
+      return res.status(200).json({
+        message: "Dislike removed successfully.",
+        ... updatedPost[0],  // Return updated post data
+      });
     }
 
     // Check if the user liked the post
@@ -241,7 +277,7 @@ exports.dislikePost = async (req, res) => {
       );
     }
 
-    // Insert reaction into Reactions table
+    // Insert dislike into Reactions table
     await connection.execute(
       "INSERT INTO Reactions (postId, userId, type) VALUES (?, ?, ?)",
       [postId, userId, "dislike"]
@@ -256,20 +292,15 @@ exports.dislikePost = async (req, res) => {
     // Commit transaction
     await connection.commit();
 
-    // Re-fetch updated post data
+    // Fetch the updated post data
     const [updatedPost] = await connection.execute(
       "SELECT * FROM Posts WHERE id = ?",
       [postId]
     );
 
-    if (updatedPost.length === 0) {
-      return res.status(404).json({ message: "Post not found." });
-    }
-
-    // Send response with updated post data
     res.status(200).json({
       message: "Post disliked successfully.",
-      ...updatedPost[0], // Spread the updated post data directly into the response object
+ ... updatedPost[0],  // Return updated post data
     });
   } catch (error) {
     console.error("Error disliking post:", error);
@@ -282,4 +313,3 @@ exports.dislikePost = async (req, res) => {
     res.status(500).json({ message: "Error disliking post." });
   }
 };
-

@@ -8,35 +8,36 @@
     <link rel="stylesheet" href="forAll.css"> 
     <style>
         /* ... your existing styles ... */
- /* Footer Styles */
- footer {
-        background-color: #ffffff;
-        border-top: 1px solid #ddd;
-        padding: 20px;
-        text-align: center;
-        color: #555;
-      }
+        /* Footer Styles */
+        footer {
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+            color: #555;
+        }
 
-      footer p {
-        margin: 0;
-      }
+        footer p {
+            margin: 0;
+        }
 
-      .footer-links {
-        margin-top: 10px;
-      }
+        .footer-links {
+            margin-top: 10px;
+        }
 
-      .footer-links a {
-        color: #007bff;
-        text-decoration: none;
-        font-weight: bold;
-        margin: 0 10px;
-        padding: 5px 10px;
-        display: inline-block;
-      }
+        .footer-links a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            padding: 5px 10px;
+            display: inline-block;
+        }
 
-      .footer-links a:hover {
-        color: #0056b3;
-      }
+        .footer-links a:hover {
+            color: #0056b3;
+        }
+
         /* Styles for Like and Dislike buttons */
         .like-btn, .dislike-btn {
             background-color: #fff;
@@ -56,7 +57,7 @@
             background-color: #ffe0e0;
         }
 
-        /* Other relevant styles from the Water Supply page - you might need to copy more from your actual CSS */ 
+        /* Styles for post and share button */
         .post { 
             border: 1px solid #ccc;
             padding: 20px;
@@ -75,9 +76,8 @@
             color: #777;
         }
 
-        /* Share button style (you can customize this further) */
         .share-btn {
-            background-color: #4CAF50; /* Green */
+            background-color: #4CAF50;
             border: none;
             color: white;
             padding: 8px 16px;
@@ -96,19 +96,17 @@
         <h1>Gondar City Information Provider</h1>
     </header>
     <nav>
-       
         <ul>
-            <li><a href="viewHealthSectorInfo.html" data-sector="Health sector">View Health Info</a></li>
-            <li><a href="viewTourismInfo.html" data-sector="Tourism-info">Tourism Info</a></li>
-            <li><a href="viewEventFestivalInfo.html" data-sector="Event&festival-info">View Event Info</a></li>
-            <li><a href="viewWaterSupplyInfo.html" data-sector="Water Supply">View Water Supply Info</a></li>
-            <li><a href="viewTransportationInfo.html" data-sector="Transportation">View Transportation Info</a></li>
-            <li><a href="viewSecurityInfo.html" data-sector="Security-info">Security Info</a></li>
+            <li><a href="viewHealthSectorInfo.html">View Health Info</a></li>
+            <li><a href="viewTourismInfo.html">Tourism Info</a></li>
+            <li><a href="viewEventFestivalInfo.html">View Event Info</a></li>
+            <li><a href="viewWaterSupplyInfo.html">View Water Supply Info</a></li>
+            <li><a href="viewTransportationInfo.html">View Transportation Info</a></li>
+            <li><a href="viewSecurityInfo.html">Security Info</a></li>
         </ul>
     </nav>
 
-    <div class="content" id="postDetails">
-    </div>
+    <div class="content" id="postDetails"></div>
 
     <footer>
         <p>© 2024 City Information Provider</p>
@@ -132,7 +130,7 @@
 
         async function fetchPostDetails(postId) {
             try {
-                const response = await fetch(`http://localhost:3000/api/post/posts/${postId}`); // Update with your actual endpoint
+                const response = await fetch(`http://localhost:3000/api/post/posts/${postId}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -141,88 +139,68 @@
                 displayPostDetails(postData);
             } catch (error) {
                 console.error("Error fetching post details:", error);
-                // Handle error, maybe display an error message on the page
             }
         }
 
         function displayPostDetails(post) {
             const postDetailsDiv = document.getElementById('postDetails');
             
-            // Create HTML elements dynamically to display post data 
             postDetailsDiv.innerHTML = `
                 <div class="post"> 
                     <h2>${post.title}</h2>
                     <p>${post.content}</p>
-
                     ${post.imageUrl ? `<img src="${post.imageUrl.replace(/^src\/public/, "http://localhost:3000")}" alt="${post.title}">` : '<p>No image available for this post.</p>'}
-
-                    <p>Type: ${post.type}</p>
-                    <p>Likes: <span id="likeCount">${post.likes}</span></p> 
-                    <p>Dislikes: <span id="dislikeCount">${post.dislikes}</span></p>
-
-                    <button class="like-btn" onclick="likePost(${post.id})">👍 ${post.likes || 0}</button>
-                    <button class="dislike-btn" onclick="dislikePost(${post.id})">👎 ${post.dislikes || 0}</button> 
-
-                    <p class="date">Posted on: ${new Date(post.createdAt).toDateString()}</p> 
-
+                    <p class="date">Posted on: ${new Date(post.createdAt).toDateString()}</p>
+                    <button class="like-btn" id="likeBtn">👍 ${post.likes}</button>
+                    <button class="dislike-btn" id="dislikeBtn">👎 ${post.dislikes}</button>
                     <button class="share-btn" onclick="sharePost(${post.id})">Share</button>
                 </div> 
             `;
+
+            // Add event listeners for like and dislike buttons
+            const likeButton = document.getElementById('likeBtn');
+            const dislikeButton = document.getElementById('dislikeBtn');
+            likeButton.addEventListener('click', () => handleLikeDislike('like', post));
+            dislikeButton.addEventListener('click', () => handleLikeDislike('dislike', post));
         }
 
-        async function likePost(postId) {
-            try {
-                const response = await fetch(`http://localhost:3000/api/post/${postId}/like`, { method: 'POST' }); 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                document.getElementById('likeCount').textContent = data.likes; // Update like count 
-            } catch (error) {
-                console.error("Error liking post:", error);
+        async function handleLikeDislike(action, post) {
+            const user = JSON.parse(localStorage.getItem("user"))  // Assuming user ID is stored in localStorage
+
+            if (!user) {
+                alert("You must be logged in to perform this action.");
+                return;
             }
-        }
-        
-        // ... in viewPost.html script: 
-        
-        async function dislikePost(postId) {
+
             try {
-                const response = await fetch(`http://localhost:3000/api/post/${postId}/dislike`, { method: 'POST' });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const response = await fetch(`http://localhost:3000/api/user/${action}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        postId: post.id,
+                        userId: user.id,
+                    }),
+                });
+
+                if (response.ok) {
+                    const updatedPost = await response.json();
+                    const likeButton = document.getElementById('likeBtn');
+                    const dislikeButton = document.getElementById('dislikeBtn');
+                    likeButton.textContent = `👍 ${updatedPost.likes}`;
+                    dislikeButton.textContent = `👎 ${updatedPost.dislikes}`;
+                } else {
+                    console.error(`Error: ${response.statusText}`);
                 }
-                const data = await response.json();
-                document.getElementById('dislikeCount').textContent = data.dislikes; // Update dislike count 
             } catch (error) {
-                console.error("Error disliking post:", error);
+                console.error("Error handling like/dislike:", error);
             }
         }
 
         function sharePost(postId) {
-            const pageUrl = window.location.href; 
-            const pageTitle = document.title;
-
-            if (navigator.share) { 
-                navigator.share({
-                    title: pageTitle,
-                    url: pageUrl
-                })
-                .then(() => {
-                    console.log('Page shared successfully');
-                })
-                .catch((error) => {
-                    console.error('Error sharing page:', error);
-                });
-            } else {
-                // Fallback to copying URL to clipboard
-                navigator.clipboard.writeText(pageUrl)
-                .then(() => {
-                    alert('Page URL copied to clipboard');
-                })
-                .catch((error) => {
-                    console.error('Error copying URL to clipboard:', error);
-                });
-            }
+            // Placeholder function for sharing a post
+            alert(`Sharing post ID: ${postId}`);
         }
     </script>
 </body>
