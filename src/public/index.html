@@ -75,8 +75,8 @@
         background-color: #003366;
       }
 
-      /* Text Box */
-      .text-box {
+      /* Search Bar */
+      .search-bar {
         margin: -30px auto 20px auto;
         max-width: 600px;
         display: flex;
@@ -85,7 +85,7 @@
         position: relative;
       }
 
-      .text-box input[type="text"] {
+      .search-bar input[type="text"] {
         width: 80%;
         padding: 10px;
         border: 1px solid #ccc;
@@ -94,8 +94,76 @@
         transition: box-shadow 0.3s ease;
       }
 
-      .text-box input[type="text"]:focus {
+      .search-bar input[type="text"]:focus {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .search-icon {
+        position: absolute;
+        top: 50%;
+        right: 10px; /* Adjust position as needed */
+        transform: translateY(-50%); /* Center vertically */
+        cursor: pointer; /* Make it look clickable */
+      }
+
+      .search-icon i { 
+        font-size: 1.2em; /* Adjust icon size as needed */
+        color: #777; /* Adjust icon color */
+      }
+      /* Search Results Menu */
+      #resultsMenu {
+        display: none;
+        position: absolute;
+        top: 60px; 
+        width: 80%;
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: white;
+        border: 1px solid #ccc; 
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        max-height: 300px; 
+        overflow-y: auto;
+        padding: 0; /* Remove default padding */
+        list-style: none; /* Remove bullet points */
+      }
+
+      #resultsMenu .result-item {
+        padding: 12px 16px; 
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+        text-decoration: none;
+        color: #333;
+        font-size: 14px; 
+        display: flex;
+        align-items: center; 
+      }
+
+      #resultsMenu .result-item:hover {
+        background-color: #f4f4f4;
+      }
+
+      #resultsMenu .result-item img { /* If you want to add thumbnails */
+        width: 40px; 
+        height: 40px;
+        object-fit: cover; 
+        margin-right: 10px;
+      }
+
+      #resultsMenu .result-item .result-text { 
+        flex-grow: 1; /* Allow text to fill available space */
+      }
+
+      #resultsMenu .result-item h3 { /* Style the result title */
+        margin: 0 0 5px 0; /* Reduce top and bottom margins */
+        font-size: 1em; 
+      }
+
+      #resultsMenu .result-item .result-type {
+        font-size: 0.8em;
+        color: #777;
+        margin: 0; /* Remove default margin */
       }
 
       /* Main Content */
@@ -142,45 +210,113 @@
 
       /* Footer Styles */
       footer {
-        background-color: #ffffff;
-        border-top: 1px solid #ddd;
-        padding: 20px;
-        text-align: center;
-        color: #555;
-      }
+        background-color: #222; 
+        color: #fff;            
+        padding: 50px 20px;     
+        text-align: center;     
+        position: relative; 
+        overflow: hidden;
+    }
 
-      footer p {
-        margin: 0;
-      }
+    footer p {
+        margin: 0 0 10px 0;     
+        font-size: 0.9em;        
+    }
 
-      .footer-links {
-        margin-top: 10px;
-      }
+    .footer-links {
+        display: flex;
+        flex-direction: column; 
+        align-items: center;   
+        margin-bottom: 20px;   
+    }
 
-      .footer-links a {
-        color: #007bff;
+    .footer-links a {
+        color: #fff;
         text-decoration: none;
-        font-weight: bold;
-        margin: 0 10px;
-        padding: 5px 10px;
-        display: inline-block;
-      }
+        margin: 5px 0;         
+        transition: color 0.3s ease, transform 0.2s ease;
+    }
 
-      .footer-links a:hover {
-        color: #0056b3;
-      }
+    .footer-links a:hover {
+        color: #00c853;        
+        transform: scale(1.1); 
+    }
 
-      @media screen and (max-width: 768px) {
-        header h1 {
-          font-size: 2em;
+    /* Footer Social Icons */
+    .social-icons { 
+        margin-bottom: 15px; 
+    }
+
+    .social-icons a { 
+        display: inline-block; 
+        margin: 0 10px; 
+        font-size: 1.8em;        
+        color: #fff;            
+        transition: color 0.3s ease; 
+    }
+
+    .social-icons a:hover i {
+        color: #ffd700; 
+    }
+
+    /* Back-to-Top Button */
+    #backToTopBtn {
+        display: none; 
+        position: fixed;
+        bottom: 20px;
+        right: 20px; 
+        background-color: #00c853;
+        color: white;
+        border: none;
+        border-radius: 50%; 
+        padding: 10px;
+        cursor: pointer;
+        z-index: 10; 
+        transition: opacity 0.3s ease;
+    }
+
+    #backToTopBtn:hover {
+        opacity: 0.8;
+    }
+
+    /* Animated Gradient Background */
+    .gradient-background { 
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, #007bff, #00c853);
+        background-size: 400% 100%;
+        animation: gradientAnimation 10s ease infinite;
+        z-index: -1; 
+    }
+
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Media Query for Responsiveness  */
+    @media screen and (max-width: 768px) { 
+        .footer-links {
+            flex-direction: row;    
+            flex-wrap: wrap;         
+            justify-content: center; 
         }
 
-        .text-box {
+        .footer-links a {
+            margin: 5px 10px;         
+        }
+    } 
+
+        .search-bar {
           flex-direction: column;
           width: 90%;
         }
 
-        .text-box input[type="text"] {
+        .search-bar input[type="text"] {
           width: 100%;
           border-radius: 4px;
           margin-bottom: 10px;
@@ -194,7 +330,7 @@
         .content div {
           padding: 15px;
         }
-      }
+      
 
       @media screen and (max-width: 480px) {
         header {
@@ -205,7 +341,7 @@
           font-size: 1.5em;
         }
 
-        .text-box {
+        .search-bar {
           margin-top: -20px;
         }
 
@@ -222,6 +358,7 @@
   </head>
   <body>
     <header>
+      
       <div class="welcome">
         <h2>Gondar City Information Provider</h2>
         <h2>Welcome to Gondar!</h2>
@@ -229,44 +366,54 @@
     </div>
     </header>
 
-    <!-- Text Box -->
-    <div class="text-box">
-      <input type="text" id="simpleInput" placeholder="Enter information..." autofocus />
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search Gondar City Information..."
+        oninput="performSearch()"
+        autofocus
+      /> 
+      <span class="search-icon" onclick="performSearch()">
+        <i class="fas fa-search"></i> 
+      </span>
     </div>
 
-    <div class="content">
+    <!-- Search Results Menu -->
+    <ul id="resultsMenu"></ul> <div class="content">
       <!-- Example sections linking to other pages -->
-      <a href="viewWaterSupplyInfo.html">
+      <a href="viewWaterSupplyInfo.html" data-sector="Water Supply" onclick="saveSector('Water Supply')">
         <div>
           <h2>View Water Supply Information</h2>
           <p>Access detailed information on city water supply services, including maintenance schedules and contact details.</p>
         </div>
       </a>
-      <a href="viewHealthSectorInfo.html">
+      <a href="viewHealthSectorInfo.html" data-sector="Health sector" onclick="saveSector('Health sector')">
         <div>
           <h2>View Health Sector Information</h2>
           <p>Find the contact details and services provided by the city's health departments and elected officials.</p>
         </div>
       </a>
-      <a href="viewTourismInfo.html">
+      <a href="viewTourismInfo.html" data-sector="Tourism-info" onclick="saveSector('Tourism-info')">
         <div>
           <h2>View Tourism Hotel Information</h2>
           <p>Explore available hotels and accommodations, along with information on COVID-19 vaccination and testing services.</p>
         </div>
       </a>
-      <a href="viewEventFestivalInfo.html">
+      <a href="viewEventFestivalInfo.html" data-sector="Event&festival-info" onclick="saveSector('Event&festival-info')">
         <div>
           <h2>View Event Festival Information</h2>
           <p>Discover local events, festivals, and other community activities in Gondar.</p>
         </div>
       </a>
-      <a href="viewTransportationInfo.html">
+      <a href="viewTransportationInfo.html" data-sector="Transportation" onclick="saveSector('Transportation')">
         <div>
           <h2>View Transportation Information</h2>
           <p>Get details on public transportation options, including schedules and routes within the city.</p>
         </div>
       </a>
-      <a href="viewSecurityInfo.html">
+      <a href="viewSecurityInfo.html" data-sector="Security-info" onclick="saveSector('Security-info')">
         <div>
           <h2>View Security Information</h2>
           <p>Get details on Security issues.</p>
@@ -275,15 +422,120 @@
     </div>
 
     <footer>
+      <div class="gradient-background"></div> 
       <p>© 2024 City Information Provider</p>
+  
       <div class="footer-links">
-        <a href="gondarcity1628@gmail.com">Contact Us</a>
-        <a href="/about">About Us</a>
-        <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
-        <a href = "AdminLogin.html"> Admin Login</a>
-        <a href = "login.html">Sign Out</a>
+          <div class="contact-info">
+              <p>
+                  <i class="fas fa-envelope"></i> <a href="mailto:gondarcity1628@gmail.com">gondarcity1628@gmail.com</a><br>
+                  <i class="fas fa-phone"></i> <a href="tel:+251912345678">+251-912-345-678</a> <span class="tel-note">(*For urgent inquiries)</span>
+              </p>
+          </div>
+  
+          <div class="social-icons">
+              <a href="https://www.facebook.com/p/Gondar-City-Administration-Civil-Service-Department-100068613683044/" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/explore/locations/243145311/gondar-ethiopia/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+          </div>
+  
+          <a href="AdminLogin.html">Admin Login</a>
+          <a href="login.html">Sign Out</a>
       </div>
-    </footer>
+  
+      <button onclick="scrollToTop()" id="backToTopBtn" title="Go to top">
+          <i class="fas fa-chevron-up"></i> 
+      </button>
+  </footer>
+  
+
+    <script>
+      async function performSearch() {
+        const query = document.getElementById('searchInput').value;
+        const resultsMenu = document.getElementById('resultsMenu');
+        
+        // Clear previous results
+        resultsMenu.innerHTML = '';
+
+        if (query.length < 2) {
+          resultsMenu.style.display = 'none';
+          return;
+        }
+
+        try {
+          // Fetch search results from the backend
+          const response = await fetch(`http://localhost:3000/api/post/posts_by_search/${encodeURIComponent(query)}`);
+          const results = await response.json();
+           
+          // Populate the results menu
+          if (results.length > 0) {
+            resultsMenu.style.display = 'block';
+            results.forEach(result => {
+              // Create list item
+              const resultItem = document.createElement('li'); 
+              resultItem.className = 'result-item';
+
+              // Add thumbnail (if you have image URLs)
+              // if (result.imageUrl) {
+              //     const img = document.createElement('img');
+              //     img.src = result.imageUrl; 
+              //     resultItem.appendChild(img);
+              // }
+
+              // Add text content 
+              const resultTextDiv = document.createElement('div');
+              resultTextDiv.className = 'result-text'; 
+
+              const resultTitle = document.createElement('h3');
+              resultTitle.textContent = result.title;
+              resultTextDiv.appendChild(resultTitle);
+
+              const resultType = document.createElement('p');
+              resultType.className = 'result-type';
+              resultType.textContent = result.type; 
+              resultTextDiv.appendChild(resultType);
+
+              // Add the text content to the list item
+              resultItem.appendChild(resultTextDiv); 
+
+              // Add click event to list item 
+              resultItem.onclick = () => {
+                  // Store the post ID in local storage
+                  localStorage.setItem('selectedPostId', result.id);
+                  // Redirect to viewPost.html
+                  window.location.href = 'viewPost.html'; 
+              };
+
+              resultsMenu.appendChild(resultItem); 
+            });
+          } else {
+            resultsMenu.style.display = 'none';
+          }
+        } catch (error) {
+          console.error('Error fetching search results:', error);
+        }
+      }
+
+      function saveSector(sector) {
+        localStorage.setItem('selectedSector', sector);
+      }
+
+      window.onscroll = function() {scrollFunction()};
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("backToTopBtn").style.display = "block";
+        } else {
+            document.getElementById("backToTopBtn").style.display = "none";
+        }
+    }
+
+    // Smooth scrolling to top function
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    </script>
   </body>
 </html>
