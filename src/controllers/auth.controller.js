@@ -18,6 +18,10 @@ exports.authenticateToken = (req, res, next) => {
     });
 };
 // Function to log in an admin
+
+
+
+
 // Function to log in an admin
 exports.loginAdmin = async (req, res) => {
     const { username, password } = req.body;
@@ -70,11 +74,25 @@ exports.loginAdmin = async (req, res) => {
 
 
 // Function to log out
+// Logout function in auth controller
+// Function to log out
 exports.logout = (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        return res.status(500).json({ message: 'Logout failed.' });
-      }
-      res.status(200).json({ message: 'Logged out successfully!' });
-    });
-  };
+    console.log('session',req);
+    
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Logout failed.' });
+            }
+
+            // Clear cache by setting headers
+            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
+
+            res.status(200).json({ message: 'Logged out successfully!' });
+        });
+    } else {
+        res.status(400).json({ message: 'No active session found.' });
+    }
+};

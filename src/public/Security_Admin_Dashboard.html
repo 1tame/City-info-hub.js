@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+
     <title>Security Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -178,7 +182,37 @@
       </body>
 
       <script>
-       
+       // Call this in the dashboard pages (like sysAdminHomePage.html) to validate the session
+document.addEventListener("DOMContentLoaded", () => {
+  if (!checkSessionTimeout()) {
+      window.location.href = 'AdminLogin.html'; // Redirect to login if session is invalid
+  }
+});
+
+window.addEventListener('pageshow', function(event) {
+  if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+    // Force a reload when navigating back to the page
+    window.location.reload();
+  }
+});
+
+window.onload = function() {
+    if (!localStorage.getItem("authToken")) { 
+      window.location.href = "AdminLogin.html"; // Redirect to login
+    }
+  };
+
+  function logout() {
+        localStorage.removeItem("authToken");
+
+        // Optionally, clear any other user-specific data from localStorage
+        localStorage.removeItem("admin");
+        localStorage.clear();
+
+        // Redirect to login page after successful logout
+        window.location.href = "AdminLogin.html";
+      }
+
       </script>
 </html>
 
