@@ -1,5 +1,6 @@
 const db = require('../config/db.config');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
 
 // Function to create a new admin
@@ -170,3 +171,57 @@ exports.deleteAdmin = async (req, res) => {
         res.status(500).json({ message: 'Error deleting admin.', error: err.message });
     }
 };
+
+
+// Password reset function
+exports.resetPassword = async (req, res) => {
+    const { adminId, email } = req.body;
+  
+    if (!adminId || !email) {
+      return res.status(400).json({ message: 'Admin ID and Email are required.' });
+    }
+  
+    try {
+      const connection = await db;
+  
+      // Check if admin exists
+      const [admin] = await connection.execute('SELECT * FROM admins WHERE id = ? ', [adminId]);
+  
+      if (admin.length === 0) {
+        return res.status(404).json({ message: 'Admin not found.' });
+      }
+  
+      const newGeneratedPassword = Math.random().toString(36).slice(-8); // Generate a random 8-character password
+      const hashedPassword = await bcrypt.hash(newGeneratedPassword, 10); // Hash the new password
+  
+      // Update the password in the database
+      await connection.execute('UPDATE admins SET password = ? WHERE id = ?', [hashedPassword, adminId]);
+  
+      // Send the new password via email
+      const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+  
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Password Reset',
+        text: `Your new password is: ${newGeneratedPassword}`,
+      };
+  
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return res.status(500).json({ message: 'Error sending email.', error });
+        }
+        res.status(200).json({ message: 'Password reset successful. Please check your email.' });
+      });
+  
+    } catch (err) {
+      console.error('Error resetting password:', err);
+      res.status(500).json({ message: 'Error resetting password.', error: err.message });
+    }
+  };

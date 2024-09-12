@@ -64,5 +64,7 @@ router.get('/sys-admin-dashboard.html', isAuthenticated, hasRole(['sys_admin']),
     res.sendFile(path.join(__dirname, '../public', 'Water_Supply_Admin_Dashboard.html'));
   });
   
+  router.post('/reset-password', adminController.resetPassword);
+
 
 module.exports = router;

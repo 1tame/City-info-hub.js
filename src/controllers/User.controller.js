@@ -1,5 +1,6 @@
 const db = require("../config/db.config");
 const bcrypt = require("bcrypt");
+const nodemailer = require('nodemailer');
 
 // Function to create a new user
 exports.createUser = async (req, res) => {
@@ -330,3 +331,94 @@ exports.dislikePost = async (req, res) => {
     res.status(500).json({ message: "Error disliking post." });
   }
 };
+
+
+// API endpoint for handling Forgot Password
+app.post('/api/auth/forgot-password', async (req, res) => {
+  const { usernameOrEmail } = req.body;
+
+  try {
+      const connection = await db;
+
+      // Find the user based on username or email
+      let user;
+      if (usernameOrEmail.includes('@')) {
+          // Email is provided
+          [user] = await connection.execute(
+              'SELECT * FROM Users WHERE email = ?',
+              [usernameOrEmail]
+          );
+      } else {
+          // Username is provided
+          [user] = await connection.execute(
+              'SELECT * FROM Users WHERE username = ?',
+              [usernameOrEmail]
+          );
+      }
+
+      if (user.length === 0) {
+          return res.status(404).json({ message: 'User not found.' });
+      }
+
+      const foundUser = user[0];
+
+      // Generate a new random password
+      const newPassword = generateRandomPassword(8); // Implement generateRandomPassword function
+      
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update the user's password in the database
+      await connection.execute(
+          'UPDATE Users SET password = ? WHERE id = ?',
+          [hashedPassword, foundUser.id]
+      );
+
+      // Send the new password to the user's email
+      await sendPasswordResetEmail(foundUser.email, newPassword); // Implement sendPasswordResetEmail function
+
+      res.status(200).json({ message: 'Password reset email sent successfully.' });
+
+  } catch (error) {
+      console.error('Error during password reset:', error);
+      res.status(500).json({ message: 'Server error during password reset.' });
+  }
+});
+
+// Implement generateRandomPassword function 
+function generateRandomPassword(length) {
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]\:;?><,./-=";';
+  let password = '';
+  for (let i = 0; i < length; i++) {
+      password += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return password;
+}
+
+// Implement sendPasswordResetEmail function (use Nodemailer or a similar library)
+async function sendPasswordResetEmail(email, newPassword) {
+  // Create a transporter (use your email provider credentials)
+  const transporter = nodemailer.createTransport({
+      host: 'smtp.your-email-provider.com', // Replace with your email provider
+      port: 587, // Replace with your email provider's port
+      secure: false, // Replace with your email provider's security setting
+      auth: {
+          user: 'your-email@your-email-provider.com', // Replace with your email
+          pass: 'your-email-password' // Replace with your email password
+      }
+  });
+
+  // Email options
+  const mailOptions = {
+      from: 'your-email@your-email-provider.com', // Replace with your email
+      to: email,
+      subject: 'Password Reset Request',
+      html: `
+          <p>Your new password is: <b>${newPassword}</b></p>
+          <p>Please change your password after logging in.</p>
+      `
+  };
+
+  // Send the email
+  await transporter.sendMail(mailOptions);
+}

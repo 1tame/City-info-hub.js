@@ -100,7 +100,89 @@
         text-align: center;
         margin-top: 20px;
       }
+
+      /* Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Darken the background */
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px; /* Increase the width */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Add stronger shadow */
+  text-align: center;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  color: #004080; /* Match the theme color */
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 10px;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px; /* Larger font for better readability */
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 14px;
+  background-color: #004080;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #003366;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: red;
+}
+
+#loadingSpinner {
+  display: none;
+  margin-top: 10px;
+  font-size: 16px;
+  color: #333;
+}
     </style>
+
     <script>
       window.onload = function () {
         const urlParams = new URLSearchParams(window.location.search);
@@ -113,84 +195,134 @@
         // Form submission handler
         const loginForm = document.getElementById("loginForm");
         loginForm.onsubmit = async function (event) {
-  event.preventDefault(); // Prevent the default form submission
+          event.preventDefault(); // Prevent the default form submission
 
-  // Gather form data
-  const formData = {
-    username: document.getElementById("username").value,
-    password: document.getElementById("password").value,
-  };
+          // Gather form data
+          const formData = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+          };
 
-  try {
-    // Make API call using Fetch
-    const response = await fetch("http://localhost:3000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+          try {
+            // Make API call using Fetch
+            const response = await fetch("http://localhost:3000/api/auth/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formData),
+            });
 
-    const result = await response.json();
+            const result = await response.json();
 
-    if (response.ok) {
-      // Save the token and admin details to localStorage
-      localStorage.setItem("authToken", result.token);
-      localStorage.setItem("admin", JSON.stringify(result.admin));
+            if (response.ok) {
+              // Save the token and admin details to localStorage
+              localStorage.setItem("authToken", result.token);
+              localStorage.setItem("admin", JSON.stringify(result.admin));
 
-      // Store session start time
-      localStorage.setItem("sessionStart", Date.now());
+              // Store session start time
+              localStorage.setItem("sessionStart", Date.now());
 
-   
+              // Route based on role
+              let dashboardUrl = "/default-dashboard"; // Default URL
+              switch (result.admin?.role) {
+                case "sys_admin":
+                  dashboardUrl = "sysAdminHomePage.html";
+                  break;
+                case "Water Supply Admin":
+                  localStorage.setItem("selectedSector", "Water Supply");
+                  dashboardUrl = "Water_Supply_Admin_Dashboard.html";
+                  break;
+                case "Health sector Admin":
+                  localStorage.setItem("selectedSector", "Health sector");
+                  dashboardUrl = "Health_Sector_Admin_Dashboard.html";
+                  break;
+                case "Security-info Admin":
+                  localStorage.setItem("selectedSector", "Security-info");
+                  dashboardUrl = "Security_Admin_Dashboard.html";
+                  break;
+                case "Tourism-info Admin":
+                  localStorage.setItem("selectedSector", "Tourism-info");
+                  dashboardUrl = "Tourism_and_Hotel_Admin_Dashboard.html";
+                  break;
+                case "Event&festival-info admin":
+                  localStorage.setItem("selectedSector", "Event&festival-info");
+                  dashboardUrl = "Festival_and_Event_Admin_Dashboard.html";
+                  break;
+                case "Transportation Admin":
+                  localStorage.setItem("selectedSector", "Transportation");
+                  dashboardUrl = "Transportation_Admin_Dashboard.html";
+                  break;
+                default:
+                  dashboardUrl = "/default-dashboard"; // Default in case of unknown role
+                  break;
+              }
 
-      // Route based on role
-      let dashboardUrl = "/default-dashboard"; // Default URL
-      switch (result.admin?.role) {
-        case "sys_admin":
-          dashboardUrl = "sysAdminHomePage.html";
-          break;
-        case "Water Supply Admin":
-          localStorage.setItem("selectedSector", "Water Supply");
-          dashboardUrl = "Water_Supply_Admin_Dashboard.html";
-          break;
-        case "Health sector Admin":
-          localStorage.setItem("selectedSector", "Health sector");
-          dashboardUrl = "Health_Sector_Admin_Dashboard.html";
-          break;
-        case "Security-info Admin":
-          localStorage.setItem("selectedSector", "Security-info");
-          dashboardUrl = "Security_Admin_Dashboard.html";
-          break;
-        case "Tourism-info Admin":
-          localStorage.setItem("selectedSector", "Tourism-info");
-          dashboardUrl = "Tourism_and_Hotel_Admin_Dashboard.html";
-          break;
-        case "Event&festival-info admin":
-          localStorage.setItem("selectedSector", "Event&festival-info");
-          dashboardUrl = "Festival_and_Event_Admin_Dashboard.html";
-          break;
-        case "Transportation Admin":
-          localStorage.setItem("selectedSector", "Transportation");
-          dashboardUrl = "Transportation_Admin_Dashboard.html";
-          break;
-        default:
-          dashboardUrl = "/default-dashboard"; // Default in case of unknown role
-          break;
-      }
+              // Redirect to the appropriate dashboard
+              window.location.href = `${dashboardUrl}?adminId=${result.admin.id}`;
+            } else {
+              // Show error message
+              const errorMessage = result.message || "An unexpected error occurred.";
+              document.getElementById("errorDiv").innerHTML = `<p style='color:red;'>${errorMessage}</p>`;
+            }
+          } catch (error) {
+            // Handle network or server errors
+            document.getElementById("errorDiv").innerHTML =
+              "<p style='color:red;'>An error occurred: " + error.message + "</p>";
+          }
+        };
 
-      // Redirect to the appropriate dashboard
-      window.location.href = `${dashboardUrl}?adminId=${result.admin.id}`;
-    } else {
-      // Show error message
-      const errorMessage = result.message || "An unexpected error occurred.";
-      document.getElementById("errorDiv").innerHTML = `<p style='color:red;'>${errorMessage}</p>`;
-    }
-  } catch (error) {
-    // Handle network or server errors
-    document.getElementById("errorDiv").innerHTML = "<p style='color:red;'>An error occurred: " + error.message + "</p>";
-  }
-};
+        // Modal logic
+        const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const closeModal = document.getElementById('closeModal');
+        const resetButton = document.getElementById('resetButton');
+        const loadingSpinner = document.getElementById('loadingSpinner');
 
+        // Open Modal
+        forgotPasswordLink.onclick = function () {
+          forgotPasswordModal.style.display = 'flex';
+        };
+
+        // Close Modal
+        closeModal.onclick = function () {
+          forgotPasswordModal.style.display = 'none';
+        };
+
+        // Handle Password Reset Process
+        resetButton.onclick = async function () {
+          const adminId = document.getElementById('adminId').value;
+          const email = document.getElementById('email').value;
+          if (!adminId || !email) {
+            alert('Both Admin ID and Email are required!');
+            return;
+          }
+
+          loadingSpinner.style.display = 'block'; // Show loading spinner
+
+          // Make API call to reset password
+          try {
+            const response = await fetch("http://localhost:3000/api/admin/reset-password", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ adminId, email }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+              alert('Password reset successful. Please check your email for the new password.');
+              forgotPasswordModal.style.display = 'none'; // Close modal
+            } else {
+              alert(result.message || 'An error occurred during the reset.');
+            }
+          } catch (error) {
+            alert('An error occurred. Please try again.');
+          } finally {
+            loadingSpinner.style.display = 'none'; // Hide loading spinner
+          }
+        };
       };
     </script>
   </head>
@@ -198,8 +330,6 @@
     <div id="loginPage">
       <h2>Admin Login</h2>
       <form id="loginForm">
-        
-
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required />
 
@@ -212,12 +342,24 @@
       <div class="general-options">
         <ul>
           <li><a href="javascript:history.back()">Go Back</a></li>
-          <li><a href="IssueReporting.html">Forgot Password?</a></li>
-        <!--  <li><a href="#">Help & Support</a></li>-->
-          <!--<li><a href="index.html">Return to Main Website</a></li>-->
+          <li><a href="#" id="forgotPasswordLink">Forgot Password?</a></li>
         </ul>
       </div>
     </div>
     <div id="errorDiv"></div>
+
+    <!-- Forgot Password Modal -->
+<div id="forgotPasswordModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h2>Reset Password</h2>
+    <label for="adminId">Admin ID:</label>
+    <input type="text" id="adminId" required />
+    <label for="email">Email Address:</label>
+    <input type="email" id="email" required />
+    <button id="resetButton">Reset Password</button>
+    <div id="loadingSpinner">Loading...</div>
+  </div>
+</div>
   </body>
 </html>

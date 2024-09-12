@@ -19,7 +19,8 @@ router.post('/like', userController.likePost);
 
 router.post('/dislike', userController.dislikePost);
 
-
+// Forgot Password Route
+router.post('/forgot-password', userController.forgotPassword); 
 
 // Export the router
 module.exports = router;
