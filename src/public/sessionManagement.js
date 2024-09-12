@@ -1,5 +1,28 @@
 // sessionManagement.js
 
+// sessionManagement.js (or a file handling your authentication logic)
+
+// ... your existing token handling code ...
+
+// On successful login:
+function handleSuccessfulLogin(result) {
+  localStorage.setItem('authToken', result.token);
+  localStorage.setItem('isLoggedIn', 'true'); // Set login flag
+
+  // ... your other login success logic, like redirecting ...
+}
+
+// On logout:
+function handleLogout() {
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('isLoggedIn'); // Clear login flag
+
+  // ... your other logout logic, like redirecting ... 
+}
+
+// ... your checkSessionTimeout() and other functions ...
+
+
 function checkSessionTimeout() {
     const sessionStart = localStorage.getItem('sessionStart');
     const sessionDuration = 10 * 60 * 1000; // 30 minutes in milliseconds
@@ -56,6 +79,10 @@ function checkSessionTimeout() {
       // window.location.href = 'AdminLogin.html'; // Redirect is handled in checkSessionTimeout
     }
   })();
+
+  
   
   // Periodic checks (can be adjusted or removed)
   setInterval(checkSessionTimeout,  10 * 60 * 1000); 
+
+  
