@@ -113,95 +113,82 @@
         // Form submission handler
         const loginForm = document.getElementById("loginForm");
         loginForm.onsubmit = async function (event) {
-          event.preventDefault(); // Prevent the default form submission
+  event.preventDefault(); // Prevent the default form submission
 
-          // Gather form data
-          const formData = {
-            username: document.getElementById("username").value,
-            password: document.getElementById("password").value,
-          };
+  // Gather form data
+  const formData = {
+    username: document.getElementById("username").value,
+    password: document.getElementById("password").value,
+  };
 
-          try {
-            // Make API call using Fetch
-            const response = await fetch(
-              "http://localhost:3000/api/auth/login",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-              }
-            );
+  try {
+    // Make API call using Fetch
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-            const result = await response.json();
+    const result = await response.json();
 
-            if (response.ok) {
-              // Save the token to localStorage
-              console.log("Token:", result.token);
-              localStorage.setItem("authToken", result.token);
+    if (response.ok) {
+      // Save the token and admin details to localStorage
+      localStorage.setItem("authToken", result.token);
+      localStorage.setItem("admin", JSON.stringify(result.admin));
 
-              // Assuming "admin" is an object that contains role details
-              localStorage.setItem("admin", JSON.stringify(result.admin));
-              // Store only the adminId in localStorage
-             //localStorage.setItem("adminId", result.admin.id); 
+      // Store session start time
+      localStorage.setItem("sessionStart", Date.now());
 
+      // Route based on role
+      let dashboardUrl = "/default-dashboard"; // Default URL
+      switch (result.admin?.role) {
+        case "sys_admin":
+          dashboardUrl = "sysAdminHomePage.html";
+          break;
+        case "Water Supply Admin":
+          localStorage.setItem("selectedSector", "Water Supply");
+          dashboardUrl = "Water_Supply_Admin_Dashboard.html";
+          break;
+        case "Health sector Admin":
+          localStorage.setItem("selectedSector", "Health sector");
+          dashboardUrl = "Health_Sector_Admin_Dashboard.html";
+          break;
+        case "Security-info Admin":
+          localStorage.setItem("selectedSector", "Security-info");
+          dashboardUrl = "Security_Admin_Dashboard.html";
+          break;
+        case "Tourism-info Admin":
+          localStorage.setItem("selectedSector", "Tourism-info");
+          dashboardUrl = "Tourism_and_Hotel_Admin_Dashboard.html";
+          break;
+        case "Event&festival-info admin":
+          localStorage.setItem("selectedSector", "Event&festival-info");
+          dashboardUrl = "Festival_and_Event_Admin_Dashboard.html";
+          break;
+        case "Transportation Admin":
+          localStorage.setItem("selectedSector", "Transportation");
+          dashboardUrl = "Transportation_Admin_Dashboard.html";
+          break;
+        default:
+          dashboardUrl = "/default-dashboard"; // Default in case of unknown role
+          break;
+      }
 
-              // Route based on role
-              let dashboardUrl = "/default-dashboard"; // Default URL
-              switch (result.admin?.role) {
-                case "sys_admin":
-                  dashboardUrl = "sysAdminHomePage.html";
-                  break;
-                case "Water Supply Admin":
-                  localStorage.setItem("selectedSector", "Water Supply");
-                  dashboardUrl = "Water_Supply_Admin_Dashboard.html";
-                  break;
-                case "Health sector Admin":
-                localStorage.setItem('selectedSector','Health sector')
-                  dashboardUrl = "Health_Sector_Admin_Dashboard.html";
-                  break;
-                case "Security-info Admin":
-                localStorage.setItem('selectedSector','Security-info')
-                  dashboardUrl = "Security_Admin_Dashboard.html";
-                  break;
-                case "Tourism-info Admin":
-                localStorage.setItem('selectedSector','Tourism-info')
-                  dashboardUrl = "Tourism_and_Hotel_Admin_Dashboard.html";
-                  break;
-                case "Event&festival-info admin":
-                localStorage.setItem('selectedSector','Event&festival-info')
-                  dashboardUrl = "Festival_and_Event_Admin_Dashboard.html";
-                  break;
-                case "Transportation Admin":
-                localStorage.setItem('selectedSector','Transportation')
-                  dashboardUrl = "Transportation_Admin_Dashboard.html";
-                  break;
-                default:
-                  dashboardUrl = "/default-dashboard"; // Default in case of unknown role
-                  break;
-              }
+      // Redirect to the appropriate dashboard
+      window.location.href = `${dashboardUrl}?adminId=${result.admin.id}`;
+    } else {
+      // Show error message
+      const errorMessage = result.message || "An unexpected error occurred.";
+      document.getElementById("errorDiv").innerHTML = `<p style='color:red;'>${errorMessage}</p>`;
+    }
+  } catch (error) {
+    // Handle network or server errors
+    document.getElementById("errorDiv").innerHTML = "<p style='color:red;'>An error occurred: " + error.message + "</p>";
+  }
+};
 
-              // Redirect to the appropriate dashboard
-              window.location.href = dashboardUrl;
-              // Redirect to the appropriate dashboard
-            window.location.href = `${dashboardUrl}?adminId=${result.admin.id}`;
-            } else {
-              // Show error message
-              const errorMessage =
-                result.message || "An unexpected error occurred.";
-              document.getElementById(
-                "errorDiv"
-              ).innerHTML = `<p style='color:red;'>${errorMessage}</p>`;
-            }
-          } catch (error) {
-            // Handle network or server errors
-            document.getElementById("errorDiv").innerHTML =
-              "<p style='color:red;'>An error occurred: " +
-              error.message +
-              "</p>";
-          }
-        };
       };
     </script>
   </head>
@@ -209,16 +196,7 @@
     <div id="loginPage">
       <h2>Admin Login</h2>
       <form id="loginForm">
-        <!-- <label for="role">Select Role:</label>
-            <select id="role" name="role" required>
-                <option value="systemAdmin">System Admin</option>
-                <option value="waterSupplyAdmin">Water Supply Admin</option>
-                <option value="healthSectorAdmin">Health Sector Admin</option>
-                <option value="securityAdmin">Security Admin</option>
-                <option value="tourismHotelAdmin">Tourism & Hotel Admin</option>
-                <option value="festivalEventAdmin">Festival & Event Admin</option>
-                <option value="transportationAdmin">Transportation Admin</option>
-            </select> -->
+        
 
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required />

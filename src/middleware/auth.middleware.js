@@ -4,7 +4,7 @@ exports.isAuthenticated = (req, res, next) => {
     return next(); // User is authenticated, proceed
   } else {
     // Redirect to login if not authenticated
-    return res.redirect('/login.html'); 
+    return res.redirect('/AdminLogin.html'); 
   }
   
 },
@@ -36,4 +36,3 @@ exports.isUser = (req, res, next) => {
       return res.status(403).json({ message: 'Access denied. Regular users only.' });
     }
   };
-  

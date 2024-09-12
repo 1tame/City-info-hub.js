@@ -98,11 +98,11 @@ exports.loginUser = async (req, res) => {
     }
 
     // If password is valid, set the session data
-    req.session.user = {
+   /* req.session.user = {
       id: foundUser.id,
       username: foundUser.username,
       role: 'user' // Since this is an ordinary user, assign 'user' role by default
-    };
+    };*/
 
     res.status(200).json({ message: 'Login successful', user: req.session.user });
   } catch (error) {

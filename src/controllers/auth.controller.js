@@ -52,14 +52,14 @@ exports.loginAdmin = async (req, res) => {
         const token = jwt.sign({ id: admin.id, role: admin.role }, SECRET_KEY, { expiresIn: '1h' });
 
 
-        //set session data
+      /*  //set session data
         req.session.admin = {
             id: admin.id,
             username: admin.username,
             role: admin.role
         }
     
-        console.log('After login:', req.session); // Debug statement
+        console.log('After login:', req.session); // Debug statement*/
         res.status(200).json({ message: 'Login successful.', token,admin });
     } catch (err) {
         console.error('Error during login:', err);

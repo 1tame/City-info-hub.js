@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const session = require('express-session');
 const path = require("path");
+// Define routes before starting server
+
 
 dotenv.config();
 
@@ -12,11 +14,23 @@ const app = express();
 
 // Configure session middleware
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'your_secret_key',
+  secret: process.env.SESSION_SECRET || 'key-city',
   resave: false, 
   saveUninitialized: false, //'false'
-  cookie: { maxAge: 300000  } // 1-hour session expiration
+  cookie: { maxAge: 3 * 60 * 1000  } //  session expiration
 }));
+
+
+// Session check route
+app.get('/api/auth/checkSession', (req, res) => {
+  if (req.session.user) { // Assuming you store user data in the session
+    // Session is valid 
+    res.json({ message: 'Session active' }); 
+  } else {
+    // Session is not valid 
+    res.status(401).json({ message: 'Session expired' });
+  }
+}); 
 // Middleware to log session details for debugging
 app.use((req, res, next) => {
   console.log('Session ID:', req.sessionID);
@@ -46,6 +60,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/issues", issuesRoutes);
 app.use("/api/search", searchRoutes); // Register search routes
+
+
+
 
 // Serve static files for various routes
 app.get("/login.html", (req, res) => {
