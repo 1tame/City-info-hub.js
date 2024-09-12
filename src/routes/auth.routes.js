@@ -13,6 +13,7 @@ router.get('/protected', authController.authenticateToken, (req, res) => {
     res.status(200).json({ message: 'This is a protected route.', user: req.user });
 });
 
+/*
 // Route to check if session is still valid
 router.get('/checkSession', (req, res) => {
     if (req.session.user) {
@@ -22,6 +23,11 @@ router.get('/checkSession', (req, res) => {
         // Session has expired or user is not logged in
         res.status(401).json({ message: 'Session expired' });
     }
+});
+*/
+router.get('/checkSession', authController.authenticateToken, (req, res) => {
+  // Token is valid if this route is reached 
+  res.json({ message: 'Session active', user: req.user }); 
 });
 
 module.exports = router;

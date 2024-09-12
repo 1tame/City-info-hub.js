@@ -51,8 +51,9 @@ exports.loginAdmin = async (req, res) => {
         // Generate a JWT token
         const token = jwt.sign({ id: admin.id, role: admin.role }, SECRET_KEY, { expiresIn: '1h' });
 
+        /*
 
-      /*  //set session data
+      //set session data
         req.session.admin = {
             id: admin.id,
             username: admin.username,

@@ -2,11 +2,14 @@
 
 function checkSessionTimeout() {
     const sessionStart = localStorage.getItem('sessionStart');
-    const sessionDuration = 3 * 60 * 1000; // 30 minutes in milliseconds
+    const sessionDuration = 10 * 60 * 1000; // 30 minutes in milliseconds
   
     // Client-side timeout check (optional but recommended)
+    console.log('mmmmmmmmmmmmmm',sessionStart);
     if (sessionStart) {
       const currentTime = Date.now();
+      console.log('mmmmmmmmmmmmmm',currentTime,sessionStart);
+      
       if (currentTime - sessionStart > sessionDuration) {
         handleSessionExpiration();
         return false;
@@ -55,4 +58,4 @@ function checkSessionTimeout() {
   })();
   
   // Periodic checks (can be adjusted or removed)
-  setInterval(checkSessionTimeout,  3 * 60 * 1000); 
+  setInterval(checkSessionTimeout,  10 * 60 * 1000); 

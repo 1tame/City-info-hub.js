@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const db = require("./config/db.config"); // Database configuration
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const session = require('express-session');
+//const session = require('express-session');
 const path = require("path");
 // Define routes before starting server
 
@@ -12,12 +12,12 @@ dotenv.config();
 
 const app = express();
 
-// Configure session middleware
+/*// Configure session middleware
 app.use(session({
   secret: process.env.SESSION_SECRET || 'key-city',
   resave: false, 
   saveUninitialized: false, //'false'
-  cookie: { maxAge: 3 * 60 * 1000  } //  session expiration
+  cookie: { maxAge: 10 * 60 * 1000  } //  session expiration
 }));
 
 
@@ -37,7 +37,7 @@ app.use((req, res, next) => {
   console.log('Session:', req.session);
   next();
 });
-
+*/
 // Middleware setup
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
