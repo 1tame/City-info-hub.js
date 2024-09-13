@@ -85,6 +85,9 @@
               sector
             )}`
           );
+
+          console.log(await response,'ll');
+          
           const posts = await response.json();
 
           const postsContainer = document.getElementById("postsContainer");

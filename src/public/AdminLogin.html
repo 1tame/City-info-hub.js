@@ -225,6 +225,8 @@
 
               // Route based on role
               let dashboardUrl = "/default-dashboard"; // Default URL
+              console.log('res',result);
+              
               switch (result.admin?.role) {
                 case "sys_admin":
                   dashboardUrl = "sysAdminHomePage.html";

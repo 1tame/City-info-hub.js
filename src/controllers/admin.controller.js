@@ -172,7 +172,7 @@ exports.deleteAdmin = async (req, res) => {
     }
 };
 
-
+ 
 // Password reset function
 exports.resetPassword = async (req, res) => {
     const { adminId, email } = req.body;
@@ -194,9 +194,7 @@ exports.resetPassword = async (req, res) => {
       const newGeneratedPassword = Math.random().toString(36).slice(-8); // Generate a random 8-character password
       const hashedPassword = await bcrypt.hash(newGeneratedPassword, 10); // Hash the new password
   
-      // Update the password in the database
-      await connection.execute('UPDATE admins SET password = ? WHERE id = ?', [hashedPassword, adminId]);
-  
+     
       // Send the new password via email
       const transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -213,10 +211,15 @@ exports.resetPassword = async (req, res) => {
         text: `Your new password is: ${newGeneratedPassword}`,
       };
   
-      transporter.sendMail(mailOptions, (error, info) => {
+      transporter.sendMail(mailOptions, async (error, info) => {
+       // console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm',error);
+        
         if (error) {
           return res.status(500).json({ message: 'Error sending email.', error });
         }
+         // Update the password in the database
+      await connection.execute('UPDATE admins SET password = ? WHERE id = ?', [hashedPassword, adminId]);
+  
         res.status(200).json({ message: 'Password reset successful. Please check your email.' });
       });
   

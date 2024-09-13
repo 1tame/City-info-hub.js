@@ -10,7 +10,7 @@ exports.isAuthenticated = (req, res, next) => {
 },
 
 exports.isAuthenticated = (req, res, next) => {
-  console.log("Session ID:", req.sessionID); // Now it will log the ID
+ // console.log("Session ID:", req.sessionID); // Now it will log the ID
   // ... your authentication logic (if needed) ...
   next();
 };
@@ -27,7 +27,7 @@ exports.hasRole = (roles) => {
     };
   };
 
-  
+  /*
   // Middleware to check if the user is a regular user
 exports.isUser = (req, res, next) => {
     if (req.session.user && req.session.user.role === 'user') {
@@ -36,3 +36,4 @@ exports.isUser = (req, res, next) => {
       return res.status(403).json({ message: 'Access denied. Regular users only.' });
     }
   };
+*/

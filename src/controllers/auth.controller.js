@@ -22,7 +22,25 @@ exports.authenticateToken = (req, res, next) => {
 
 
 
-// Function to log in an admin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 exports.loginAdmin = async (req, res) => {
     const { username, password } = req.body;
 
@@ -71,6 +89,10 @@ exports.loginAdmin = async (req, res) => {
         res.status(500).json({ message: 'Error during login.', error: err.message });
     }
 };
+
+
+
+
 
 
 // Function to log out
