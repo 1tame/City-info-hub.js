@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 //const session = require('express-session');
 const path = require("path");
+const nodemailer = require('nodemailer');
 // Define routes before starting server
 
 
