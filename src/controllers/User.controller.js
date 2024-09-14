@@ -339,56 +339,56 @@ exports.forgotPassword = async (req, res) => {
   const { usernameOrEmail } = req.body;
 
   if (!usernameOrEmail) {
-    return res.status(400).json({ message: "Username or Email is required." });
+      return res.status(400).json({ message: "Username or Email is required." });
   }
 
   try {
-    const connection = await db;
-    let userQuery = '';
-    let userParams = [];
+      const connection = await db;
+      let userQuery = '';
+      let userParams = [];
 
-    // Determine if usernameOrEmail is an email or username
-    if (usernameOrEmail.includes('@')) {
-      // Email is provided
-      userQuery = 'SELECT * FROM Users WHERE email = ?';
-      userParams = [usernameOrEmail];
-    } else {
-      // Username is provided
-      userQuery = 'SELECT * FROM Users WHERE username = ?';
-      userParams = [usernameOrEmail];
-    }
+      // Determine if usernameOrEmail is an email or username
+      if (usernameOrEmail.includes('@')) {
+          // Email is provided
+          userQuery = 'SELECT * FROM Users WHERE email = ?';
+          userParams = [usernameOrEmail];
+      } else {
+          // Username is provided
+          userQuery = 'SELECT * FROM Users WHERE username = ?';
+          userParams = [usernameOrEmail];
+      }
 
-    // Fetch user from database
-    const [user] = await connection.execute(userQuery, userParams);
+      // Fetch user from the database
+      const [user] = await connection.execute(userQuery, userParams);
 
-    // If no user is found, send a 404 response
-    if (user.length === 0) {
-      return res.status(404).json({ message: 'User not found.' });
-    }
+      // If no user is found, send a 404 response
+      if (user.length === 0) {
+          return res.status(404).json({ message: 'User not found.' });
+      }
 
-    const foundUser = user[0];
+      const foundUser = user[0];
 
-    // Generate a new random password
-    const newPassword = generateRandomPassword(8);
+      // Generate a new random password
+      const newPassword = generateRandomPassword(8);
 
-    // Hash the new password
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Update the user's password in the database
-    await connection.execute(
-      'UPDATE Users SET password = ? WHERE id = ?',
-      [hashedPassword, foundUser.id]
-    );
+      // Update the user's password in the database
+      await connection.execute(
+          'UPDATE Users SET password = ? WHERE id = ?',
+          [hashedPassword, foundUser.id]
+      );
 
-    // Send the new password to the user's email
-    await sendPasswordResetEmail(foundUser.email, newPassword);
+      // Send the new password to the user's email
+      await sendPasswordResetEmail(foundUser.email, newPassword);
 
-    // Respond with success message
-    res.status(200).json({ message: 'Password reset email sent successfully.' });
+      // Respond with success message
+      res.status(200).json({ message: 'Password reset email sent successfully.' });
 
   } catch (error) {
-    console.error('Error during password reset:', error);
-    res.status(500).json({ message: 'Server error during password reset.' });
+      console.error('Error during password reset:', error);
+      res.status(500).json({ message: 'Server error during password reset.' });
   }
 };
 
@@ -397,7 +397,7 @@ function generateRandomPassword(length) {
   const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]\\:;?><,./-="';
   let password = '';
   for (let i = 0; i < length; i++) {
-    password += characters.charAt(Math.floor(Math.random() * characters.length));
+      password += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return password;
 }
@@ -405,26 +405,32 @@ function generateRandomPassword(length) {
 // Helper function to send password reset email using Nodemailer
 async function sendPasswordResetEmail(email, newPassword) {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.your-email-provider.com', // Update with actual email provider details
-    port: process.env.SMTP_PORT || 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: process.env.SMTP_USER || 'your-email@your-email-provider.com', // SMTP username
-      pass: process.env.SMTP_PASS || 'your-email-password', // SMTP password
-    },
+      host: process.env.SMTP_HOST || 'smtp.your-email-provider.com', // Update with actual email provider details
+      port: process.env.SMTP_PORT || 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+          user: process.env.SMTP_USER || 'your-email@your-email-provider.com', // SMTP username
+          pass: process.env.SMTP_PASS || 'your-email-password', // SMTP password
+      },
   });
 
   // Email options
   const mailOptions = {
-    from: process.env.SMTP_USER || 'your-email@your-email-provider.com', // Sender address
-    to: email, // Receiver's email
-    subject: 'Password Reset Request',
-    html: `
-      <p>Your new password is: <b>${newPassword}</b></p>
-      <p>Please log in with this password and change it after logging in.</p>
-    `,
+      from: process.env.SMTP_USER || 'your-email@your-email-provider.com', // Sender address
+      to: email, // Receiver's email
+      subject: 'Password Reset Request',
+      html: `
+          <p>Your new password is: <b>${newPassword}</b></p>
+          <p>Please log in with this password and change it after logging in.</p>
+      `,
   };
 
-  // Send email
-  await transporter.sendMail(mailOptions);
+  try {
+      console.log('Sending email to:', email); // Debugging step
+      await transporter.sendMail(mailOptions);
+      console.log('Password reset email sent successfully.'); // Debugging step
+  } catch (error) {
+      console.error('Error sending password reset email:', error);
+      throw error;
+  }
 }

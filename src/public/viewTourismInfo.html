@@ -5,171 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gondar City Tourism</title>
     <link rel="stylesheet" href="forAll.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-      /* General Reset */
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
       body {
         font-family: Arial, sans-serif;
-        line-height: 1.6;
-        background-color: #f9f9f9;
-        padding: 20px; /* Added padding for extra spacing on the sides */
-      }
-
-      /* Container for centering content */
-      .container {
-        max-width: 1200px;
-        margin: 0 auto; /* Center the container */
-        padding: 0 20px; /* Add some space on the sides */
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Center content horizontally */
-      }
-
-      /* Navbar Styling */
-      nav {
-        display: flex;
-        justify-content: center; /* Center nav horizontally */
+        margin: 0;
+        padding: 0;
         background-color: #f4f4f4;
-        padding: 10px 20px;
-        width: 100%;
+        display: flex; /* Allows the sidebar and main content to sit next to each other */
       }
 
-      nav ul {
+      /* Sidebar Styling */
+      .sidebar {
+        position: fixed;
+        width: 250px;
+        height: 100vh;
+        background-color: #004080;
+        color: #fff;
+        padding-top: 20px;
+        transition: width 0.3s ease;
+        overflow: hidden;
+      }
+
+      .sidebar a {
         display: flex;
-        list-style: none;
-      }
-
-      nav ul li {
-        margin: 0 15px;
-      }
-
-      nav ul li a {
+        align-items: center;
+        padding: 15px;
         text-decoration: none;
-        color: #333;
-        padding: 10px;
-        transition: color 0.3s ease;
+        color: #fff;
+        transition: background 0.3s ease, transform 0.2s ease;
+        font-size: 1em;
       }
 
-      nav ul li a:hover {
-        color: #007bff;
+      .sidebar a:hover {
+        background-color: #003366;
+        transform: translateX(5px);
       }
 
-      /* Navbar Toggle (for mobile) */
-      .nav-toggle {
+      .sidebar i {
+        margin-right: 15px;
+        font-size: 1.2em;
+      }
+
+      .sidebar.collapsed {
+        width: 60px;
+      }
+
+      .sidebar.collapsed a span {
         display: none;
       }
 
-      /* Main Content */
-      .content-section {
-        margin: 20px 0;
-        width: 100%; /* Ensure content section takes full width */
-        text-align: center; /* Center align text in sections */
-      }
-
-      h1 {
-        margin-bottom: 20px;
-        font-size: 2.5rem;
-      }
-
-      p {
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        line-height: 1.8;
-      }
-
-      .image-container,
-      .grid-item img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin: 10px 0;
-        transition: transform 0.3s ease-in-out;
-      }
-
-      .image-container img:hover,
-      .grid-item img:hover {
-        transform: scale(1.05);
-      }
-
-      /* Grid Layout for images and info */
-      .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        grid-gap: 20px;
-        margin: 20px 0;
-        width: 100%; /* Ensure grid takes up full width */
-      }
-
-      .grid-item {
-        padding: 10px;
-      }
-
-      .caption {
+      .sidebar.collapsed i {
+        margin-right: 0;
         text-align: center;
-        margin-top: 10px;
-        font-style: italic;
-        font-size: 1rem;
+        width: 100%;
       }
 
-      /* Media Queries */
-      @media (max-width: 768px) {
-        h1 {
-          font-size: 2rem;
+      /* Sidebar Toggle Button */
+      .sidebar-toggle {
+        position: fixed;
+        top: 20px;
+        left: 250px;
+        font-size: 2em;
+        cursor: pointer;
+        color: #004080;
+        transition: left 0.3s ease;
+      }
+
+      .sidebar.collapsed ~ .sidebar-toggle {
+        left: 60px;
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 250px;
+        padding: 20px;
+        flex-grow: 1;
+        transition: margin-left 0.3s ease;
+      }
+
+      .sidebar.collapsed ~ .main-content {
+        margin-left: 60px;
+      }
+
+      /* Mobile View */
+      @media screen and (max-width: 768px) {
+        .sidebar {
+          width: 60px;
         }
 
-        p {
-          font-size: 1rem;
+        .sidebar-toggle {
+          left: 60px;
         }
 
-        nav ul {
-          flex-direction: column;
+        .main-content {
+          margin-left: 60px;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .sidebar {
+          position: relative;
+          width: 100%;
+          height: auto;
         }
 
-        .nav-toggle {
-          display: inline-block;
-          font-size: 1.5rem;
+        .main-content {
+          margin-left: 0;
         }
 
-        nav ul {
+        .sidebar-toggle {
           display: none;
-          flex-direction: column;
         }
+      }
 
-        nav ul.active {
-          display: flex;
-        }
+      .child-menu {
+        display: none;
+        padding-left: 20px;
+      }
 
-        nav ul li {
-          margin: 10px 0;
-        }
+      .parent-menu:hover .child-menu {
+        display: block;
       }
     </style>
   </head>
-
   <body>
-    <div class="container">
-      <!-- Center the content inside this container -->
 
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <a href="viewWaterSupplyInfo.html"><i class="fas fa-water"></i><span>Water Supply</span></a>
+      <a href="viewHealthSectorInfo.html"><i class="fas fa-clinic-medical"></i><span>Health Sector</span></a>
+      <div class="parent-menu">
+        <a href="viewTourismInfo.html"><i class="fas fa-hotel"></i><span>Tourism & Hotels</span></a>
+        <div class="child-menu">
+          <a href="Hotels.html"><i class="fas fa-bed"></i><span>Hotels</span></a>
+          <a href="HistoricalPlaces.html"><i class="fas fa-landmark"></i><span>Historical Places</span></a>
+        </div>
+      </div>
+      <!-- <a href="viewEventFestivalInfo.html"><i class="fas fa-calendar-alt"></i><span>Events & Festivals</span></a> -->
+      <a href="viewTransportationInfo.html"><i class="fas fa-bus"></i><span>Transportation</span></a>
+      <a href="viewSecurityInfo.html"><i class="fas fa-shield-alt"></i><span>Security</span></a>
+      <a href="indexx.html"><i class="fas fa-home"></i><span>Home</span></a>
+      <a href="login.html" onclick="signOut()"><i class="fas fa-sign-out-alt"></i><span>Sign Out</span></a>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <i class="fas fa-bars sidebar-toggle" id="sidebarToggle"></i>
+
+    <!-- Main Content -->
+    <div class="main-content">
       <h1>Tourism Sector Information</h1>
-
-      <!-- Navbar -->
-      <nav>
-        <button class="nav-toggle">☰</button>
-        <ul>
-          <li><a href="Hotels.html" data-sector="Hotels">Hotels</a></li>
-          <li>
-            <a href="HistoricalPlaces.html" data-sector="Historical Places">Historical Places</a>
-          </li>
-          <li><a href="javascript:history.back()">Go Back</a></li>
-        </ul>
-      </nav>
-
       <!-- Page Description -->
       <section id="description" class="content-section">
         <h1>Welcome to Gondar City</h1>
@@ -226,6 +212,32 @@
     <!-- End of Container -->
 
     <script>
+
+        // Check if the user is authenticated
+  window.onload = function () {
+    const user = localStorage.getItem('user'); // or 'auth', depending on how you store the user session
+
+    // If not authenticated, redirect to login page
+    if (!user) {
+      window.location.href = 'login.html';
+    }
+  };
+
+  function signOut() {
+    // Clear all user-related data from localStorage
+    localStorage.removeItem('auth');
+    localStorage.removeItem('user');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+}
+      // Sidebar Toggle Functionality
+      const sidebar = document.getElementById('sidebar');
+      const toggleButton = document.getElementById('sidebarToggle');
+
+      toggleButton.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+      });
       // Toggle the navbar on mobile
       document.querySelector('.nav-toggle').addEventListener('click', () => {
         document.querySelector('nav ul').classList.toggle('active');

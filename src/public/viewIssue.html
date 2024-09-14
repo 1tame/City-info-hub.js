@@ -257,7 +257,6 @@
             <li><a href="update-admin.html">Update Admin</a></li>
             <li><a href="delete-admin.html">Delete Admin</a></li>
             <li><a href="javascript:history.back()">Go Back</a></li>
-            <li><a href="AdminLogin.html">Sign Out</a></li>
         </ul>
     </nav>
 
@@ -365,6 +364,23 @@
                 console.error('Error submitting feedback:', error);
             });
         }
+        window.onload = function() {
+    if (!localStorage.getItem("authToken")) { 
+      window.location.href = "AdminLogin.html"; // Redirect to login
+    }
+  };
+
+  function logout() {
+        localStorage.removeItem("authToken");
+
+        // Optionally, clear any other user-specific data from localStorage
+        localStorage.removeItem("admin");
+        localStorage.clear();
+
+        // Redirect to login page after successful logout
+        window.location.href = "AdminLogin.html";
+      }
+
     </script>
 </body>
 </html>

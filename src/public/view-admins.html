@@ -144,8 +144,8 @@
             <li><a href="view-admins.html">View All Admins</a></li>
             <li><a href="update-admin.html">Update Admin</a></li>
             <li><a href="delete-admin.html">Delete Admin</a></li>
-            <li><a href="AdminLogin.html">Sign Out</a></li>
-        </ul>
+            <li><a href="javascript:history.back()">Go Back</a></li>
+            </ul>
     </nav>
 
     <h2>View All Admins</h2>
@@ -207,6 +207,23 @@
 
         adminsVisible = !adminsVisible; // Toggle the state
     });
+
+    window.onload = function () {
+        if (!localStorage.getItem("authToken")) {
+          window.location.href = "AdminLogin.html"; // Redirect to login
+        }
+      };
+
+      function logout() {
+        localStorage.removeItem("authToken");
+
+        // Optionally, clear any other user-specific data from localStorage
+        localStorage.removeItem("admin");
+        localStorage.clear();
+
+        // Redirect to login page after successful logout
+        window.location.href = "AdminLogin.html";
+      }
 </script>
 </body>
 </html>

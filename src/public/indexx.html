@@ -440,7 +440,8 @@
           </div>
   
           <a href="AdminLogin.html">Admin Login</a>
-          <a href="login.html">Sign Out</a>
+          <a href="login.html" onclick="signOut()">Sign Out</a>
+
       </div>
   
       <button onclick="scrollToTop()" id="backToTopBtn" title="Go to top">
@@ -450,6 +451,16 @@
   
 
     <script>
+
+       // Check if the user is authenticated
+  window.onload = function () {
+    const user = localStorage.getItem('user'); // or 'auth', depending on how you store the user session
+
+    // If not authenticated, redirect to login page
+    if (!user) {
+      window.location.href = 'login.html';
+    }
+  };
       async function performSearch() {
         const query = document.getElementById('searchInput').value;
         const resultsMenu = document.getElementById('resultsMenu');
@@ -536,6 +547,15 @@
             behavior: 'smooth'
         });
     }
+
+    function signOut() {
+    // Clear all user-related data from localStorage
+    localStorage.removeItem('auth');
+    localStorage.removeItem('user');
+    
+    // Redirect to login page
+    window.location.href = 'login.html';
+}
     </script>
   </body>
 </html>

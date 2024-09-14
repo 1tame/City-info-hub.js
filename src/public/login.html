@@ -13,6 +13,14 @@
             padding: 0;
             box-sizing: border-box;
         }
+        .image-container {
+  width: 50%;
+  
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
         body, html {
             height: 100%;
@@ -29,11 +37,25 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100%; /* Take full width of the page */
+        }
+
+        .image-container {
+            opacity: 0;
+            animation: fadeIn 1.5s forwards ease-in-out;
+            /* You can adjust the animation duration if needed */
+            width: 50%; /* Make the image container take up 50% of the viewport width */
+        }
+        .image-container {
+            flex: 1;
+            background-image: url('C:/Users/weshu/Desktop/imagesforproj/historical places/loign.jpg');
+            background-size: cover;
+            background-position: center;
         }
 
         .form-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 500px; /* Adjust the max width as needed */
             background-color: #fff;
             padding: 30px;
             border-radius: 10px;
@@ -84,24 +106,6 @@
             background-color: #0056b3;
         }
 
-        .image-container {
-            display: none; /* Initially hide the image */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50%;
-            height: auto;
-            z-index: -1; /* Place behind the form */
-        }
-
-        .image-container img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
         .loader-overlay {
             display: none;
             position: fixed;
@@ -120,7 +124,10 @@
             height: auto;
         }
 
-        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
         /* Welcome Animation */
         .welcome-message {
@@ -275,6 +282,7 @@
             </form>
             <p>Don't have an account? <a href="register.html">Register</a></p>
             <p>Forgot your password? <a href="#" onclick="openForgotPasswordModal()">Reset Password</a></p>
+            
             <!-- Admin login link -->
             <div class="admin-login">
                 <p>Admin? <a href="adminlogin.html">Login here</a></p>
@@ -371,34 +379,38 @@
             document.getElementById("forgotPasswordForm").reset();
         }
 
-        // Handle the Forgot Password form submission
         document.getElementById('forgotPasswordForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const usernameOrEmail = document.getElementById('forgotUsername').value;
+    event.preventDefault();
+    const usernameOrEmail = document.getElementById('forgotUsername').value;
 
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
-            forgotPasswordMessage.textContent = "";
-            loadingSpinner.style.display = 'block'; 
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
+    forgotPasswordMessage.textContent = "";
+    loadingSpinner.style.display = 'block'; 
 
-            // Send a request to your API to handle password reset
-            const response = await fetch('http://localhost:3000/api/auth/forgot-password', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ usernameOrEmail: usernameOrEmail })
-            });
+    console.log('Sending password reset request for:', usernameOrEmail); // Debugging step
 
-            const data = await response.json();
-            loadingSpinner.style.display = 'none';
+    // Send a request to your API to handle password reset
+    const response = await fetch('http://localhost:3000/api/user/forgot-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ usernameOrEmail: usernameOrEmail })
+    });
 
-            if (response.ok) {
-                forgotPasswordMessage.textContent = data.message; // Display success message
-            } else {
-                forgotPasswordMessage.textContent = data.message; // Display error message
-            }
-        });
+    const data = await response.json();
+    loadingSpinner.style.display = 'none';
+
+    if (response.ok) {
+        console.log('Password reset email sent successfully:', data); // Debugging step
+        forgotPasswordMessage.textContent = data.message; // Display success message
+    } else {
+        console.log('Error:', data); // Debugging step
+        forgotPasswordMessage.textContent = data.message; // Display error message
+    }
+});
+
 
     </script>
 </body>

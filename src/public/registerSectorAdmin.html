@@ -136,7 +136,7 @@
             <li><a href="view-admins.html">View All Admins</a></li>
             <li><a href="update-admin.html">Update Admin</a></li>
             <li><a href="delete-admin.html">Delete Admin</a></li>
-            <li><a href="AdminLogin.html">Sign Out</a></li>
+            <li><a href="javascript:history.back()">Go Back</a></li>
         </ul>
     </nav>
     <div id="registerPage">
@@ -164,14 +164,46 @@
 
         <div id="responseDiv"></div>
 
-        <div class="general-options">
-            <ul>
-                <li><a href="javascript:history.back()">Go Back</a></li>
-                <li><a href="#">Forgot Password?</a></li>
-                <li><a href="#">Help & Support</a></li>
-                <li><a href="indexx.html">Return to Main Website</a></li>
-            </ul>
-        </div>
     </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent default form submission behavior
+
+    // Collect form data
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const role = document.getElementById('role').value;
+
+    try {
+        // Make the POST request to the server using fetch API
+        const response = await fetch('http://localhost:3000/api/admin/create', { // Adjust this URL based on your route
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Ensure JSON content type
+            },
+            body: JSON.stringify({
+                username,
+                password,
+                role
+            }),
+        });
+
+        const data = await response.json(); // Parse the JSON response
+
+        if (response.ok) {
+            // Display success message
+            document.getElementById('responseDiv').innerHTML = `<p style="color: green;">${data.message}</p>`;
+        } else {
+            // Display error message from server
+            document.getElementById('responseDiv').innerHTML = `<p style="color: red;">${data.message}</p>`;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('responseDiv').innerHTML = '<p style="color: red;">Failed to create admin. Try again later.</p>';
+    }
+});
+
+    </script>
 </body>
 </html>

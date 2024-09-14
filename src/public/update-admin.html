@@ -177,9 +177,9 @@ table tbody tr:hover {
             <li><a href="view-admins.html">View All Admins</a></li>
             <li><a href="update-admin.html">Update Admin</a></li>
             <li><a href="delete-admin.html">Delete Admin</a></li>
-            <li><a href="viewIssue.html">View Issues</a></li>
-            <li><a href="AdminLogin.html">Sign Out</a></li>
-        </ul>
+            
+            <li><a href="javascript:history.back()">Go Back</a></li>
+            </ul>
     </nav>
 
     <h2>Update Admin</h2>
@@ -195,13 +195,13 @@ table tbody tr:hover {
 
         <label for="role">Select New Role:</label>
         <select id="role" name="role" required>
-            <option value="systemAdmin">System Admin</option>
-            <option value="waterSupplyAdmin">Water Supply Admin</option>
-            <option value="healthSectorAdmin">Health Sector Admin</option>
-            <option value="securityAdmin">Security Admin</option>
-            <option value="tourismHotelAdmin">Tourism & Hotel Admin</option>
-            <option value="festivalEventAdmin">Festival & Event Admin</option>
-            <option value="transportationAdmin">Transportation Admin</option>
+            <option value="sys_admin">System Admin</option>
+            <option value="Water Supply Admin">Water Supply Admin</option>
+            <option value="Health sector Admin">Health Sector Admin</option>
+            <option value="Security-info Admin">Security Admin</option>
+            <option value="Tourism-info Admin">Tourism & Hotel Admin</option>
+            <option value="Event&festival-info admin">Festival & Event Admin</option>
+            <option value="Transportation Admin">Transportation Admin</option>
         </select>
 
         <button type="submit">Update Admin</button>
@@ -244,6 +244,24 @@ if (response.headers.get('Content-Type').includes('application/json')) {
                 alert('An error occurred while updating the admin.');
             }
         });
+
+        window.onload = function() {
+    if (!localStorage.getItem("authToken")) { 
+      window.location.href = "AdminLogin.html"; // Redirect to login
+    }
+  };
+
+  function logout() {
+        localStorage.removeItem("authToken");
+
+        // Optionally, clear any other user-specific data from localStorage
+        localStorage.removeItem("admin");
+        localStorage.clear();
+
+        // Redirect to login page after successful logout
+        window.location.href = "AdminLogin.html";
+      }
+
     </script>
 </body>
 </html>

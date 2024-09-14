@@ -6,6 +6,98 @@
     <title>Register</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
     <link rel="stylesheet" href="userloginStyle.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .form-container {
+            padding: 40px;
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+        .password-rules {
+            font-size: 12px;
+            margin-top: 5px;
+            color: rgb(195, 144, 144);
+        }
+        .password-rules.valid {
+            color: green;
+        }
+        .image-container {
+            flex: 1;
+            background-image: url('C:/Users/weshu/Desktop/imagesforproj/historical places/loign.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #007bff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -23,13 +115,20 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <div class="password-rules" id="passwordRules">
+                        Password must be at least 4 characters long, and include: <br>
+                        - At least one uppercase letter <br>
+                        - At least one lowercase letter <br>
+                        - At least one number <br>
+                        - At least one special character (@$!%*?&)
+                    </div>
                 </div>
-                <button type="submit" class="submit-btn">Register</button>
+                <button type="submit" class="submit-btn" id="submitButton" disabled>Register</button>
             </form>
             <p>Already have an account? <a href="login.html">Login</a></p>
         </div>
         <div class="image-container">
-            <img src="C:\Users\weshu\Desktop\imagesforproj\historical places\loign.jpg" alt="Registration Animation">
+            <img src="C:/Users/weshu/Desktop/imagesforproj/historical places/loign.jpg" alt="Registration Animation">
         </div>
     </div>
 
@@ -43,12 +142,56 @@
     </div>
 
     <script>
+        // Password validation function
+        function validatePassword(password) {
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{4,}$/;
+            return passwordPattern.test(password);
+        }
+
+        // Real-time password validation display
+        document.getElementById('password').addEventListener('input', function () {
+            const password = this.value;
+            const passwordRules = document.getElementById('passwordRules');
+            const submitButton = document.getElementById('submitButton');
+
+            // Check if the password matches the rules
+            if (validatePassword(password)) {
+                passwordRules.classList.add('valid');
+                passwordRules.classList.remove('invalid');
+                passwordRules.textContent = "Password is strong!";
+                submitButton.disabled = false; // Enable the button
+            } else {
+                passwordRules.classList.remove('valid');
+                passwordRules.classList.add('invalid');
+                passwordRules.innerHTML = "Password must be at least 4 characters long, and include: <br>" +
+                    "- At least one uppercase letter <br>" +
+                    "- At least one lowercase letter <br>" +
+                    "- At least one number <br>" +
+                    "- At least one special character (@$!%*?&)";
+                submitButton.disabled = true; // Disable the button
+            }
+        });
+
+        // Email format validation
+        function validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
         document.getElementById('registerForm').addEventListener('submit', async (event) => {
             event.preventDefault();
+
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
+            // Validate email format
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return; // Stop form submission
+            }
+
+            // If validation passes, proceed with the fetch call
             const response = await fetch('http://localhost:3000/api/user/register', {
                 method: 'POST',
                 headers: {
