@@ -96,53 +96,101 @@ exports.getFeedbackByIssueId = async (req, res) => {
 
 // issues.controller.js
 
-// Handle like or dislike for feedback
-exports.likeOrDislikeFeedback = async (req, res) => {
-    const { feedbackId, adminId, action } = req.body;
+//handles reaction
+exports.handleFeedbackReaction = async (req, res) => {
+  console.log('2');
+  const { feedbackId, adminId, action } = req.body;  // Destructure the request body
 
-    try {
-        const connection = await db;
+  console.log("Received Data:", req.body);  // Log the incoming request body
 
-        // Check if admin has already liked or disliked this feedback
-        const [existingRecord] = await connection.execute(
-            `SELECT * FROM feedback_likes WHERE feedback_id = ? AND admin_id = ?`,
-            [feedbackId, adminId]
-        );
+  // Check if all required fields are provided
+  if (!feedbackId || !adminId || !action) {
+    console.log(feedbackId , adminId , action);
+    
 
-        if (existingRecord.length > 0) {
-            return res.status(400).json({ message: 'Admin has already liked or disliked this feedback.' });
-        }
+    console.error("Validation Error: Missing feedbackId, adminId, or action");
+    return res.status(400).json({ message: "All fields are required." });
+  }
 
-        // Insert the like or dislike action into feedback_likes
+
+  try {
+    const connection = await db;
+    await connection.beginTransaction();
+
+    // Check if the admin already reacted to this feedback
+    const [existingReaction] = await connection.execute(
+      "SELECT * FROM feedback_likes WHERE feedback_id = ? AND admin_id = ?",
+      [feedbackId, adminId]
+    );
+
+    if (existingReaction.length > 0) {
+      // Remove the existing reaction
+      const previousAction = existingReaction[0].action;
+
+      await connection.execute(
+        "DELETE FROM feedback_likes WHERE feedback_id = ? AND admin_id = ?",
+        [feedbackId, adminId]
+      );
+
+      if (previousAction === 'like') {
         await connection.execute(
-            `INSERT INTO feedback_likes (feedback_id, admin_id, action) VALUES (?, ?, ?)`,
-            [feedbackId, adminId, action]
+          "UPDATE feedback SET likes = likes - 1 WHERE id = ?",
+          [feedbackId]
         );
-
-        // Update the feedback table to increment likes or dislikes
-        const updateColumn = action === 'like' ? 'likes' : 'dislikes';
+      } else if (previousAction === 'dislike') {
         await connection.execute(
-            `UPDATE feedback SET ${updateColumn} = ${updateColumn} + 1 WHERE id = ?`,
-            [feedbackId]
+          "UPDATE feedback SET dislikes = dislikes - 1 WHERE id = ?",
+          [feedbackId]
         );
-
-        // Get updated like/dislike counts 
-        const [updatedFeedback] = await connection.execute(
-            `SELECT likes, dislikes FROM feedback WHERE id = ?`,
-            [feedbackId]
-        );
-
-        res.status(200).json({
-            message: `${action} registered successfully.`,
-            action: action, 
-            likes: updatedFeedback[0].likes,
-            dislikes: updatedFeedback[0].dislikes
-        });
-
-    } catch (err) {
-        console.error('Error handling feedback like/dislike:', err);
-        res.status(500).json({ message: 'Error handling feedback like/dislike.', error: err.message });
+      }
     }
+
+    // Insert the new like or dislike
+    if (action === 'like') {
+      await connection.execute(
+        "INSERT INTO feedback_likes (feedback_id, admin_id, action) VALUES (?, ?, ?)",
+        [feedbackId, adminId, 'like']
+      );
+      await connection.execute(
+        "UPDATE feedback SET likes = likes + 1 WHERE id = ?",
+        [feedbackId]
+      );
+    } else if (action === 'dislike') {
+      await connection.execute(
+        "INSERT INTO feedback_likes (feedback_id, admin_id, action) VALUES (?, ?, ?)",
+        [feedbackId, adminId, 'dislike']
+      );
+      await connection.execute(
+        "UPDATE feedback SET dislikes = dislikes + 1 WHERE id = ?",
+        [feedbackId]
+      );
+    }
+
+    // Commit transaction
+    await connection.commit();
+
+    // Fetch updated feedback data
+    const [updatedFeedback] = await connection.execute(
+      "SELECT * FROM feedback WHERE id = ?",
+      [feedbackId]
+    );
+
+    res.status(200).json({
+      message: `Feedback ${action}d successfully.`,
+      ...updatedFeedback[0],
+    });
+  } catch (error) {
+    console.log('3');
+    console.error(`Error handling feedback reaction: ${action}`, error);
+
+    // Rollback transaction if any error occurs
+    if (connection) {
+      await connection.rollback();
+    }
+
+    res.status(500).json({ message: `Error handling feedback ${action}.` });
+  
+  }
 };
 
 
@@ -265,3 +313,34 @@ exports.getAllFeedbackWithDetails = async (req, res) => {
         res.status(500).json({ message: 'Error fetching feedback and details.', error: err.message });
     }
 };
+
+
+// API to get all feedback with issue details and reactions
+exports.getFeedbackWithReaction =async (req, res) => {
+  try {
+      const connection = await db;
+      const [results] = await connection.execute(`
+          SELECT 
+              i.id AS issue_id, 
+              i.issue_description, 
+              i.status, 
+              i.created_at AS issue_created_at, 
+              f.id AS feedback_id, 
+              f.feedback_message, 
+              f.created_at AS feedback_created_at, 
+              f.admin_id AS feedback_admin_id,
+              COALESCE(SUM(CASE WHEN fl.action = 'like' THEN 1 ELSE 0 END), 0) as likes,
+              COALESCE(SUM(CASE WHEN fl.action = 'dislike' THEN 1 ELSE 0 END), 0) as dislikes
+          FROM issues i
+          INNER JOIN feedback f ON i.id = f.issue_id
+          LEFT JOIN feedback_likes fl ON f.id = fl.feedback_id
+          GROUP BY f.id, i.id
+      `);
+
+      res.status(200).json(results);
+  } catch (err) {
+      console.error('Error fetching feedback and details:', err);
+      res.status(500).json({ message: 'Error fetching feedback and details.', error: err.message });
+  }
+};
+

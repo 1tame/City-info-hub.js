@@ -207,6 +207,11 @@ app.get('/view-sysadmin-likes.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'view-sysadmin-likes.html'));
 });
 
+
+// Serve the view-reaction.html file
+app.get('/view-reaction', (req, res) => {
+  res.sendFile(path.join(__dirname, '../views/view-reaction.html'));
+});
 // Start server after successful database connection
 db.then((connection) => {
   console.log("Connected to the MySQL database.");

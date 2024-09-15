@@ -257,19 +257,24 @@
         Welcome to Gondar City Website
     </div>
 
-    <div class="container" id="loginContainer">
+    <!-- Container for login content -->
+    <div class="container card" id="loginContainer">
         <div class="form-container">
             <!-- Logo Placeholder -->
             <div class="logo">
-                <img src="C:\Users\weshu\Desktop\imagesforproj\website logo\Screenshot 2024-09-10 235918.png" alt="Gondar City Logo">
+                <img src="C:\Users\weshu\Desktop\imagesforproj\website logo\Screenshot 2024-09-10 235918.png" alt="Gondar City Logo" class="logo-image">
             </div>
             
+            <!-- Introductory quote -->
             <div class="intro-quote">
                 "Discover the rich history and vibrant culture of Gondar, Ethiopia."
             </div>
 
+            <!-- Login form title -->
             <h2>Login</h2>
-            <form id="loginForm">
+
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -280,6 +285,8 @@
                 </div>
                 <button type="submit" class="submit-btn">Login</button>
             </form>
+
+            <!-- Links for registration and password reset -->
             <p>Don't have an account? <a href="register.html">Register</a></p>
             <p>Forgot your password? <a href="#" onclick="openForgotPasswordModal()">Reset Password</a></p>
             
@@ -288,8 +295,10 @@
                 <p>Admin? <a href="adminlogin.html">Login here</a></p>
             </div>
         </div>
+
+        <!-- Image container for login page -->
         <div class="image-container">
-            <img src="C:\Users\weshu\Desktop\imagesforproj\historical places\loign.jpg" alt="Login Animation">
+            <img src="C:\Users\weshu\Desktop\imagesforproj\historical places\loign.jpg" alt="Login Animation" class="login-image">
         </div>
     </div>
 
@@ -302,20 +311,22 @@
 
     <!-- Forgot Password Modal -->
     <div id="forgotPasswordModal" class="modal">
-        <div class="forgotPasswordModal-content">
+        <div class="forgotPasswordModal-content card">
             <span class="close" onclick="closeForgotPasswordModal()">×</span>
             <h2>Forgot Password</h2>
             <form id="forgotPasswordForm">
-                <div>
+                <div class="form-group">
                     <label for="forgotUsername">Username or Email:</label>
                     <input type="text" id="forgotUsername" name="forgotUsername" required>
                 </div>
                 <button type="submit">Reset Password</button>
-                <div id="forgotPasswordMessage"></div> <div id="loadingSpinner" class="loading"></div> </form>
+                <div id="forgotPasswordMessage"></div>
+                <div id="loadingSpinner" class="loading"></div>
+            </form>
         </div>
     </div>
 
-
+    <!-- Scripts for animations and functionality -->
     <script>
         // Show welcome message first, then load login page
         window.addEventListener('load', () => {
@@ -327,14 +338,14 @@
                 welcomeMessage.classList.add('hidden');
                 setTimeout(() => {
                     loginContainer.style.display = 'flex';
-                    setTimeout(() => { // Fade in image with a slight delay
+                    setTimeout(() => {
                         imageContainer.style.display = 'block';
                         imageContainer.style.opacity = 0;
                         imageContainer.style.transition = 'opacity 1s ease-in-out';
                         imageContainer.style.opacity = 1;
                     }, 500);
                 }, 500);
-            }, 2000); // Adjust the duration of the welcome message
+            }, 2000);
         });
 
         document.getElementById('loginForm').addEventListener('submit', async (event) => {
@@ -354,13 +365,11 @@
             if (response.ok) {
                 localStorage.setItem("user", JSON.stringify(result.user));
 
-                // Show the loader with animation
                 const loaderOverlay = document.getElementById('loaderOverlay');
                 loaderOverlay.style.display = 'flex';
 
-                // Redirect after 3 seconds (after animation ends)
                 setTimeout(() => {
-                    window.location.href = 'indexx.html'; // Redirect to the dashboard
+                    window.location.href = 'indexx.html';
                 }, 3000);
             } else {
                 alert(result.message);
@@ -380,38 +389,36 @@
         }
 
         document.getElementById('forgotPasswordForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const usernameOrEmail = document.getElementById('forgotUsername').value;
+            event.preventDefault();
+            const usernameOrEmail = document.getElementById('forgotUsername').value;
 
-    const loadingSpinner = document.getElementById('loadingSpinner');
-    const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
-    forgotPasswordMessage.textContent = "";
-    loadingSpinner.style.display = 'block'; 
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
+            forgotPasswordMessage.textContent = "";
+            loadingSpinner.style.display = 'block';
 
-    console.log('Sending password reset request for:', usernameOrEmail); // Debugging step
+            console.log('Sending password reset request for:', usernameOrEmail);
 
-    // Send a request to your API to handle password reset
-    const response = await fetch('http://localhost:3000/api/user/forgot-password', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ usernameOrEmail: usernameOrEmail })
-    });
+            const response = await fetch('http://localhost:3000/api/user/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ usernameOrEmail: usernameOrEmail })
+            });
 
-    const data = await response.json();
-    loadingSpinner.style.display = 'none';
+            const data = await response.json();
+            loadingSpinner.style.display = 'none';
 
-    if (response.ok) {
-        console.log('Password reset email sent successfully:', data); // Debugging step
-        forgotPasswordMessage.textContent = data.message; // Display success message
-    } else {
-        console.log('Error:', data); // Debugging step
-        forgotPasswordMessage.textContent = data.message; // Display error message
-    }
-});
-
-
+            if (response.ok) {
+                console.log('Password reset email sent successfully:', data);
+                forgotPasswordMessage.textContent = data.message;
+            } else {
+                console.log('Error:', data);
+                forgotPasswordMessage.textContent = data.message;
+            }
+        });
     </script>
 </body>
+
 </html>

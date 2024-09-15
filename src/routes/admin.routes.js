@@ -67,4 +67,7 @@ router.get('/sys-admin-dashboard.html', isAuthenticated, hasRole(['sys_admin']),
   router.post('/reset-password', adminController.resetPassword);
 
 
+  
+
+
 module.exports = router;
